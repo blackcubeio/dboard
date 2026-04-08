@@ -1,0 +1,83 @@
+{
+    "name": "blackcube/dboard",
+    "description": "CMS Administration Panel",
+    "keywords": [
+        "cms",
+        "admin",
+        "back-office",
+        "rbac",
+        "oauth2",
+        "webauthn"
+    ],
+    "type": "library",
+    "homepage": "https://github.com/blackcubeio/dboard",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Philippe Gaultier",
+            "email": "philippe@blackcube.io"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/blackcubeio/dboard/issues",
+        "source": "https://github.com/blackcubeio/dboard"
+    },
+    "readme": "README.md",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.2",
+        "blackcube/dcore": "@dev",
+        "blackcube/fileprovider": "@dev",
+        "blackcube/oauth2": "@dev",
+        "blackcube/yii-assets": "@dev",
+        "blackcube/yii-bleet": "@dev",
+        "blackcube/yii-bridge-model": "@dev",
+        "vlucas/phpdotenv": "^5.6",
+        "web-auth/webauthn-lib": "^5.2",
+        "yiisoft/active-record": "^1.0",
+        "yiisoft/aliases": "^3.1",
+        "yiisoft/db": "^2.0",
+        "yiisoft/db-migration": "^2.0",
+        "yiisoft/db-mysql": "^2.0",
+        "yiisoft/rbac": "^2.1",
+        "yiisoft/router": "^4.0",
+        "yiisoft/router-fastroute": "^4.0",
+        "yiisoft/strings": "^2.7",
+        "yiisoft/translator": "^3.2",
+        "yiisoft/translator-message-db": "^1.1"
+    },
+    "suggest": {
+        "blackcube/ssr": "Required for SSR route options in Type admin forms"
+    },
+    "require-dev": {
+        "codeception/codeception": "^5.3",
+        "codeception/module-asserts": "^3.3",
+        "yiisoft/di": "^1.4",
+        "yiisoft/event-dispatcher": "^1.1",
+        "yiisoft/injector": "^1.2",
+        "yiisoft/test-support": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Blackcube\\Dboard\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Blackcube\\Dboard\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-devel": "1.x-dev"
+        },
+        "config-plugin-file": "config/configuration.php"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "yiisoft/config": true
+        }
+    }
+}

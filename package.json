@@ -1,0 +1,41 @@
+{
+    "name": "dboard-assets",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dist-clean-vite": "vite build",
+        "dist-clean-webpack": "webpack --mode production",
+        "watch": "webpack --mode development --watch",
+        "dist-clean": "npm run dist-clean-vite && npm run dist-clean-webpack"
+    },
+    "devDependencies": {
+        "@aurelia/vite-plugin": "^2.0.0-rc.1",
+        "@aurelia/webpack-loader": "^2.0.0-rc.1",
+        "@tailwindcss/postcss": "^4.1.17",
+        "@types/jsoneditor": "^9.9.6",
+        "@types/node": "^22.0",
+        "assets-webpack-plugin": "^7.0",
+        "compression-webpack-plugin": "^11.0",
+        "css-loader": "^7.0",
+        "mini-css-extract-plugin": "^2.0",
+        "postcss-loader": "^8.0",
+        "sass": "^1.80",
+        "sass-loader": "^16.0",
+        "source-map-loader": "^5.0",
+        "tailwindcss": "^4.1.17",
+        "ts-loader": "^9.0",
+        "ts-node": "^10.0",
+        "typescript": "^5.0",
+        "vite": "^6.0",
+        "webpack": "^5.0",
+        "webpack-cli": "^6.0"
+    },
+    "dependencies": {
+        "@blackcube/aurelia2-bleet": "^1.0.4",
+        "aurelia": "^2.0.0-rc.1",
+        "jsoneditor": "^10.1.0",
+        "quill": "^2.0.3",
+        "resumablejs": "^1.1.0",
+        "socket.io-client": "^4.8.1"
+    }
+}

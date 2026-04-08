@@ -1,0 +1,16 @@
+{
+    "builders": [
+        "vite",
+        "webpack"
+    ],
+    "sourceDir": "src/Assets/App/src",
+    "outputBaseDir": "src/Assets/App",
+    "entry": {
+        "app": "startup.ts"
+    },
+    "subDirectories": {
+        "js": "js",
+        "css": "css"
+    },
+    "catalog": "assets-catalog.json"
+}

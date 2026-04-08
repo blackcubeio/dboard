@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * DeleteInit.php
+ *
+ * @copyright 2010-2026 Blackcube
+ * @license https://www.blackcube.io/license
+ * @link https://www.blackcube.io
+ */
+
+namespace Blackcube\Dboard\Handlers\Contents;
+
+use Blackcube\Dcore\Models\Content;
+use Blackcube\Dboard\Handlers\Commons\AbstractPanel;
+use Blackcube\Dboard\Enums\PanelType;
+use Blackcube\Bleet\Enums\UiColor;
+
+/**
+ * Content delete init action (GET).
+ * Displays delete confirmation modal.
+ *
+ * @copyright 2010-2026 Blackcube
+ * @license https://www.blackcube.io/license
+ * @link https://www.blackcube.io
+ */
+final class DeleteInit extends AbstractPanel
+{
+    protected function getType(): PanelType { return PanelType::Modal; }
+    protected function getModelClass(): string { return Content::class; }
+    protected function getTitle(): string { return $this->translator->translate('Delete content', category: 'dboard-content'); }
+    protected function getContentView(): string { return 'Commons/_delete-content'; }
+    protected function getMessage(): string { return $this->translator->translate('Content "{name}" will be permanently deleted.', ['name' => $this->getModelName()], 'dboard-content'); }
+    protected function getColor(): UiColor { return UiColor::Danger; }
+}
