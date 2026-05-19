@@ -1,0 +1,463 @@
+@import "tailwindcss";
+
+@import "jsoneditor/dist/jsoneditor.css";
+
+@import "quill/dist/quill.snow.css";
+
+/* Scan des sources Bleet */
+@source "../../../../../vendor/blackcube/yii-bleet/aurelia/src/**/*.ts";
+@source "../../../../../vendor/blackcube/yii-bleet/src/**/*.php";
+@source "../../../../../vendor/blackcube/yii-bleet/src/Widget/**/*.php";
+/* Scan des sources pour les classes Tailwind */
+@source "../../../../Views/**/*.php";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    --height-nav: calc(100vh - 4rem);
+
+    --color-primary-50: #e6f0fa;
+    --color-primary-100: #b8d4f0;
+    --color-primary-200: #8ab8e5;
+    --color-primary-300: #5c9cd9;
+    --color-primary-400: #3080cc;
+    --color-primary-500: #1a66b3;
+    --color-primary-600: #145091;
+    --color-primary-700: #0f3d70;
+    --color-primary-800: #0c2e55;
+    --color-primary-900: #0c2340;
+
+    --color-secondary-50: #f8fafc;
+    --color-secondary-100: #f1f5f9;
+    --color-secondary-200: #e2e8f0;
+    --color-secondary-300: #cbd5e1;
+    --color-secondary-400: #94a3b8;
+    --color-secondary-500: #64748b;
+    --color-secondary-600: #475569;
+    --color-secondary-700: #334155;
+    --color-secondary-800: #1e293b;
+    --color-secondary-900: #0f172a;
+
+    --color-accent-50: #fefffe;
+    --color-accent-100: #feffc7;
+    --color-accent-200: #ffff99;
+    --color-accent-300: #ffff5c;
+    --color-accent-400: #ffff00;
+    --color-accent-500: #e6e600;
+    --color-accent-600: #b3b300;
+    --color-accent-700: #808000;
+    --color-accent-800: #4d4d00;
+    --color-accent-900: #333300;
+
+    --color-danger-50: #fef2f2;
+    --color-danger-100: #fee2e2;
+    --color-danger-200: #fecaca;
+    --color-danger-300: #fca5a5;
+    --color-danger-400: #f87171;
+    --color-danger-500: #ef4444;
+    --color-danger-600: #dc2626;
+    --color-danger-700: #b91c1c;
+    --color-danger-800: #991b1b;
+    --color-danger-900: #7f1d1d;
+
+    --color-warning-50: #fff7ed;
+    --color-warning-100: #ffedd5;
+    --color-warning-200: #fed7aa;
+    --color-warning-300: #fdba74;
+    --color-warning-400: #fb923c;
+    --color-warning-500: #f97316;
+    --color-warning-600: #ea580c;
+    --color-warning-700: #c2410c;
+    --color-warning-800: #9a3412;
+    --color-warning-900: #7c2d12;
+
+    --color-success-50: #f0fdf4;
+    --color-success-100: #dcfce7;
+    --color-success-200: #bbf7d0;
+    --color-success-300: #86efac;
+    --color-success-400: #4ade80;
+    --color-success-500: #22c55e;
+    --color-success-600: #16a34a;
+    --color-success-700: #15803d;
+    --color-success-800: #166534;
+    --color-success-900: #14532d;
+
+    --color-info-50: #eff6ff;
+    --color-info-100: #dbeafe;
+    --color-info-200: #bfdbfe;
+    --color-info-300: #93c5fd;
+    --color-info-400: #60a5fa;
+    --color-info-500: #3b82f6;
+    --color-info-600: #2563eb;
+    --color-info-700: #1d4ed8;
+    --color-info-800: #1e40af;
+    --color-info-900: #1e3a8a;
+}
+
+html { scroll-behavior: smooth; }
+
+.code-block {
+    background: var(--color-secondary-900);
+    color: #e2e8f0;
+}
+
+.schema-descriptor {
+    background: repeating-linear-gradient(
+        -45deg, transparent, transparent 8px,
+        var(--color-accent-100) 8px, var(--color-accent-100) 9px
+    );
+}
+.dark .schema-descriptor {
+    background: repeating-linear-gradient(
+        -45deg, transparent, transparent 8px,
+        var(--color-accent-900) 8px, var(--color-accent-900) 9px
+    );
+}
+
+dboard-schema-editor .jsoneditor,
+dboard-schema-editor .jsoneditor-menu {
+    border-color: var(--color-secondary-700);
+}
+dboard-schema-editor .jsoneditor-menu {
+    background-color: var(--color-secondary-600);
+}
+dboard-schema-editor .jsoneditor-tree,
+dboard-schema-editor .jsoneditor textarea.jsoneditor-text {
+    background-color: var(--color-secondary-50);
+    color: var(--color-secondary-600);
+}
+dboard-schema-editor .jsoneditor-field,
+dboard-schema-editor .jsoneditor-value {
+    color: var(--color-secondary-600);
+}
+dboard-schema-editor table.jsoneditor-search .jsoneditor-frame {
+    background-color: var(--color-secondary-50);
+}
+
+dboard-schema-editor .jsoneditor-menu > button,
+dboard-schema-editor .jsoneditor-menu > .jsoneditor-modes > button {
+    color: var(--color-secondary-50);
+    background-color: var(--color-secondary-600);
+    cursor: pointer;
+}
+
+dboard-schema-editor tr.jsoneditor-highlight,
+dboard-schema-editor tr.jsoneditor-selected {
+    background-color: var(--color-secondary-50);
+}
+
+dboard-schema-editor .jsoneditor-field[contenteditable=true]:focus,
+dboard-schema-editor .jsoneditor-field[contenteditable=true]:hover,
+dboard-schema-editor .jsoneditor-value[contenteditable=true]:focus,
+dboard-schema-editor .jsoneditor-value[contenteditable=true]:hover,
+dboard-schema-editor .jsoneditor-field.jsoneditor-highlight,
+dboard-schema-editor .jsoneditor-value.jsoneditor-highlight {
+    background-color: var(--color-secondary-50);
+    border-color: var(--color-secondary-300);
+}
+
+dboard-schema-editor .jsoneditor-field.jsoneditor-highlight-active,
+dboard-schema-editor .jsoneditor-field.jsoneditor-highlight-active:focus,
+dboard-schema-editor .jsoneditor-field.jsoneditor-highlight-active:hover,
+dboard-schema-editor .jsoneditor-value.jsoneditor-highlight-active,
+dboard-schema-editor .jsoneditor-value.jsoneditor-highlight-active:focus,
+dboard-schema-editor .jsoneditor-value.jsoneditor-highlight-active:hover {
+    background-color: var(--color-secondary-50);
+    border-color: var(--color-secondary-200);
+}
+
+dboard-schema-editor .jsoneditor-tree button:focus {
+    background-color: var(--color-secondary-50);
+}
+
+/* coloring of JSON in tree mode */
+dboard-schema-editor .jsoneditor-readonly {
+    color: var(--color-secondary-600);
+}
+dboard-schema-editor .jsoneditor td.jsoneditor-separator {
+    color: var(--color-secondary-600);
+}
+dboard-schema-editor .jsoneditor-value.jsoneditor-string {
+    color: var(--color-success-800);
+}
+dboard-schema-editor .jsoneditor-value.jsoneditor-object,
+dboard-schema-editor .jsoneditor-value.jsoneditor-array {
+    color: var(--color-secondary-600);
+}
+dboard-schema-editor .jsoneditor-value.jsoneditor-number {
+    color: var(--color-danger-500);
+}
+dboard-schema-editor .jsoneditor-value.jsoneditor-boolean {
+    color: var(--color-warning-500);
+}
+dboard-schema-editor .jsoneditor-value.jsoneditor-null {
+    color: var(--color-info-500);
+}
+dboard-schema-editor .jsoneditor-value.jsoneditor-invalid {
+    color: var(--color-secondary-600);
+}
+
+bleet-quilljs .ql-editor td {
+    border-color: var(--color-secondary-900);
+}
+
+bleet-quilljs .ql-editor li[data-list=checked] > .ql-ui,
+bleet-quilljs .ql-editor li[data-list=unchecked] > .ql-ui {
+    color: var(--color-secondary-500);
+}
+
+
+ bleet-quilljs .ql-editor .ql-bg-black {
+    background-color: var(--color-secondary-900);
+}
+
+ bleet-quilljs .ql-editor .ql-bg-red {
+    background-color: var(--color-danger-500);
+}
+
+ bleet-quilljs .ql-editor .ql-bg-orange {
+    background-color: var(--color-warning-500);
+}
+
+ bleet-quilljs .ql-editor .ql-bg-yellow {
+    background-color: var(--color-accent-400);
+}
+
+ bleet-quilljs .ql-editor .ql-bg-green {
+    background-color: var(--color-success-500);
+}
+
+ bleet-quilljs .ql-editor .ql-bg-blue {
+    background-color: var(--color-info-500);
+}
+
+ bleet-quilljs .ql-editor .ql-bg-purple {
+    background-color: #93f
+}
+
+ bleet-quilljs .ql-editor .ql-color-white {
+    color: #fff
+}
+
+ bleet-quilljs .ql-editor .ql-color-red {
+    color: var(--color-danger-500);
+}
+
+ bleet-quilljs .ql-editor .ql-color-orange {
+    color: var(--color-warning-500);
+}
+
+ bleet-quilljs .ql-editor .ql-color-yellow {
+    color: var(--color-accent-400);
+}
+
+ bleet-quilljs .ql-editor .ql-color-green {
+    color: var(--color-success-500);
+}
+
+ bleet-quilljs .ql-editor .ql-color-blue {
+    color: var(--color-info-500);
+}
+
+ bleet-quilljs .ql-editor .ql-color-purple {
+    color: #93f
+}
+
+ bleet-quilljs .ql-editor.ql-blank::before {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+ bleet-quilljs .ql-snow.ql-toolbar button:hover,
+ bleet-quilljs .ql-snow .ql-toolbar button:hover,
+ bleet-quilljs .ql-snow.ql-toolbar button:focus,
+ bleet-quilljs .ql-snow .ql-toolbar button:focus,
+ bleet-quilljs .ql-snow.ql-toolbar button.ql-active,
+ bleet-quilljs .ql-snow .ql-toolbar button.ql-active,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-label:hover,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-label:hover,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-item:hover,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-item:hover,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+    color: var(--color-info-700);
+}
+
+ bleet-quilljs .ql-snow.ql-toolbar button:hover .ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar button:hover .ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar button:focus .ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar button:focus .ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar button.ql-active .ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar button.ql-active .ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-label:hover .ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-item:hover .ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-item:hover .ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar button:hover .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar button:hover .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar button:focus .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar button:focus .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar button.ql-active .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar button.ql-active .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill {
+    fill: var(--color-info-700);
+}
+
+ bleet-quilljs .ql-snow.ql-toolbar button:hover .ql-stroke,
+ bleet-quilljs .ql-snow .ql-toolbar button:hover .ql-stroke,
+ bleet-quilljs .ql-snow.ql-toolbar button:focus .ql-stroke,
+ bleet-quilljs .ql-snow .ql-toolbar button:focus .ql-stroke,
+ bleet-quilljs .ql-snow.ql-toolbar button.ql-active .ql-stroke,
+ bleet-quilljs .ql-snow .ql-toolbar button.ql-active .ql-stroke,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+ bleet-quilljs .ql-snow.ql-toolbar button:hover .ql-stroke-miter,
+ bleet-quilljs .ql-snow .ql-toolbar button:hover .ql-stroke-miter,
+ bleet-quilljs .ql-snow.ql-toolbar button:focus .ql-stroke-miter,
+ bleet-quilljs .ql-snow .ql-toolbar button:focus .ql-stroke-miter,
+ bleet-quilljs .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter,
+ bleet-quilljs .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+ bleet-quilljs .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
+ bleet-quilljs .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
+    stroke: var(--color-info-700);
+}
+
+@media (pointer: coarse) {
+     bleet-quilljs .ql-snow.ql-toolbar button:hover:not(.ql-active),
+     bleet-quilljs .ql-snow .ql-toolbar button:hover:not(.ql-active) {
+        color: var(--color-secondary-600)
+    }
+
+     bleet-quilljs .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-fill,
+     bleet-quilljs .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-fill,
+     bleet-quilljs .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill,
+     bleet-quilljs .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill {
+        fill: var(--color-secondary-600)
+    }
+
+     bleet-quilljs .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke,
+     bleet-quilljs .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke,
+     bleet-quilljs .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter,
+     bleet-quilljs .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter {
+        stroke: var(--color-secondary-600)
+    }
+}
+
+ bleet-quilljs .ql-snow .ql-stroke {
+    stroke: var(--color-secondary-600);
+}
+
+ bleet-quilljs .ql-snow .ql-stroke-miter {
+    stroke: var(--color-secondary-600);
+}
+
+ bleet-quilljs .ql-snow .ql-fill,
+ bleet-quilljs .ql-snow .ql-stroke.ql-fill {
+    fill: var(--color-secondary-600)
+}
+
+
+ bleet-quilljs .ql-snow .ql-editor blockquote {
+    border-left-color: var(--color-secondary-300);
+}
+
+ bleet-quilljs .ql-snow .ql-editor code,
+ bleet-quilljs .ql-snow .ql-editor .ql-code-block-container {
+    background-color: var(--color-secondary-300);
+}
+
+ bleet-quilljs .ql-snow .ql-editor .ql-code-block-container {
+    background-color: var(--color-secondary-800);
+    color: var(--color-secondary-300);
+}
+
+ bleet-quilljs .ql-snow .ql-picker {
+    color: var(--color-secondary-600);
+}
+
+ bleet-quilljs .ql-snow .ql-picker.ql-expanded .ql-picker-label {
+    color: var(--color-secondary-300);
+}
+
+ bleet-quilljs .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-fill {
+    fill: var(--color-secondary-300);
+}
+
+ bleet-quilljs .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-stroke {
+    stroke: var(--color-secondary-300);
+}
+
+ bleet-quilljs .ql-snow .ql-color-picker.ql-color .ql-picker-item {
+    background-color: var(--color-secondary-900);
+}
+
+bleet-quilljs .ql-toolbar.ql-snow {
+    border: 1px solid var(--color-secondary-300);
+}
+
+bleet-quilljs .ql-toolbar.ql-snow .ql-picker-options {
+    box-shadow: rgba(0, 0, 0, 0.2) 0 2px 8px
+}
+
+bleet-quilljs .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+    border-color: var(--color-secondary-300);
+}
+
+bleet-quilljs .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+    border-color: var(--color-secondary-300);
+}
+
+bleet-quilljs .ql-toolbar.ql-snow .ql-color-picker .ql-picker-item.ql-selected,
+bleet-quilljs .ql-toolbar.ql-snow .ql-color-picker .ql-picker-item:hover {
+    border-color: var(--color-secondary-900);
+}
+
+ bleet-quilljs .ql-snow .ql-tooltip {
+    background-color: #fff;
+    border: 1px solid var(--color-secondary-300);
+    box-shadow: 0 0 5px var(--color-secondary-300);
+    color: var(--color-secondary-600);
+}
+
+ bleet-quilljs .ql-snow .ql-tooltip input[type=text] {
+    border: 1px solid var(--color-secondary-300);
+}
+
+ bleet-quilljs .ql-snow .ql-tooltip a.ql-action::after {
+    border-right-color: var(--color-secondary-300);
+}
+
+ bleet-quilljs .ql-snow a {
+    color: var(--color-info-700);
+}
+
+bleet-quilljs .ql-container.ql-snow {
+    border-color: var(--color-secondary-300);
+}

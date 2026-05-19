@@ -1,0 +1,12 @@
+.idea
+*.iml
+.claude
+vendor
+composer.lock
+tests/_output/*
+.DS_Store
+.env
+.env.*
+package-lock.json
+node_modules
+src/Assets/Passkeys/Img
