@@ -1,0 +1,28 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @copyright 2010-2026 Blackcube - Philippe Gaultier
+ * @license https://www.blackcube.io/license
+ * @link https://www.blackcube.io
+ */
+
+namespace Blackcube\Dboard\Handlers\Tags;
+
+use Blackcube\Dcore\Models\Tag;
+use Blackcube\Dboard\Handlers\Commons\AbstractXeoRefresh;
+
+/**
+ * Tag XEO refresh action.
+ *
+ * @copyright 2010-2026 Blackcube - Philippe Gaultier
+ * @license https://www.blackcube.io/license
+ * @link https://www.blackcube.io
+ */
+class XeoRefresh extends AbstractXeoRefresh
+{
+    protected function getModelClass(): string { return Tag::class; }
+    protected function getEntityName(): string { return 'tag'; }
+    protected function getFileRoutePrefix(): string { return 'dboard.tags'; }
+}

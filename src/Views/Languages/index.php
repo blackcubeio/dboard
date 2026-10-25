@@ -1,0 +1,91 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @copyright 2010-2026 Blackcube - Philippe Gaultier
+ * @license https://www.blackcube.io/license
+ * @link https://www.blackcube.io
+ */
+
+use Blackcube\Dcore\Models\Language;
+use Blackcube\Dboard\Models\Administrator;
+use Blackcube\Bleet\Bleet;
+use Blackcube\Dboard\Widgets\Widgets;
+use Yiisoft\Data\Paginator\OffsetPaginator;
+use Yiisoft\Html\Html;
+use Yiisoft\Router\CurrentRoute;
+use Yiisoft\Router\UrlGeneratorInterface;
+use Yiisoft\Translator\TranslatorInterface;
+
+/**
+ * @var Yiisoft\View\WebView $this
+ * @var UrlGeneratorInterface $urlGenerator
+ * @var TranslatorInterface $translator
+ * @var Administrator $administrator
+ * @var OffsetPaginator $paginator
+ * @var \Blackcube\Dboard\Models\Forms\SearchForm $searchForm
+ * @var \Blackcube\Dboard\Models\Forms\PageForm $pageForm
+ * @var CurrentRoute $currentRoute
+ * @var array<string, true> $usedLanguageIds
+ */
+
+?>
+
+
+        <main class="flex-1 p-4 sm:p-6 lg:p-8">
+            <div class="bg-white rounded-lg shadow-sm border border-secondary-200 p-4 mb-6">
+                <?php echo Html::form()->get($urlGenerator->generate('dboard.languages'))->attribute('class', 'flex flex-wrap gap-4 items-center')->open(); ?>
+                    <div class="flex-1">
+                        <?php echo Bleet::input()
+                            ->type('search')
+                            ->name('search')
+                            ->value($searchForm->getSearch())
+                            ->placeholder($translator->translate('Search', category: 'dboard-common'))
+                            ->hideLabel()
+                            ->render();
+                        ?>
+                    </div>
+                    <div>
+                        <?php echo Bleet::a($translator->translate('Create', category: 'dboard-common'), $urlGenerator->generate('dboard.languages.create'))
+                            ->button()
+                            ->icon('plus')
+                            ->primary()
+                            ->render();
+                        ?>
+                    </div>
+                <?php echo Html::form()->close(); ?>
+            </div>
+
+            <?php echo Bleet::cardHeader()
+                ->icon('flag')
+                ->title($translator->translate('Languages', category: 'dboard-modules'))
+                ->primary();
+            ?>
+
+            <div class="bg-white rounded-b-lg shadow-lg p-4">
+                <bleet-ajaxify id="languages-list">
+                <?php
+                    echo $this->render('Languages/_list', [
+                        'urlGenerator' => $urlGenerator,
+                        'administrator' => $administrator,
+                        'paginator' => $paginator,
+                        'searchForm' => $searchForm,
+                        'currentRoute' => $currentRoute,
+                        'items' => $items ?? null,
+                        'usedLanguageIds' => $usedLanguageIds,
+                    ]);
+                ?>
+                </bleet-ajaxify>
+            </div>
+
+            <div class="mt-6">
+                <?php echo Widgets::pagination($paginator, $urlGenerator, $translator)
+                    ->showInfo()
+                    ->primary()
+                    ->render();
+                ?>
+            </div>
+        </main>
+
+

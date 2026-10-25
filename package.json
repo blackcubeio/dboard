@@ -1,0 +1,43 @@
+{
+    "name": "dboard-assets",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dist-clean-vite": "rimraf src/Assets/App/dist-vite && vite build",
+        "dist-clean-webpack": "rimraf src/Assets/App/dist-webpack && webpack --mode production",
+        "watch": "webpack --mode development --watch",
+        "dist-clean": "npm run dist-clean-vite && npm run dist-clean-webpack"
+    },
+    "devDependencies": {
+        "@aurelia/vite-plugin": "^2.0.0-rc.2",
+        "@aurelia/webpack-loader": "^2.0.0-rc.2",
+        "@tailwindcss/postcss": "^4.3.3",
+        "@types/node": "^26.6.5",
+        "assets-webpack-plugin": "^7.1.1",
+        "compression-webpack-plugin": "^12.0.0",
+        "css-loader": "^7.1.5",
+        "mini-css-extract-plugin": "^2.10.2",
+        "postcss-loader": "^8.2.1",
+        "rimraf": "^6.1.3",
+        "source-map-loader": "^5.0.0",
+        "tailwindcss": "^4.3.3",
+        "ts-loader": "^9.6.2",
+        "ts-node": "^10.9.2",
+        "typescript": "^6.0.3",
+        "vite": "^8.3.4",
+        "webpack": "^5.112.0",
+        "webpack-cli": "^7.2.3"
+    },
+    "dependencies": {
+        "@blackcube/aurelia-api": "^1.0.0-rc1",
+        "@blackcube/aurelia-bridge-jsoneditor": "^1.0.0-rc3",
+        "@blackcube/aurelia-bridge-quill": "^1.0.0-rc2",
+        "@blackcube/aurelia-bridge-resumablejs": "^1.0.0-rc4",
+        "@blackcube/aurelia-kit": "^1.0.0-rc6",
+        "aurelia": "^2.0.0-rc.2",
+        "jsoneditor": "^10.4.3",
+        "quill": "^2.0.3",
+        "resumablejs": "^1.1.0",
+        "socket.io-client": "^4.8.4"
+    }
+}
