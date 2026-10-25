@@ -14,7 +14,7 @@ use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dboard\Handlers\Commons\AbstractAjaxHandler;
 use Blackcube\Dboard\Components\ActionModel;
 use Blackcube\Dboard\Components\Rbac;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Models\Forms\PermissionForm;
 use Blackcube\Bleet\Bleet;

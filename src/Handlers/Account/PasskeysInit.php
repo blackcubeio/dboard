@@ -12,7 +12,7 @@ namespace Blackcube\Dboard\Handlers\Account;
 
 use Blackcube\Dboard\Handlers\Commons\AbstractAjaxHandler;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Models\Passkey;
 use Blackcube\Bleet\Bleet;

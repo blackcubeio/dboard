@@ -30,6 +30,7 @@
         "blackcube/bleet": "^1.0",
         "blackcube/dcore": "^1.0",
         "blackcube/fileprovider": "^1.0",
+        "blackcube/handler": "^1.0",
         "blackcube/oauth2": "^1.0",
         "blackcube/resumable": "^1.0",
         "blackcube/assets": "^1.0",

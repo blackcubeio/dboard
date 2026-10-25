@@ -12,7 +12,7 @@ namespace Blackcube\Dboard\Handlers\Commons;
 
 use Blackcube\Dcore\Models\Bloc;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Forms\BlocForm;
 use Blackcube\Bleet\Enums\AjaxifyAction;
 use Blackcube\Bleet\Enums\UiLevel;

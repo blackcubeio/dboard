@@ -15,7 +15,7 @@ use Blackcube\Dcore\Models\Slug;
 use Blackcube\Dcore\Models\Xeo;
 use Blackcube\Dcore\Services\XeoRefreshService;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Bleet\Enums\DialogAction;
 use Blackcube\Bleet\Enums\UiLevel;
 use Blackcube\Bleet\Helper\AureliaCommunication;

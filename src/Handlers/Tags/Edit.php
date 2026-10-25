@@ -14,7 +14,7 @@ use Blackcube\Dcore\Models\Tag;
 use Blackcube\Dcore\Models\Language;
 use Blackcube\Dcore\Models\Type;
 use Blackcube\Dboard\Handlers\Commons\AbstractEdit;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Forms\TagForm;
 
 /**

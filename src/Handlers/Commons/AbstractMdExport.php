@@ -13,7 +13,7 @@ namespace Blackcube\Dboard\Handlers\Commons;
 use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dcore\Services\ElasticMdService;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Forms\MdExportForm;
 use Blackcube\Bleet\Bleet;
 use Blackcube\Bleet\Enums\DialogAction;

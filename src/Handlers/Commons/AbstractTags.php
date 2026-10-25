@@ -12,7 +12,7 @@ namespace Blackcube\Dboard\Handlers\Commons;
 
 use Blackcube\Dcore\Models\Tag;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Bleet\Bleet;
 use Blackcube\Bleet\Enums\DialogAction;
 use Blackcube\Bleet\Enums\DialogType;
