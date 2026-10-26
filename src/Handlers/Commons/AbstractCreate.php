@@ -13,7 +13,7 @@ namespace Blackcube\Dboard\Handlers\Commons;
 use Blackcube\Dcore\Enums\ElasticSchemaKind;
 use Blackcube\Dcore\Models\ElasticSchema;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Enums\TreePosition;
 use Blackcube\ActiveRecord\Elastic\ElasticInterface;
 use Blackcube\ActiveRecord\Hazeltree\HazeltreeInterface;

@@ -12,7 +12,7 @@ namespace Blackcube\Dboard\Handlers\Hosts;
 
 use Blackcube\Dcore\Models\Host;
 use Blackcube\Dboard\Handlers\Commons\AbstractPanel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Bleet\Bleet;
 use Blackcube\Bleet\Enums\DialogAction;
 use Blackcube\Bleet\Enums\DialogType;

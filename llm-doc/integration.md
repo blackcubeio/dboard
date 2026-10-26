@@ -17,7 +17,7 @@
 | `routes` | `config/routes.php` | one `Group` on `routePrefix` with `CsrfTokenMiddleware`, `JsonBodyParserMiddleware`, `LocaleMiddleware` (`:197-200`), one sub-group per module, the addon groups, the population OAuth group and the well-known route |
 | console | `config/console/commands.php` | `dboard:refreshAaguid` → `Commands\RefreshAaguidCommand` |
 
-`DboardConfig` (`src/DboardConfig.php:26-36`) also carries `viewsAlias` (`@dboard/Views`), `cypherKey`, `scopeProvider`, `webauthnConfig`, not set by the package DI.
+`DboardConfig` (`src/DboardConfig.php:26-46`) extends `Blackcube\Handler\HandlerConfig`: `handlerNamespacePrefix` `Blackcube\Dboard\Handlers\`, `layoutAlias` `<viewsAlias>/Layouts/main.php`; its own type keeps the panel handlers apart from the `HandlerConfig` of the application. It also carries `viewsAlias` (`@dboard/Views`), `cypherKey`, `scopeProvider`, `webauthnConfig`, not set by the package DI.
 
 ## Left to the application
 

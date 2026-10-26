@@ -38,7 +38,7 @@ All request handlers extend a base hierarchy:
 
 | Base class | Purpose |
 |---|---|
-| `AbstractBaseHandler` | Foundation: render, redirect, JSON, AJAX detection |
+| `AbstractBaseHandler` | Foundation on `Blackcube\Handler\AbstractHandler` (`blackcube/handler`): render, redirect, JSON, download, AJAX detection; adds `DboardConfig` and the translator |
 | `AbstractModelHandler` | Model loading via `ActionModel`, form data binding |
 | `AbstractPageHandler` | Full-page pipeline: `setupAction → setupMethod → handleMethod → prepareOutputData → output` |
 | `AbstractAjaxHandler` | AJAX pipeline with exception catching (error → toast) |
@@ -120,9 +120,10 @@ The popovers, the dialog frames and the JSON Schema editor come from `blackcube/
 
 | Enum | Values |
 |---|---|
-| `OutputType` | `Render`, `Partial`, `Json`, `Redirect` |
 | `ReorderMode` | `MoveUp`, `MoveDown`, `Dnd` |
 | `TreePosition` | `Before`, `Into`, `After` |
+
+The output types come from `blackcube/handler` (`Blackcube\Handler\OutputType`); the dboard pipeline handles `Render`, `Partial`, `Json` and `Redirect`.
 
 ### Helpers
 

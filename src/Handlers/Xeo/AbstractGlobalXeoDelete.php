@@ -12,7 +12,7 @@ namespace Blackcube\Dboard\Handlers\Xeo;
 
 use Blackcube\Dcore\Models\GlobalXeo;
 use Blackcube\Dboard\Handlers\Commons\AbstractDelete;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Bleet\Bleet;
 use Blackcube\Bleet\Enums\DialogAction;
 use Blackcube\Bleet\Enums\DialogType;

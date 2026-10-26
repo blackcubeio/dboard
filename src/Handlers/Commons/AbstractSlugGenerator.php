@@ -13,7 +13,7 @@ namespace Blackcube\Dboard\Handlers\Commons;
 use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dcore\Interfaces\SlugGeneratorInterface;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Psr\Log\LoggerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;

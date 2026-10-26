@@ -14,7 +14,7 @@ use Blackcube\Dcore\Models\Host;
 use Blackcube\Dcore\Models\Menu;
 use Blackcube\Dcore\Models\Slug;
 use Blackcube\Dboard\Handlers\Commons\AbstractPanel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Bleet\Bleet;
 use Blackcube\Bleet\Enums\DialogAction;
 use Blackcube\Bleet\Enums\DialogType;

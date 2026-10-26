@@ -14,7 +14,7 @@ use Blackcube\Dcore\Models\Sitemap;
 use Blackcube\Dcore\Models\Slug;
 use Blackcube\Dcore\Models\Xeo;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Forms\SitemapForm;
 use Blackcube\Dboard\Models\Forms\SlugForm;
 use Blackcube\Bleet\Bleet;

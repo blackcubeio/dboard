@@ -22,7 +22,7 @@ use Blackcube\Dcore\Models\Slug;
 use Blackcube\Dcore\Services\FileService;
 use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Forms\XeoAuthorForm;
 use Blackcube\Dboard\Models\Forms\XeoBlocForm;
 use Blackcube\Dboard\Models\Forms\XeoForm;

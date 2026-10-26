@@ -14,7 +14,7 @@ use Blackcube\Dcore\Models\Author;
 use Blackcube\Dcore\Services\FileService;
 use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dboard\Handlers\Commons\AbstractCreate;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Forms\AuthorForm;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;

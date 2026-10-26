@@ -54,7 +54,7 @@ The package uses `config-plugin` for automatic Yii3 registration:
 | Service | Purpose |
 |---|---|
 | `CypherKey` (`oauth2`) | JWT signing from `oauth2` config: with `RS*` the two paths are read when a token is signed and the pair is generated on first use when it is missing, with `HS*` the `hsKey` secret is used as it is given |
-| `DboardConfig` | Aggregated package configuration |
+| `DboardConfig` | Aggregated package configuration; extends `Blackcube\Handler\HandlerConfig` (views alias, layout and debug of the panel handlers) |
 | `WebauthnConfig` | WebAuthn relying party settings |
 
 `ScopeProvider` and `ViewInjection` are resolved by autowiring (no explicit definition).
