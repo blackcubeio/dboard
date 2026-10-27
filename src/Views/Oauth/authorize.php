@@ -8,7 +8,6 @@ declare(strict_types=1);
  * @link https://www.blackcube.io
  */
 
-use Blackcube\Dboard\Assets\StaticAsset;
 use Blackcube\Dboard\Components\Rbac;
 use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Models\Forms\ConsentForm;
@@ -31,26 +30,18 @@ use Yiisoft\Translator\TranslatorInterface;
  * @var string|null $csrf
  */
 
-$assetManager->register(StaticAsset::class);
-$staticBundle = $assetManager->getBundle(StaticAsset::class);
-$backgroundUrl = $staticBundle->baseUrl . '/login.jpg';
-
 ?>
-<?php echo Html::openTag('div', [
-    'class' => 'min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat',
-    'style' => 'background-image: url(\'' . $backgroundUrl . '\');',
-]);
-?>
-    <div class="w-full sm:mx-auto sm:max-w-[560px]">
+<div class="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+    <div class="w-full max-w-xl">
         <div class="flex flex-col items-center">
-            <div class="bg-black rounded-xl p-0 text-white">
+            <div class="rounded-xl bg-primary-950 p-2 text-white dark:bg-white/10">
                 <?php echo Bleet::svg()
                         ->logo('blackcube')
-                        ->addClass('size-20');
+                        ->addClass('size-16');
                 ?>
             </div>
         </div>
-        <div class="mt-10 bg-white px-6 py-12 shadow-sm sm:rounded-lg sm:px-12">
+        <div class="dboard-surface mt-8 px-6 py-10 sm:px-12">
             <?php echo Html::form()
                     ->post($formAction)
                     ->csrf($csrf)
@@ -72,8 +63,8 @@ $backgroundUrl = $staticBundle->baseUrl . '/login.jpg';
                     <?php echo Bleet::p($translator->translate('Choose the rights to grant. Each one is bounded by your own permissions.', category: 'dboard-modules'))->secondary()->render(); ?>
                     <div class="space-y-4">
                         <?php foreach ($groups as $role => $scopeOptions): ?>
-                            <div class="border border-secondary-200 rounded-lg overflow-hidden">
-                                <div class="bg-secondary-50 px-4 py-3 flex items-center gap-2">
+                            <div class="overflow-hidden rounded-lg border border-secondary-200 dark:border-white/10">
+                                <div class="flex items-center gap-2 bg-secondary-50 px-4 py-3">
                                     <?php echo Bleet::svg()->outline('shield-check')->addClass('size-5', 'text-secondary-600')->render(); ?>
                                     <span class="font-medium text-secondary-900"><?php echo Html::encode($role); ?></span>
                                 </div>
@@ -88,16 +79,17 @@ $backgroundUrl = $staticBundle->baseUrl . '/login.jpg';
                     </div>
                 <?php endif; ?>
 
-                <div class="flex gap-4 pt-6 border-t border-gray-200">
+                <div class="flex gap-3 border-t border-secondary-200 pt-6 dark:border-white/10">
                     <?php echo Bleet::submitButton($translator->translate('Deny', category: 'dboard-modules'), $form, 'decision')
                             ->value(ConsentForm::DECISION_DENY)
+                            ->ghost()
                             ->secondary()
                             ->render();
                     ?>
                     <?php if (empty($groups) === false): ?>
                         <?php echo Bleet::submitButton($translator->translate('Allow', category: 'dboard-modules'), $form, 'decision')
                                 ->value(ConsentForm::DECISION_ALLOW)
-                                ->primary()
+                                ->accent()
                                 ->render();
                         ?>
                     <?php endif; ?>
@@ -107,5 +99,4 @@ $backgroundUrl = $staticBundle->baseUrl . '/login.jpg';
             ?>
         </div>
     </div>
-<?php echo Html::closeTag('div');
-?>
+</div>

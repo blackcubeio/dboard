@@ -30,29 +30,17 @@ use Yiisoft\Translator\TranslatorInterface;
 
 ?>
 
-        <main class="flex-1 p-4 sm:p-6 lg:p-8">
-            <div class="bg-white rounded-lg shadow-sm border border-secondary-200 p-4 mb-6">
-                <div class="flex flex-wrap gap-4 items-center">
-                    <div class="flex-1">
-                    </div>
-                    <div>
-                        <?php echo Bleet::a($translator->translate('Create', category: 'dboard-common'), $urlGenerator->generate('dboard.xeo.mapping.create'))
-                            ->button()
-                            ->icon('plus')
-                            ->primary()
-                            ->render();
-                        ?>
-                    </div>
-                </div>
-            </div>
-
-            <?php echo Bleet::cardHeader()
-                ->icon('arrows-right-left')
-                ->title($translator->translate('Xeo Mappings', category: 'dboard-modules'))
-                ->primary();
+        <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <?php echo Widgets::pageHeading($translator->translate('Xeo Mappings', category: 'dboard-modules'))
+                ->addAction(Bleet::a($translator->translate('Create', category: 'dboard-common'), $urlGenerator->generate('dboard.xeo.mapping.create'))
+                    ->button()
+                    ->icon('plus')
+                    ->accent()
+                    ->render())
+                ->render();
             ?>
 
-            <div class="bg-white rounded-b-lg shadow-lg p-4">
+            <div class="dboard-surface p-4">
                 <bleet-ajaxify id="mapping-list">
                 <?php
                     echo $this->render('SchemasMapping/_list', [

@@ -8,7 +8,7 @@ declare(strict_types=1);
  * @link https://www.blackcube.io
  */
 
-use Blackcube\Bleet\Bleet;
+use Blackcube\Dboard\Widgets\Widgets;
 use Yiisoft\Router\CurrentRoute;
 use Yiisoft\Router\UrlGeneratorInterface;
 use Yiisoft\Translator\TranslatorInterface;
@@ -22,14 +22,10 @@ use Yiisoft\Translator\TranslatorInterface;
  */
 
 ?>
-        <main class="flex-1 p-4 sm:p-6 lg:p-8">
-            <?php echo Bleet::cardHeader()
-                ->icon('shield-check')
-                ->title($translator->translate('RBAC', category: 'dboard-modules'))
-                ->primary();
-            ?>
+        <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <?php echo Widgets::pageHeading($translator->translate('RBAC', category: 'dboard-modules'))->render(); ?>
 
-            <div class="bg-white rounded-b-lg shadow-lg p-6">
+            <div class="dboard-surface p-4">
                 <bleet-ajaxify id="rbac-status">
                     <?php echo $this->render('Rbac/_status', [
                         'isInSync' => $isInSync,

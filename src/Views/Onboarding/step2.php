@@ -22,7 +22,7 @@ use Yiisoft\Translator\TranslatorInterface;
  */
 
 ?>
-<div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
+<div class="dboard-surface p-8">
     <div class="mb-8">
         <?php echo Bleet::step()
             ->current(1)
@@ -36,35 +36,35 @@ use Yiisoft\Translator\TranslatorInterface;
 
     <div class="text-center mb-8">
         <div class="flex justify-center mb-4">
-            <div class="bg-black rounded-xl p-2 text-white">
+            <div class="rounded-xl bg-primary-950 p-2 text-white dark:bg-white/10">
                 <?php echo Bleet::svg()
                     ->logo('blackcube')
                     ->addClass('size-16');
                 ?>
             </div>
         </div>
-        <h2 class="text-2xl font-bold text-gray-900"><?php echo $translator->translate('Verification', category: 'dboard-onboarding'); ?></h2>
-        <p class="text-gray-600 mt-2"><?php echo $translator->translate('Verify the information entered', category: 'dboard-onboarding'); ?></p>
+        <h2 class="text-2xl font-semibold tracking-tight text-secondary-950 dark:text-white"><?php echo $translator->translate('Verification', category: 'dboard-onboarding'); ?></h2>
+        <p class="mt-2 text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('Verify the information entered', category: 'dboard-onboarding'); ?></p>
     </div>
 
     <div class="space-y-4 mb-8">
-        <div class="border border-gray-200 rounded-lg p-4">
+        <div class="rounded-lg border border-secondary-200 p-4 dark:border-white/10">
             <dl class="space-y-3">
                 <div class="flex justify-between">
-                    <dt class="text-sm font-medium text-gray-500"><?php echo $translator->translate('First name', category: 'dboard-common'); ?></dt>
-                    <dd class="text-sm text-gray-900"><?php echo Html::encode($administratorValues['firstname'] ?? ''); ?></dd>
+                    <dt class="text-sm font-medium text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('First name', category: 'dboard-common'); ?></dt>
+                    <dd class="text-sm text-secondary-900 dark:text-white"><?php echo Html::encode($administratorValues['firstname'] ?? ''); ?></dd>
                 </div>
                 <div class="flex justify-between">
-                    <dt class="text-sm font-medium text-gray-500"><?php echo $translator->translate('Last name', category: 'dboard-common'); ?></dt>
-                    <dd class="text-sm text-gray-900"><?php echo Html::encode($administratorValues['lastname'] ?? ''); ?></dd>
+                    <dt class="text-sm font-medium text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('Last name', category: 'dboard-common'); ?></dt>
+                    <dd class="text-sm text-secondary-900 dark:text-white"><?php echo Html::encode($administratorValues['lastname'] ?? ''); ?></dd>
                 </div>
                 <div class="flex justify-between">
-                    <dt class="text-sm font-medium text-gray-500">E-mail</dt>
-                    <dd class="text-sm text-gray-900"><?php echo Html::encode($administratorValues['email'] ?? ''); ?></dd>
+                    <dt class="text-sm font-medium text-secondary-500 dark:text-secondary-400">E-mail</dt>
+                    <dd class="text-sm text-secondary-900 dark:text-white"><?php echo Html::encode($administratorValues['email'] ?? ''); ?></dd>
                 </div>
                 <div class="flex justify-between">
-                    <dt class="text-sm font-medium text-gray-500"><?php echo $translator->translate('Password', category: 'dboard-common'); ?></dt>
-                    <dd class="text-sm text-gray-900">••••••••</dd>
+                    <dt class="text-sm font-medium text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('Password', category: 'dboard-common'); ?></dt>
+                    <dd class="text-sm text-secondary-900 dark:text-white">••••••••</dd>
                 </div>
             </dl>
         </div>
@@ -73,14 +73,15 @@ use Yiisoft\Translator\TranslatorInterface;
     <div class="flex gap-4">
         <?php echo Bleet::a($translator->translate('Previous', category: 'dboard-common'), $urlGenerator->generate('dboard.onboarding.step1'))
             ->button()
+            ->ghost()
             ->secondary()
-            ->addClass('flex-1')
+            ->addClass('flex-1', 'text-center')
             ->render();
         ?>
         <?php echo Bleet::a($translator->translate('Confirm', category: 'dboard-common'), $urlGenerator->generate('dboard.onboarding.step3'))
             ->button()
-            ->primary()
-            ->addClass('flex-1')
+            ->accent()
+            ->addClass('flex-1', 'text-center')
             ->render();
         ?>
     </div>

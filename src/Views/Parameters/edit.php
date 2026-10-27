@@ -11,6 +11,7 @@ declare(strict_types=1);
 use Blackcube\Dcore\Models\Parameter;
 use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Models\Forms\ParameterForm;
+use Blackcube\Dboard\Widgets\Widgets;
 use Blackcube\Bleet\Bleet;
 use Yiisoft\Html\Html;
 use Yiisoft\Router\CurrentRoute;
@@ -29,7 +30,12 @@ use Yiisoft\Translator\TranslatorInterface;
  */
 
 ?>
-        <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <?php echo Widgets::pageHeading($parameter->getDomain() . '.' . $parameter->getName())
+                ->subtitle($translator->translate('Parameter', category: 'dboard-modules'))
+                ->backTo($urlGenerator->generate('dboard.parameters'), $translator->translate('Parameters', category: 'dboard-modules'))
+                ->render();
+            ?>
             <?php echo Html::form()
                 ->post($urlGenerator->generate('dboard.parameters.edit', [
                     'domain' => $parameter->getDomain(),
@@ -38,11 +44,6 @@ use Yiisoft\Translator\TranslatorInterface;
                 ->csrf($csrf)
                 ->noValidate()
                 ->open(); ?>
-                <?php echo Bleet::cardHeader()
-                    ->left(Bleet::a()->url($urlGenerator->generate('dboard.parameters'))->icon('chevron-left')->outline()->addClass('text-white', 'hover:text-white', '[&>svg]:size-6'))
-                    ->title($translator->translate('Parameter', category: 'dboard-modules'))
-                    ->primary();
-                ?>
 
                 <?php echo $this->render('Parameters/_form', [
                     'urlGenerator' => $urlGenerator,
@@ -52,7 +53,7 @@ use Yiisoft\Translator\TranslatorInterface;
                     'currentRoute' => $currentRoute,
                 ]); ?>
 
-                <div class="flex justify-end gap-4 mt-6">
+                <div class="mt-6 flex justify-end gap-3">
                     <?php echo Bleet::a($translator->translate('Cancel', category: 'dboard-common'))
                         ->url($urlGenerator->generate('dboard.parameters'))
                         ->icon('x-mark')
@@ -62,7 +63,7 @@ use Yiisoft\Translator\TranslatorInterface;
                     ?>
                     <?php echo Bleet::submitButton($translator->translate('Save', category: 'dboard-common'))
                         ->icon('check')
-                        ->primary()
+                        ->accent()
                         ->render();
                     ?>
                 </div>

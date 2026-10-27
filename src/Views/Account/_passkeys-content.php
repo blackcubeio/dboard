@@ -62,7 +62,7 @@ $registerUrl = $urlGenerator->generate('dboard.account.passkeys', [
         ?>
     </div>
 
-    <div class="flex gap-4 pt-6 mt-6 border-t border-gray-200">
+    <div class="flex gap-4 pt-6 mt-6 border-t border-secondary-200">
         <?php echo Bleet::button($translator->translate('Close', category: 'dboard-common'))
             ->secondary()
             ->attribute('data-dialog', 'close')

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 use Blackcube\Bleet\Bleet;
 use Blackcube\Dboard\Models\Forms\ImportReferencesForm;
+use Blackcube\Dboard\Widgets\Widgets;
 use Yiisoft\Html\Html;
 use Yiisoft\Router\UrlGeneratorInterface;
 use Yiisoft\Translator\TranslatorInterface;
@@ -33,7 +34,9 @@ $hasWarnings = empty($warnings) === false;
 $hasIssues = $hasMissing || $hasWarnings === true || $slugConflict === true;
 
 ?>
-<main class="flex-1 p-4 sm:p-6 lg:p-8">
+<main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+    <?php echo Widgets::pageHeading($translator->translate('References validation', category: 'dboard-modules'))->render(); ?>
+
     <div class="mb-8">
         <?php echo Bleet::step()
             ->current(2)
@@ -45,13 +48,7 @@ $hasIssues = $hasMissing || $hasWarnings === true || $slugConflict === true;
         ?>
     </div>
 
-    <?php echo Bleet::cardHeader()
-        ->icon('arrow-up-tray')
-        ->title($translator->translate('References validation', category: 'dboard-modules'))
-        ->primary();
-    ?>
-
-    <div class="bg-white rounded-b-lg shadow-lg p-8">
+    <div class="dboard-surface p-6">
         <?php if ($hasIssues === false): ?>
             <div class="mb-6">
                 <?php echo Bleet::alert()->content($translator->translate('All references are valid.', category: 'dboard-modules'))->success()->render(); ?>
@@ -83,7 +80,7 @@ $hasIssues = $hasMissing || $hasWarnings === true || $slugConflict === true;
         <?php endif; ?>
 
         <?php if ($hasMissing === true): ?>
-            <p class="text-sm text-gray-600 mb-4"><?php echo $translator->translate('Some references do not exist in the database. Choose a replacement:', category: 'dboard-modules'); ?></p>
+            <p class="mb-4 text-sm text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('Some references do not exist in the database. Choose a replacement:', category: 'dboard-modules'); ?></p>
 
             <?php if (isset($missing['languageId']) === true): ?>
                 <div class="mb-4">
@@ -91,7 +88,7 @@ $hasIssues = $hasMissing || $hasWarnings === true || $slugConflict === true;
                         ->secondary()
                         ->render();
                     ?>
-                    <p class="text-xs text-gray-500 mb-1"><?php echo $translator->translate('Not found: {value}', [
+                    <p class="mb-1 text-xs text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('Not found: {value}', [
                         'value' => Html::encode($missing['languageId']),
                     ], 'dboard-common'); ?></p>
                     <div class="mt-2">
@@ -112,7 +109,7 @@ $hasIssues = $hasMissing || $hasWarnings === true || $slugConflict === true;
                         ->secondary()
                         ->render();
                     ?>
-                    <p class="text-xs text-gray-500 mb-1"><?php echo $translator->translate('Not found: {value}', [
+                    <p class="mb-1 text-xs text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('Not found: {value}', [
                         'value' => 'ID ' . Html::encode((string) $missing['typeId']),
                     ], 'dboard-common'); ?></p>
                     <div class="mt-2">
@@ -133,7 +130,7 @@ $hasIssues = $hasMissing || $hasWarnings === true || $slugConflict === true;
                         ->secondary()
                         ->render();
                     ?>
-                    <p class="text-xs text-gray-500 mb-1"><?php echo $translator->translate('Not found: {value}', [
+                    <p class="mb-1 text-xs text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('Not found: {value}', [
                         'value' => 'ID ' . Html::encode((string) $missing['hostId']),
                     ], 'dboard-common'); ?></p>
                     <div class="mt-2">
@@ -152,7 +149,7 @@ $hasIssues = $hasMissing || $hasWarnings === true || $slugConflict === true;
                 <?php echo Bleet::hr($translator->translate('Authors not found', category: 'dboard-modules'))->secondary(); ?>
                 <?php foreach ($missing['authors'] as $i => $authorData): ?>
                     <div class="flex gap-4 items-center mb-4">
-                        <span class="text-sm text-gray-500 min-w-[150px]">
+                        <span class="min-w-40 text-sm text-secondary-500 dark:text-secondary-400">
                             <?php echo Html::encode(($authorData['firstname'] ?? '') . ' ' . ($authorData['lastname'] ?? '')); ?>
                             (ID <?php echo Html::encode((string) ($authorData['id'] ?? '?')); ?>)
                         </span>
@@ -176,7 +173,7 @@ $hasIssues = $hasMissing || $hasWarnings === true || $slugConflict === true;
                 ], 'dboard-modules'))->secondary(); ?>
                 <?php foreach ($missing['blocs'] as $i => $blocData): ?>
                     <div class="flex gap-4 items-center mb-4">
-                        <span class="text-sm text-gray-500 min-w-[150px]">
+                        <span class="min-w-40 text-sm text-secondary-500 dark:text-secondary-400">
                             <?php echo $translator->translate('Block #{number} (schema ID {schemaId})', [
                                 'number' => $i + 1,
                                 'schemaId' => Html::encode((string) ($blocData['elasticSchemaId'] ?? '?')),
@@ -200,7 +197,7 @@ $hasIssues = $hasMissing || $hasWarnings === true || $slugConflict === true;
                 <?php echo Bleet::hr($translator->translate('XEO block schemas not found', category: 'dboard-modules'))->secondary(); ?>
                 <?php foreach ($missing['xeoBlocs'] as $i => $blocData): ?>
                     <div class="flex gap-4 items-center mb-4">
-                        <span class="text-sm text-gray-500 min-w-[150px]">
+                        <span class="min-w-40 text-sm text-secondary-500 dark:text-secondary-400">
                             <?php echo $translator->translate('XEO Block #{number} (schema ID {schemaId})', [
                                 'number' => $i + 1,
                                 'schemaId' => Html::encode((string) ($blocData['elasticSchemaId'] ?? '?')),
@@ -243,7 +240,7 @@ $hasIssues = $hasMissing || $hasWarnings === true || $slugConflict === true;
             <?php endif; ?>
         <?php endif; ?>
 
-        <div class="flex justify-between items-center mt-6">
+        <div class="mt-6 flex items-center justify-between gap-3">
             <?php echo Bleet::a($translator->translate('Previous', category: 'dboard-common'))
                 ->url($urlGenerator->generate('dboard.import.step2'))
                 ->icon('arrow-left')
@@ -253,7 +250,7 @@ $hasIssues = $hasMissing || $hasWarnings === true || $slugConflict === true;
             ?>
             <?php echo Bleet::submitButton($translator->translate('Continue', category: 'dboard-common'))
                 ->icon('arrow-right')
-                ->primary()
+                ->accent()
                 ->render();
             ?>
         </div>

@@ -70,7 +70,7 @@ use Yiisoft\Translator\TranslatorInterface;
         <?php endif; ?>
 
         <?php if ($userCan(Rbac::PERMISSION_IA_IMPORT) === true): ?>
-        <div class="border-t border-gray-200"></div>
+        <div class="border-t border-secondary-200"></div>
 
         <!-- Upload Section -->
         <div>
@@ -85,7 +85,7 @@ use Yiisoft\Translator\TranslatorInterface;
         </div>
 
         <!-- Warning -->
-        <div class="border-t border-gray-200 pt-4">
+        <div class="border-t border-secondary-200 pt-4">
             <div class="rounded-md bg-warning-50 p-4">
                 <div class="flex">
                     <div class="flex-shrink-0">
@@ -106,7 +106,7 @@ use Yiisoft\Translator\TranslatorInterface;
     </div>
 
     <!-- Close button -->
-    <div class="flex gap-4 pt-6 mt-6 border-t border-gray-200">
+    <div class="flex gap-4 pt-6 mt-6 border-t border-secondary-200">
         <?php echo Bleet::button($translator->translate('Close', category: 'dboard-common'))
             ->secondary()
             ->attribute('data-dialog', 'close')

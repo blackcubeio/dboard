@@ -27,7 +27,7 @@ use Yiisoft\Translator\TranslatorInterface;
 
 ?>
 
-                <div class="bg-white rounded-b-lg shadow-lg p-6">
+                <div class="dboard-surface p-6">
                     <div class="flex gap-4">
                         <div class="basis-1/3 grow">
                             <?php echo Bleet::input($formModel, 'domain')

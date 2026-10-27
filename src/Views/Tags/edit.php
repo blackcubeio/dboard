@@ -14,6 +14,7 @@ use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Models\Forms\BlocForm;
 use Blackcube\Dboard\Models\Forms\TagForm;
 use Blackcube\Dboard\Components\Rbac;
+use Blackcube\Dboard\Widgets\Widgets;
 use Blackcube\Html\Aurelia;
 use Blackcube\Bleet\Bleet;
 use Yiisoft\Html\Html;
@@ -44,12 +45,6 @@ $hasType = $tag->getTypeId() !== null;
 $hasSlug = $tag->getSlugId() !== null;
 $hasElasticSchema = $tag->elasticSchemaId !== null;
 
-$barButtonClasses = [
-    '!rounded-none',
-    '!shadow-none',
-    'bg-white',
-];
-
 $slugSitemapPopover = Bleet::popover($translator->translate('Slug / Sitemap', category: 'dboard-common'))->id('tag-popover-slug-sitemap');
 $seoPopover = Bleet::popover($translator->translate('*EO', category: 'dboard-common'))->id('tag-popover-seo');
 $elasticPopover = Bleet::popover($translator->translate('Properties', category: 'dboard-common'))->id('tag-popover-elastic');
@@ -62,7 +57,6 @@ $slugSitemapButton = Bleet::button()
     ->outline()
     ->secondary()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($slugSitemapPopover->trigger());
 if ($hasType === true):
     $slugSitemapUrl = $urlGenerator->generate('dboard.tags.slug-sitemap', [
@@ -78,7 +72,6 @@ $seoButton = Bleet::button()
     ->outline()
     ->info()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($seoPopover->trigger());
 if ($hasSlug === true):
     $seoUrl = $urlGenerator->generate('dboard.tags.xeo', [
@@ -94,7 +87,6 @@ $elasticButton = Bleet::button()
     ->outline()
     ->primary()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($elasticPopover->trigger());
 if ($hasElasticSchema === true):
     $elasticUrl = $urlGenerator->generate('dboard.tags.elastic', [
@@ -110,7 +102,6 @@ $translationsButton = Bleet::button()
     ->outline()
     ->info()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($translationsPopover->trigger());
 if ($languageCount > 1):
     $translationsUrl = $urlGenerator->generate('dboard.tags.translations', [
@@ -126,7 +117,6 @@ $mdExportButton = Bleet::button()
     ->outline()
     ->accent()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($mdExportPopover->trigger());
 if ($hasType === true && ($userCan(Rbac::PERMISSION_IA_IMPORT) === true || $userCan(Rbac::PERMISSION_IA_EXPORT) === true)):
     $mdExportUrl = $urlGenerator->generate('dboard.tags.md-export', [
@@ -142,7 +132,6 @@ $publicUrlButton = Bleet::button()
     ->outline()
     ->success()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($publicUrlPopover->trigger())
     ->disabled();
 if ($hasSlug === true):
@@ -160,7 +149,6 @@ if ($hasSlug === true):
                 ->outline()
                 ->success()
                 ->xs()
-                ->addClass(...$barButtonClasses)
                 ->attribute('target', '_blank')
                 ->addAttributes($publicUrlPopover->trigger())
                 ->button();
@@ -176,7 +164,13 @@ $buttonGroup = Bleet::buttonGroup()
     ->addButton($mdExportButton)
     ->addButton($publicUrlButton)
 ?>
-        <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <?php echo Widgets::pageHeading($tag->getName())
+                ->subtitle($translator->translate('Tag', category: 'dboard-content') . ' #' . $tag->getId())
+                ->backTo($urlGenerator->generate('dboard.tags'), $translator->translate('Tags', category: 'dboard-content'))
+                ->addAction($buttonGroup->render())
+                ->render();
+            ?>
             <?php echo Html::form()
                 ->post($urlGenerator->generate('dboard.tags.edit', [
                     'id' => $tag->getId(),
@@ -184,13 +178,6 @@ $buttonGroup = Bleet::buttonGroup()
                 ->csrf($csrf)
                 ->noValidate()
                 ->open(); ?>
-                <?php
-                $cardHeader = Bleet::cardHeader()
-                    ->left(Bleet::a()->url($urlGenerator->generate('dboard.tags'))->icon('chevron-left')->outline()->addClass('text-white', 'hover:text-white', '[&>svg]:size-6'))
-                    ->title($translator->translate('Tag', category: 'dboard-content'))
-                    ->button($buttonGroup);
-                echo $cardHeader->primary();
-                ?>
 
                 <?php echo $this->render('Tags/_form', [
                     'urlGenerator' => $urlGenerator,
@@ -208,19 +195,18 @@ $buttonGroup = Bleet::buttonGroup()
                 <?php
                 $dndToggleButton = Bleet::button()
                     ->icon('arrows-up-down')
-                    ->inverse()
+                    ->ghost()
+                    ->secondary()
                     ->xs()
                     ->attribute('dboard-drag-drop-trigger', Aurelia::attributesCustomAttribute([
                         'id' => 'tag-blocs-list',
                     ]));
                 ?>
-                <?php echo Bleet::cardHeader()
-                    ->title($translator->translate('Blocks', category: 'dboard-common'))
-                    ->button($dndToggleButton)
-                    ->addClass('mt-6')
-                    ->secondary();
-                ?>
-                <div class="bg-white rounded-b-lg shadow-lg p-6">
+                <div class="mt-8 mb-4 flex items-center justify-between gap-4">
+                    <h2 class="text-lg font-semibold tracking-tight text-secondary-950 dark:text-white"><?php echo Html::encode($translator->translate('Blocks', category: 'dboard-common')); ?></h2>
+                    <?php echo $dndToggleButton->render(); ?>
+                </div>
+                <div class="dboard-surface p-6">
                     <bleet-ajaxify id="tag-blocs-list">
                     <?php echo $this->render('Commons/_blocs', [
                         'urlGenerator' => $urlGenerator,
@@ -240,7 +226,7 @@ $buttonGroup = Bleet::buttonGroup()
                 </div>
             <?php endif; ?>
 
-                <div class="flex justify-end gap-4 mt-6">
+                <div class="mt-6 flex justify-end gap-3">
                     <?php echo Bleet::a($translator->translate('Cancel', category: 'dboard-common'))
                         ->url($urlGenerator->generate('dboard.tags'))
                         ->icon('x-mark')
@@ -250,7 +236,7 @@ $buttonGroup = Bleet::buttonGroup()
                     ?>
                     <?php echo Bleet::submitButton($translator->translate('Save', category: 'dboard-common'))
                         ->icon('check')
-                        ->primary()
+                        ->accent()
                         ->render();
                     ?>
                 </div>

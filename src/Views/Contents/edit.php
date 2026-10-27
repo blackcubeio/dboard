@@ -14,6 +14,7 @@ use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Models\Forms\BlocForm;
 use Blackcube\Dboard\Models\Forms\ContentForm;
 use Blackcube\Dboard\Components\Rbac;
+use Blackcube\Dboard\Widgets\Widgets;
 use Blackcube\Html\Aurelia;
 use Blackcube\Bleet\Bleet;
 use Yiisoft\Html\Html;
@@ -44,12 +45,6 @@ $hasType = $content->getTypeId() !== null;
 $hasSlug = $content->getSlugId() !== null;
 $hasElasticSchema = $content->elasticSchemaId !== null;
 
-$barButtonClasses = [
-    '!rounded-none',
-    '!shadow-none',
-    'bg-white',
-];
-
 $slugSitemapPopover = Bleet::popover($translator->translate('Slug / Sitemap', category: 'dboard-common'))->id('content-popover-slug-sitemap');
 $seoPopover = Bleet::popover($translator->translate('*EO', category: 'dboard-common'))->id('content-popover-seo');
 $elasticPopover = Bleet::popover($translator->translate('Properties', category: 'dboard-common'))->id('content-popover-elastic');
@@ -63,7 +58,6 @@ $slugSitemapButton = Bleet::button()
     ->outline()
     ->secondary()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($slugSitemapPopover->trigger());
 if ($hasType === true):
     $slugSitemapUrl = $urlGenerator->generate('dboard.contents.slug-sitemap', [
@@ -79,7 +73,6 @@ $seoButton = Bleet::button()
     ->outline()
     ->info()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($seoPopover->trigger());
 if ($hasSlug === true):
     $seoUrl = $urlGenerator->generate('dboard.contents.xeo', [
@@ -95,7 +88,6 @@ $elasticButton = Bleet::button()
     ->outline()
     ->primary()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($elasticPopover->trigger());
 if ($hasElasticSchema === true):
     $elasticUrl = $urlGenerator->generate('dboard.contents.elastic', [
@@ -114,7 +106,6 @@ $tagsButton = Bleet::button()
     ->outline()
     ->secondary()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($tagsPopover->trigger())
     ->addAttributes(Bleet::drawer()->trigger($tagsUrl));
 
@@ -123,7 +114,6 @@ $translationsButton = Bleet::button()
     ->outline()
     ->info()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($translationsPopover->trigger());
 if ($languageCount > 1):
     $translationsUrl = $urlGenerator->generate('dboard.contents.translations', [
@@ -139,7 +129,6 @@ $mdExportButton = Bleet::button()
     ->outline()
     ->accent()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($mdExportPopover->trigger());
 if ($hasType === true && ($userCan(Rbac::PERMISSION_IA_IMPORT) === true || $userCan(Rbac::PERMISSION_IA_EXPORT) === true)):
     $mdExportUrl = $urlGenerator->generate('dboard.contents.md-export', [
@@ -155,7 +144,6 @@ $publicUrlButton = Bleet::button()
     ->outline()
     ->success()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($publicUrlPopover->trigger())
     ->disabled();
 if ($hasSlug === true):
@@ -173,7 +161,6 @@ if ($hasSlug === true):
                 ->outline()
                 ->success()
                 ->xs()
-                ->addClass(...$barButtonClasses)
                 ->attribute('target', '_blank')
                 ->addAttributes($publicUrlPopover->trigger())
                 ->button();
@@ -190,7 +177,13 @@ $buttonGroup = Bleet::buttonGroup()
     ->addButton($mdExportButton)
     ->addButton($publicUrlButton)
 ?>
-        <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <?php echo Widgets::pageHeading((string) $content->getName())
+                ->subtitle($translator->translate('Content', category: 'dboard-content') . ' #' . $content->getId())
+                ->backTo($urlGenerator->generate('dboard.contents'), $translator->translate('Contents', category: 'dboard-content'))
+                ->addAction($buttonGroup->render())
+                ->render();
+            ?>
             <?php echo Html::form()
                 ->post($urlGenerator->generate('dboard.contents.edit', [
                     'id' => $content->getId(),
@@ -198,13 +191,6 @@ $buttonGroup = Bleet::buttonGroup()
                 ->csrf($csrf)
                 ->noValidate()
                 ->open(); ?>
-                <?php
-                $cardHeader = Bleet::cardHeader()
-                    ->left(Bleet::a()->url($urlGenerator->generate('dboard.contents'))->icon('chevron-left')->outline()->addClass('text-white', 'hover:text-white', '[&>svg]:size-6'))
-                    ->title($translator->translate('Content', category: 'dboard-content'))
-                    ->button($buttonGroup);
-                echo $cardHeader->primary();
-                ?>
 
                 <?php echo $this->render('Contents/_form', [
                     'urlGenerator' => $urlGenerator,
@@ -222,19 +208,18 @@ $buttonGroup = Bleet::buttonGroup()
                 <?php
                 $dndToggleButton = Bleet::button()
                     ->icon('arrows-up-down')
-                    ->inverse()
+                    ->ghost()
+                    ->secondary()
                     ->xs()
                     ->attribute('dboard-drag-drop-trigger', Aurelia::attributesCustomAttribute([
                         'id' => 'content-blocs-list',
                     ]));
                 ?>
-                <?php echo Bleet::cardHeader()
-                    ->title($translator->translate('Blocks', category: 'dboard-common'))
-                    ->button($dndToggleButton)
-                    ->addClass('mt-6')
-                    ->secondary();
-                ?>
-                <div class="bg-white rounded-b-lg shadow-lg p-6">
+                <div class="mt-8 mb-4 flex items-center justify-between gap-4">
+                    <h2 class="text-lg font-semibold tracking-tight text-secondary-950 dark:text-white"><?php echo Html::encode($translator->translate('Blocks', category: 'dboard-common')); ?></h2>
+                    <?php echo $dndToggleButton->render(); ?>
+                </div>
+                <div class="dboard-surface p-6">
                     <bleet-ajaxify id="content-blocs-list">
                     <?php echo $this->render('Commons/_blocs', [
                         'urlGenerator' => $urlGenerator,
@@ -254,7 +239,7 @@ $buttonGroup = Bleet::buttonGroup()
                 </div>
             <?php endif; ?>
 
-                <div class="flex justify-end gap-4 mt-6">
+                <div class="mt-6 flex justify-end gap-3">
                     <?php echo Bleet::a($translator->translate('Cancel', category: 'dboard-common'))
                         ->url($urlGenerator->generate('dboard.contents'))
                         ->icon('x-mark')
@@ -264,7 +249,7 @@ $buttonGroup = Bleet::buttonGroup()
                     ?>
                     <?php echo Bleet::submitButton($translator->translate('Save', category: 'dboard-common'))
                         ->icon('check')
-                        ->primary()
+                        ->accent()
                         ->render();
                     ?>
                 </div>
