@@ -44,7 +44,7 @@ $this->beginPage()
         <base href="/">
         <?php $this->head(); ?>
     </head>
-    <body class="min-h-screen">
+    <body class="min-h-screen bg-secondary-50 text-secondary-900 dark:bg-primary-950 dark:text-secondary-100">
     <?php $this->beginBody(); ?>
 
     <?php echo $content ?>

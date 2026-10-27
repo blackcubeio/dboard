@@ -301,4 +301,11 @@ return [
     '{type, select, content{Content block schemas not found} other{Tag block schemas not found}}' => '{type, select, content{Schémas de blocs du contenu introuvables} other{Schémas de blocs du tag introuvables}}',
     '{type, select, content{Create new content} other{Create new tag}}' => '{type, select, content{Créer un nouveau contenu} other{Créer un nouveau tag}}',
     '{type, select, content{Overwrite existing content} other{Overwrite existing tag}}' => '{type, select, content{Écraser le contenu existant} other{Écraser le tag existant}}',
+    'Remember me' => 'Se souvenir de moi',
+    'Sign in with a passkey' => 'Se connecter avec une passkey',
+    'or' => 'ou',
+    'Use your passkey or your password.' => 'Utilisez votre passkey ou votre mot de passe.',
+    'Administration' => 'Administration',
+    'Your site, in your hands.' => 'Votre site, entre vos mains.',
+    'Contents, structure, languages and access rights: everything that makes your site, in one place.' => 'Contenus, structure, langues et droits d\'accès : tout ce qui fait votre site, au même endroit.',
 ];

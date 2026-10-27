@@ -301,4 +301,11 @@ return [
     '{type, select, content{Content block schemas not found} other{Tag block schemas not found}}' => '{type, select, content{Content block schemas not found} other{Tag block schemas not found}}',
     '{type, select, content{Create new content} other{Create new tag}}' => '{type, select, content{Create new content} other{Create new tag}}',
     '{type, select, content{Overwrite existing content} other{Overwrite existing tag}}' => '{type, select, content{Overwrite existing content} other{Overwrite existing tag}}',
+    'Remember me' => 'Remember me',
+    'Sign in with a passkey' => 'Sign in with a passkey',
+    'or' => 'or',
+    'Use your passkey or your password.' => 'Use your passkey or your password.',
+    'Administration' => 'Administration',
+    'Your site, in your hands.' => 'Your site, in your hands.',
+    'Contents, structure, languages and access rights: everything that makes your site, in one place.' => 'Contents, structure, languages and access rights: everything that makes your site, in one place.',
 ];
