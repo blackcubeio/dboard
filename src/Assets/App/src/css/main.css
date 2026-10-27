@@ -13,6 +13,7 @@
 @source "../../../../../vendor/blackcube/icons/src/**/*.php";
 /* Scan des sources pour les classes Tailwind */
 @source "../../../../Views/**/*.php";
+@source "../../../../Widgets/**/*.php";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

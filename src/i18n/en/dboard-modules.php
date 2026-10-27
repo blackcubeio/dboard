@@ -308,4 +308,5 @@ return [
     'Administration' => 'Administration',
     'Your site, in your hands.' => 'Your site, in your hands.',
     'Contents, structure, languages and access rights: everything that makes your site, in one place.' => 'Contents, structure, languages and access rights: everything that makes your site, in one place.',
+    'Your contents and tags at a glance, and what changed last.' => 'Your contents and tags at a glance, and what changed last.',
 ];

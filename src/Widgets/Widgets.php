@@ -49,6 +49,11 @@ class Widgets
         return self::$preview;
     }
 
+    public static function pageHeading(string $title): PageHeading
+    {
+        return (new PageHeading())->title($title);
+    }
+
     public static function elastic(?FormModelInterface $model = null, ?string $property = null, array $elasticOptions = []): Elastic
     {
         return new Elastic($model, $property, $elasticOptions);

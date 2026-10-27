@@ -32,108 +32,138 @@ use Yiisoft\Translator\TranslatorInterface;
  * @var string|null $csrf
  */
 
-$fullName = trim($administrator->getFirstname() . ' ' . $administrator->getLastname());
+$outOfDateClasses = [
+    'mt-2',
+    'tabular-nums',
+    'text-3xl',
+    'font-semibold',
+    'tracking-tight',
+    $stats['contentsOutOfDate'] > 0 ? 'text-warning-600' : 'text-secondary-950',
+    $stats['contentsOutOfDate'] > 0 ? 'dark:text-warning-400' : 'dark:text-white',
+];
+$inactiveClasses = [
+    'mt-2',
+    'tabular-nums',
+    'text-3xl',
+    'font-semibold',
+    'tracking-tight',
+    $stats['contentsInactive'] > 0 ? 'text-danger-600' : 'text-secondary-950',
+    $stats['contentsInactive'] > 0 ? 'dark:text-danger-400' : 'dark:text-white',
+];
+$rowLinkClasses = [
+    'min-w-0',
+    'truncate',
+    'text-sm',
+    'font-medium',
+    'text-secondary-900',
+    'underline-offset-4',
+    'transition-colors',
+    'hover:text-accent-600',
+    'hover:underline',
+    'dark:text-secondary-100',
+    'dark:hover:text-accent-300',
+];
 
 ?>
 
-        <main class="flex-1 p-4 sm:p-6 lg:p-8">
-            <?php echo Bleet::h1($translator->translate('Dashboard', category: 'dboard-modules'))->primary(); ?>
+        <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <?php echo Widgets::pageHeading($translator->translate('Dashboard', category: 'dboard-modules'))
+                ->subtitle($translator->translate('Your contents and tags at a glance, and what changed last.', category: 'dboard-modules'))
+                ->render(); ?>
 
-            <div class="flex flex-wrap gap-4 mb-8">
-                <?php echo Bleet::statCard($translator->translate('Active contents', category: 'dboard-modules'), (string) $stats['contentsActive'])
-                    ->icon('check-circle')
-                    ->success()
-                    ->addClass('flex-1');
-                ?>
-                <?php echo Bleet::statCard($translator->translate('Out of date contents', category: 'dboard-modules'), (string) $stats['contentsOutOfDate'])
-                    ->icon('clock')
-                    ->warning()
-                    ->addClass('flex-1');
-                ?>
-                <?php echo Bleet::statCard($translator->translate('Inactive contents', category: 'dboard-modules'), (string) $stats['contentsInactive'])
-                    ->icon('x-circle')
-                    ->danger()
-                    ->addClass('flex-1');
-                ?>
-            </div>
-
-            <?php echo Bleet::h2($translator->translate('Overview', category: 'dboard-modules'))->primary(); ?>
-
-            <div class="flex flex-wrap gap-4 items-stretch">
-                <div class="w-full lg:flex-1 flex flex-col">
-                    <?php
-                    echo Bleet::cardHeader()
-                        ->icon('document-text')
-                        ->title($translator->translate('Contents', category: 'dboard-modules'))
-                        ->badges([
-                            Bleet::badge((string) $stats['contentsActive'])->dot()->success(),
-                            Bleet::badge((string) $stats['contentsInactive'])->dot()->danger(),
-                            Bleet::badge((string) $stats['contentsOutOfDate'])->dot()->warning(),
-                        ])
-                        ->primary();
-
-                    $contentsFeed = Bleet::activityFeed()
-                        ->title($translator->translate('Latest updated contents', category: 'dboard-modules'));
-
-                    /** @var Content $content */
-                    foreach ($latestContentsQuery->each() as $content):
-                        $timestamp = RelativeTimeHelper::format($content->getDateUpdate(), $translator);
-                        $contentName = Html::a(
-                            Html::encode($content->getName() ?? $translator->translate('Unnamed', category: 'dboard-modules')),
-                            $urlGenerator->generate('dboard.contents.edit', [
-                                'id' => $content->getId(),
-                            ])
-                        )->render();
-                        $contentsFeed = $contentsFeed->addItem(
-                            Bleet::activityItem($contentName)
-                                ->encode(false)
-                                ->icon('document-text')
-                                ->primary()
-                                ->timestamp($timestamp)
-                        );
-                    endforeach;
-                    ?>
-                    <div class="bg-white rounded-b-lg shadow-lg p-4 flex-1">
-                        <?php echo $contentsFeed->unstyled()->primary(); ?>
-                    </div>
+            <dl class="flex flex-col gap-4 sm:flex-row">
+                <div class="flex-1 rounded-xl border border-secondary-200 bg-white px-5 py-4 shadow-xs dark:border-white/10 dark:bg-primary-900">
+                    <dt class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('Active contents', category: 'dboard-modules')); ?></dt>
+                    <dd class="mt-2 tabular-nums text-3xl font-semibold tracking-tight text-secondary-950 dark:text-white"><?php echo $stats['contentsActive']; ?></dd>
                 </div>
-
-                <div class="w-full lg:flex-1 flex flex-col">
-                    <?php
-                    echo Bleet::cardHeader()
-                        ->icon('tag')
-                        ->title($translator->translate('Tags', category: 'dboard-modules'))
-                        ->badges([
-                            Bleet::badge((string) $stats['tagsActive'])->dot()->success(),
-                            Bleet::badge((string) $stats['tagsInactive'])->dot()->danger(),
-                            Bleet::badge('0')->dot()->warning(),
-                        ])
-                        ->primary();
-
-                    $tagsFeed = Bleet::activityFeed()
-                        ->title($translator->translate('Latest updated tags', category: 'dboard-modules'));
-
-                    /** @var Tag $tag */
-                    foreach ($latestTagsQuery->each() as $tag):
-                        $timestamp = RelativeTimeHelper::format($tag->getDateUpdate(), $translator);
-                        $tagName = Html::a(
-                            Html::encode($tag->getName()),
-                            $urlGenerator->generate('dboard.tags.edit', [
-                                'id' => $tag->getId(),
-                            ])
-                        )->render();
-                        $tagsFeed = $tagsFeed->addItem(
-                            Bleet::activityItem($tagName)
-                                ->encode(false)
-                                ->icon('tag')
-                                ->primary()
-                                ->timestamp($timestamp)
-                        );
-                    endforeach;
-                    ?>
-                    <div class="bg-white rounded-b-lg shadow-lg p-4 flex-1">
-                        <?php echo $tagsFeed->unstyled()->primary(); ?>
-                    </div>
+                <div class="flex-1 rounded-xl border border-secondary-200 bg-white px-5 py-4 shadow-xs dark:border-white/10 dark:bg-primary-900">
+                    <dt class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('Out of date contents', category: 'dboard-modules')); ?></dt>
+                    <?php echo Html::tag('dd', (string) $stats['contentsOutOfDate'], [
+                        'class' => $outOfDateClasses,
+                    ]); ?>
                 </div>
+                <div class="flex-1 rounded-xl border border-secondary-200 bg-white px-5 py-4 shadow-xs dark:border-white/10 dark:bg-primary-900">
+                    <dt class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('Inactive contents', category: 'dboard-modules')); ?></dt>
+                    <?php echo Html::tag('dd', (string) $stats['contentsInactive'], [
+                        'class' => $inactiveClasses,
+                    ]); ?>
+                </div>
+            </dl>
+
+            <h2 class="mt-10 text-lg font-semibold tracking-tight text-secondary-950 dark:text-white"><?php echo Html::encode($translator->translate('Overview', category: 'dboard-modules')); ?></h2>
+
+            <div class="mt-4 flex flex-col gap-6 lg:flex-row">
+                <article class="min-w-0 flex-1 overflow-hidden rounded-xl border border-secondary-200 bg-white shadow-xs dark:border-white/10 dark:bg-primary-900">
+                    <div class="h-0.5 bg-linear-to-r from-accent-500 to-accent-300"></div>
+                    <div class="flex items-start justify-between gap-4 px-5 pt-5">
+                        <div class="min-w-0">
+                            <p class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-400"><?php echo Html::encode($translator->translate('Contents', category: 'dboard-modules')); ?></p>
+                            <h3 class="mt-1 text-base font-semibold text-secondary-950 dark:text-white"><?php echo Html::encode($translator->translate('Latest updated contents', category: 'dboard-modules')); ?></h3>
+                        </div>
+                        <div class="flex shrink-0 items-center gap-1.5">
+                            <?php echo Bleet::badge((string) $stats['contentsActive'])->dot()->success(); ?>
+                            <?php echo Bleet::badge((string) $stats['contentsOutOfDate'])->dot()->warning(); ?>
+                            <?php echo Bleet::badge((string) $stats['contentsInactive'])->dot()->danger(); ?>
+                        </div>
+                    </div>
+                    <?php $hasContents = false; ?>
+                    <ul class="mt-3 divide-y divide-secondary-100 px-5 pb-2 dark:divide-white/5">
+                        <?php /** @var Content $content */ ?>
+                        <?php foreach ($latestContentsQuery->each() as $content): ?>
+                            <?php $hasContents = true; ?>
+                            <li class="flex items-baseline justify-between gap-4 py-3">
+                                <?php echo Html::a(
+                                    Html::encode($content->getName() ?? $translator->translate('Unnamed', category: 'dboard-modules')),
+                                    $urlGenerator->generate('dboard.contents.edit', [
+                                        'id' => $content->getId(),
+                                    ]),
+                                    [
+                                        'class' => $rowLinkClasses,
+                                    ]
+                                ); ?>
+                                <span class="shrink-0 text-xs text-secondary-500 dark:text-secondary-400"><?php echo Html::encode(RelativeTimeHelper::format($content->getDateUpdate(), $translator)); ?></span>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php if ($hasContents === false): ?>
+                        <p class="px-5 pb-5 text-sm text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('No results', category: 'dboard-common')); ?></p>
+                    <?php endif; ?>
+                </article>
+
+                <article class="min-w-0 flex-1 overflow-hidden rounded-xl border border-secondary-200 bg-white shadow-xs dark:border-white/10 dark:bg-primary-900">
+                    <div class="h-0.5 bg-linear-to-r from-accent-500 to-accent-300"></div>
+                    <div class="flex items-start justify-between gap-4 px-5 pt-5">
+                        <div class="min-w-0">
+                            <p class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-400"><?php echo Html::encode($translator->translate('Tags', category: 'dboard-modules')); ?></p>
+                            <h3 class="mt-1 text-base font-semibold text-secondary-950 dark:text-white"><?php echo Html::encode($translator->translate('Latest updated tags', category: 'dboard-modules')); ?></h3>
+                        </div>
+                        <div class="flex shrink-0 items-center gap-1.5">
+                            <?php echo Bleet::badge((string) $stats['tagsActive'])->dot()->success(); ?>
+                            <?php echo Bleet::badge((string) $stats['tagsInactive'])->dot()->danger(); ?>
+                        </div>
+                    </div>
+                    <?php $hasTags = false; ?>
+                    <ul class="mt-3 divide-y divide-secondary-100 px-5 pb-2 dark:divide-white/5">
+                        <?php /** @var Tag $tag */ ?>
+                        <?php foreach ($latestTagsQuery->each() as $tag): ?>
+                            <?php $hasTags = true; ?>
+                            <li class="flex items-baseline justify-between gap-4 py-3">
+                                <?php echo Html::a(
+                                    Html::encode($tag->getName()),
+                                    $urlGenerator->generate('dboard.tags.edit', [
+                                        'id' => $tag->getId(),
+                                    ]),
+                                    [
+                                        'class' => $rowLinkClasses,
+                                    ]
+                                ); ?>
+                                <span class="shrink-0 text-xs text-secondary-500 dark:text-secondary-400"><?php echo Html::encode(RelativeTimeHelper::format($tag->getDateUpdate(), $translator)); ?></span>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php if ($hasTags === false): ?>
+                        <p class="px-5 pb-5 text-sm text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('No results', category: 'dboard-common')); ?></p>
+                    <?php endif; ?>
+                </article>
             </div>
         </main>

@@ -302,4 +302,5 @@ return [
     'Administration' => 'Amministrazione',
     'Your site, in your hands.' => 'Il tuo sito, nelle tue mani.',
     'Contents, structure, languages and access rights: everything that makes your site, in one place.' => 'Contenuti, struttura, lingue e diritti di accesso: tutto ciò che compone il tuo sito, in un unico posto.',
+    'Your contents and tags at a glance, and what changed last.' => 'I tuoi contenuti e i tuoi tag a colpo d\'occhio, e cosa è cambiato per ultimo.',
 ];

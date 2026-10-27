@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - The `dboard-login-device` attribute removes its whole `[data-login-device="block"]` block, separator included, when the browser cannot do WebAuthn.
 - The connected frame is a bar of ink, dark in both modes, rendered by the package's own `Widgets/Views/sidebar.php`: the brand, the navigation, and at its foot the preview toggle, the light / dark switch (`dboard-dark-toggle`), the account menu and the installed version. The header and the footer of the layout are gone; on a phone a thin bar carries the burger and the brand. The workbench is bounded to `max-w-7xl`.
 - The root route of the panel is named `dboard.index`, so the dashboard entry is marked on it too.
+- The dashboard opens on a sober heading (`Widgets::pageHeading()`, the heading of every page from now on), three counters in a description list, and two cards listing the latest contents and tags as rows.
 
 ### Added
 
