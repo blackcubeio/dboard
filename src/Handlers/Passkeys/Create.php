@@ -13,7 +13,7 @@ namespace Blackcube\Dboard\Handlers\Passkeys;
 use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dboard\Handlers\Commons\AbstractAjaxHandler;
 use Blackcube\Dboard\Components\WebauthnHelper;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Services\WebauthnConfig;
 use Psr\Http\Message\ResponseFactoryInterface;

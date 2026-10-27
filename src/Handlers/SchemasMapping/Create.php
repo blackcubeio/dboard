@@ -14,7 +14,7 @@ use Blackcube\Dcore\Enums\ElasticSchemaKind;
 use Blackcube\Dcore\Models\ElasticSchema;
 use Blackcube\Dcore\Models\SchemaSchema;
 use Blackcube\Dboard\Handlers\Commons\AbstractCreate;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Forms\SchemaSchemaForm;
 use Psr\Http\Message\ResponseInterface;
 use Yiisoft\Router\CurrentRoute;

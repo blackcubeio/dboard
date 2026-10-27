@@ -14,7 +14,7 @@ use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dcore\Models\ElasticSchema;
 use Blackcube\Dcore\Services\FileService;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Bleet\Bleet;
 use Blackcube\Bleet\Enums\DialogAction;
 use Blackcube\Bleet\Enums\DialogType;

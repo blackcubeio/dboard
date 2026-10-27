@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Blackcube\Dboard\Handlers\Commons;
 
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Enums\TreePosition;
 use Blackcube\Dboard\Models\Forms\HazeltreeReorderForm;
 use Blackcube\Bleet\Enums\AjaxifyAction;

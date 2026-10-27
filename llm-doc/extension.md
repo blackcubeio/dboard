@@ -24,7 +24,7 @@
 | Element | Reason |
 |---|---|
 | The pipeline order | `handle()` of `AbstractPageHandler` / `AbstractAjaxHandler` is fixed; only the steps are overridable |
-| Output types | `match` on the four `OutputType` values in `output()` (`src/Handlers/Commons/AbstractModelHandler.php:202-210`); an unknown type throws |
+| Output types | `match` on four of the `Blackcube\Handler\OutputType` values in `output()` (`src/Handlers/Commons/AbstractModelHandler.php:202-210`); `download` and an unknown type throw |
 | Dialog protocol | `AureliaCommunication` arrays of `blackcube/bleet` (`dialog`, `dialogContent`, `ajaxify`, `toast`); the Aurelia side expects those keys |
 | Cookie names and flags | `access_token` / `refresh_token`, path = route prefix, `Lax`, `Secure`, access cookie not `HttpOnly` (`JwtAuthMiddleware.php:52-53`, `:197-215`) |
 | Token TTLs of the `dboard` population | 1 h access, 15 days refresh, in `refreshAccessToken()` (`:279-280`) and the `Authentication\Token` handler |

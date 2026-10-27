@@ -12,7 +12,7 @@ namespace Blackcube\Dboard\Handlers\Commons;
 
 use Blackcube\Dcore\Models\LlmMenu;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Forms\XeoLlmForm;
 use Blackcube\Bleet\Enums\AjaxifyAction;
 use Blackcube\Bleet\Enums\UiLevel;

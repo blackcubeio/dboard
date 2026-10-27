@@ -15,7 +15,7 @@ use Blackcube\Dcore\Models\Content;
 use Blackcube\Dcore\Models\ContentBloc;
 use Blackcube\Dboard\Handlers\Commons\AbstractAjaxHandler;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Bleet\Bleet;
 use Blackcube\Bleet\Enums\DialogAction;
 use Blackcube\Bleet\Enums\DialogType;

@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Blackcube\Dboard\Handlers\Commons;
 
 use Blackcube\Dcore\Data\ActiveQueryPaginator;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Forms\PageForm;
 use Blackcube\Dboard\Models\Forms\SearchForm;
 use Psr\Http\Message\ResponseInterface;

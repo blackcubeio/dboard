@@ -16,7 +16,7 @@ use Blackcube\Dcore\Models\ElasticSchema;
 use Blackcube\Dcore\Models\SchemaSchema;
 use Blackcube\Dcore\Models\Slug;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Forms\XeoForm;
 use Blackcube\Bleet\Enums\UiLevel;
 use Blackcube\Bleet\Helper\AureliaCommunication;

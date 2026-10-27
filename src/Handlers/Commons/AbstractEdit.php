@@ -14,7 +14,7 @@ use Blackcube\Dcore\Enums\ElasticSchemaKind;
 use Blackcube\Dcore\Models\Bloc;
 use Blackcube\Dcore\Models\ElasticSchema;
 use Blackcube\Dboard\Components\ActionModel;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Enums\ReorderMode;
 use Blackcube\Dboard\Enums\TreePosition;
 use Blackcube\Dboard\Models\Forms\BlocForm;

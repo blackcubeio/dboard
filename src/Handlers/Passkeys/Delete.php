@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Blackcube\Dboard\Handlers\Passkeys;
 
 use Blackcube\Dboard\Handlers\Commons\AbstractDelete;
-use Blackcube\Dboard\Enums\OutputType;
+use Blackcube\Handler\OutputType;
 use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Models\Passkey;
 use Blackcube\Bleet\Bleet;
