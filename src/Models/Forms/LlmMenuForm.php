@@ -23,7 +23,8 @@ use Yiisoft\Validator\Rule\StringValue;
  * LlmMenu form model.
  *
  * Tree structure: Root (level 1) → Category (level 2) → Data (level 3).
- * contentId/tagId are only relevant for Data nodes (level >= 3).
+ * contentId/tagId link the node to a page at any level: dcore's LlmsService renders
+ * the link under the heading of a root or a category, and as the entry itself for data nodes.
  *
  * @copyright 2010-2026 Blackcube - Philippe Gaultier
  * @license https://www.blackcube.io/license
