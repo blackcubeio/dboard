@@ -140,6 +140,14 @@
 /* THE SURFACE of the workbench: a plain sheet with a hairline and the faintest shadow, light or night. The tiles of
    the dashboard, the lists and the forms sit on it; declared once rather than copied on every page. */
 @layer components {
+    .dboard-canvas {
+        background-color: var(--color-secondary-50);
+        color: var(--color-secondary-900);
+    }
+    .dark .dboard-canvas {
+        background-color: var(--color-primary-950);
+        color: var(--color-secondary-100);
+    }
     .dboard-surface {
         border-radius: var(--radius-xl);
         border: 1px solid var(--color-secondary-200);
@@ -186,6 +194,153 @@
 .dark .text-primary-600,
 .dark .text-primary-700 {
     color: var(--color-primary-300);
+}
+
+/* THE COMPONENTS AT NIGHT. Bleet emits light classes only, no dark variant: each class it emits is dressed again
+   here, read in its source, never by patching Bleet nor by rewriting its markup in a view. Unlayered on purpose: a
+   plain rule beats a utility whatever its specificity, so a remap holds on every element that carries the class. */
+
+/* The strong texts go light; the muted ones stay muted, one step lighter. */
+.dark .text-secondary-800,
+.dark .text-primary-800 {
+    color: var(--color-secondary-200);
+}
+.dark .text-secondary-900,
+.dark .text-primary-900 {
+    color: var(--color-secondary-100);
+}
+.dark .text-secondary-500 {
+    color: var(--color-secondary-400);
+}
+.dark .text-primary-500 {
+    color: var(--color-primary-300);
+}
+.dark .text-info-800 {
+    color: var(--color-info-300);
+}
+.dark .text-success-800 {
+    color: var(--color-success-300);
+}
+.dark .text-danger-800 {
+    color: var(--color-danger-300);
+}
+.dark .text-warning-800 {
+    color: var(--color-warning-300);
+}
+
+/* What Bleet paints white takes the ink of the surface: the dialogs, the cards, the pager. A field, a button of a
+   group and the knob of a toggle are told apart from the sheet they sit on. */
+.dark .bg-white {
+    background-color: var(--color-primary-900);
+}
+.dark input.bg-white:not(:checked),
+.dark textarea.bg-white,
+.dark button.bg-white[aria-haspopup="listbox"],
+.dark .inset-ring-1.bg-white {
+    background-color: color-mix(in oklab, white 5%, transparent);
+}
+.dark .size-5.rounded-full.bg-white {
+    background-color: white;
+}
+
+/* The light tints become a veil of white, or of the semantic colour for the badges, the alerts and the dialogs. */
+.dark .bg-secondary-50,
+.dark .bg-primary-50,
+.dark .bg-secondary-50\/50,
+.dark .bg-primary-50\/50 {
+    background-color: color-mix(in oklab, white 6%, transparent);
+}
+.dark .bg-secondary-100,
+.dark .bg-primary-100,
+.dark .hover\:bg-secondary-50:hover,
+.dark .hover\:bg-primary-50:hover,
+.dark .hover\:bg-secondary-100:hover,
+.dark .hover\:bg-primary-100:hover {
+    background-color: color-mix(in oklab, white 10%, transparent);
+}
+.dark .inset-ring.bg-secondary-200:not(:has(:checked)) {
+    background-color: color-mix(in oklab, white 15%, transparent);
+}
+.dark .bg-info-50 {
+    background-color: color-mix(in oklab, var(--color-info-500) 15%, transparent);
+}
+.dark .bg-success-50 {
+    background-color: color-mix(in oklab, var(--color-success-500) 15%, transparent);
+}
+.dark .bg-danger-50 {
+    background-color: color-mix(in oklab, var(--color-danger-500) 15%, transparent);
+}
+.dark .bg-warning-50 {
+    background-color: color-mix(in oklab, var(--color-warning-500) 15%, transparent);
+}
+.dark .bg-accent-50 {
+    background-color: color-mix(in oklab, var(--color-accent-500) 15%, transparent);
+}
+.dark .bg-info-100,
+.dark .hover\:bg-info-100:hover {
+    background-color: color-mix(in oklab, var(--color-info-500) 25%, transparent);
+}
+.dark .bg-success-100,
+.dark .hover\:bg-success-100:hover {
+    background-color: color-mix(in oklab, var(--color-success-500) 25%, transparent);
+}
+.dark .bg-danger-100,
+.dark .hover\:bg-danger-50:hover,
+.dark .hover\:bg-danger-100:hover {
+    background-color: color-mix(in oklab, var(--color-danger-500) 25%, transparent);
+}
+.dark .bg-warning-100,
+.dark .hover\:bg-warning-100:hover {
+    background-color: color-mix(in oklab, var(--color-warning-500) 25%, transparent);
+}
+.dark .bg-accent-100,
+.dark .hover\:bg-accent-100:hover {
+    background-color: color-mix(in oklab, var(--color-accent-500) 25%, transparent);
+}
+
+/* The hairlines: outlines of the fields, rings of the pager and of the button groups, borders and rules. The focus
+   of a field takes the iris, the only colour that signals. */
+.dark .outline-secondary-300,
+.dark .outline-primary-300 {
+    outline-color: color-mix(in oklab, white 15%, transparent);
+}
+.dark .focus\:outline-secondary-600:focus,
+.dark .focus\:outline-primary-600:focus {
+    outline-color: var(--color-accent-400);
+}
+.dark .ring-secondary-200,
+.dark .ring-primary-200 {
+    --tw-ring-color: color-mix(in oklab, white 10%, transparent);
+}
+.dark .ring-secondary-300,
+.dark .ring-primary-300 {
+    --tw-ring-color: color-mix(in oklab, white 15%, transparent);
+}
+.dark .inset-ring-secondary-300,
+.dark .inset-ring-primary-300 {
+    --tw-inset-ring-color: color-mix(in oklab, white 15%, transparent);
+}
+.dark .border-secondary-100,
+.dark .border-secondary-200,
+.dark .border-primary-200 {
+    border-color: color-mix(in oklab, white 10%, transparent);
+}
+.dark .border-secondary-300,
+.dark .border-primary-300 {
+    border-color: color-mix(in oklab, white 15%, transparent);
+}
+.dark .divide-secondary-200 > :not(:last-child),
+.dark .divide-primary-200 > :not(:last-child),
+.dark .divide-secondary-300 > :not(:last-child),
+.dark .divide-primary-300 > :not(:last-child) {
+    border-color: color-mix(in oklab, white 10%, transparent);
+}
+
+/* The popover floats over everything: a plain ink, never a veil. */
+.dark [bleet-popover] {
+    background-color: var(--color-primary-800);
+    border-color: color-mix(in oklab, white 15%, transparent);
+    color: var(--color-secondary-100);
 }
 
 /* THE GRID of the sign-in panel: a fine lattice that fades towards the edges, on the ink. A background, discreet. */
@@ -314,6 +469,54 @@
 }
 .dboard-schema-editor .jsoneditor-value.jsoneditor-invalid {
     color: var(--color-secondary-600);
+}
+
+/* The schema editor at night: its menu on the ink of the panel, its tree on the ink of the night, its texts light. */
+.dark .dboard-schema-editor .jsoneditor,
+.dark .dboard-schema-editor .jsoneditor-menu {
+    border-color: color-mix(in oklab, white 15%, transparent);
+}
+.dark .dboard-schema-editor .jsoneditor-menu,
+.dark .dboard-schema-editor .jsoneditor-menu > button,
+.dark .dboard-schema-editor .jsoneditor-menu > .jsoneditor-modes > button {
+    background-color: var(--color-primary-800);
+}
+.dark .dboard-schema-editor .jsoneditor-tree,
+.dark .dboard-schema-editor .jsoneditor textarea.jsoneditor-text,
+.dark .dboard-schema-editor table.jsoneditor-search .jsoneditor-frame,
+.dark .dboard-schema-editor tr.jsoneditor-highlight,
+.dark .dboard-schema-editor tr.jsoneditor-selected,
+.dark .dboard-schema-editor .jsoneditor-tree button:focus {
+    background-color: var(--color-primary-950);
+}
+.dark .dboard-schema-editor .jsoneditor-tree,
+.dark .dboard-schema-editor .jsoneditor textarea.jsoneditor-text,
+.dark .dboard-schema-editor .jsoneditor-field,
+.dark .dboard-schema-editor .jsoneditor-value,
+.dark .dboard-schema-editor .jsoneditor-readonly,
+.dark .dboard-schema-editor .jsoneditor td.jsoneditor-separator,
+.dark .dboard-schema-editor .jsoneditor-value.jsoneditor-object,
+.dark .dboard-schema-editor .jsoneditor-value.jsoneditor-array,
+.dark .dboard-schema-editor .jsoneditor-value.jsoneditor-invalid {
+    color: var(--color-secondary-300);
+}
+.dark .dboard-schema-editor .jsoneditor-field[contenteditable=true]:focus,
+.dark .dboard-schema-editor .jsoneditor-field[contenteditable=true]:hover,
+.dark .dboard-schema-editor .jsoneditor-value[contenteditable=true]:focus,
+.dark .dboard-schema-editor .jsoneditor-value[contenteditable=true]:hover,
+.dark .dboard-schema-editor .jsoneditor-field.jsoneditor-highlight,
+.dark .dboard-schema-editor .jsoneditor-value.jsoneditor-highlight,
+.dark .dboard-schema-editor .jsoneditor-field.jsoneditor-highlight-active,
+.dark .dboard-schema-editor .jsoneditor-field.jsoneditor-highlight-active:focus,
+.dark .dboard-schema-editor .jsoneditor-field.jsoneditor-highlight-active:hover,
+.dark .dboard-schema-editor .jsoneditor-value.jsoneditor-highlight-active,
+.dark .dboard-schema-editor .jsoneditor-value.jsoneditor-highlight-active:focus,
+.dark .dboard-schema-editor .jsoneditor-value.jsoneditor-highlight-active:hover {
+    background-color: color-mix(in oklab, white 8%, transparent);
+    border-color: color-mix(in oklab, white 15%, transparent);
+}
+.dark .dboard-schema-editor .jsoneditor-value.jsoneditor-string {
+    color: var(--color-success-400);
 }
 
 bleet-quilljs .ql-editor td {
@@ -576,4 +779,45 @@ bleet-quilljs .ql-toolbar.ql-snow .ql-color-picker .ql-picker-item:hover {
 
 bleet-quilljs .ql-container.ql-snow {
     border-color: var(--color-secondary-300);
+}
+
+/* The rich text editor at night: light strokes, hairlines of white, its pickers and tooltip on the ink of the panel. */
+.dark bleet-quilljs .ql-editor.ql-blank::before {
+    color: color-mix(in oklab, white 45%, transparent);
+}
+.dark bleet-quilljs .ql-snow .ql-stroke,
+.dark bleet-quilljs .ql-snow .ql-stroke-miter {
+    stroke: var(--color-secondary-300);
+}
+.dark bleet-quilljs .ql-snow .ql-fill,
+.dark bleet-quilljs .ql-snow .ql-stroke.ql-fill {
+    fill: var(--color-secondary-300);
+}
+.dark bleet-quilljs .ql-snow .ql-picker {
+    color: var(--color-secondary-300);
+}
+.dark bleet-quilljs .ql-toolbar.ql-snow,
+.dark bleet-quilljs .ql-container.ql-snow,
+.dark bleet-quilljs .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label,
+.dark bleet-quilljs .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+    border-color: color-mix(in oklab, white 15%, transparent);
+}
+.dark bleet-quilljs .ql-snow .ql-picker-options,
+.dark bleet-quilljs .ql-snow .ql-tooltip {
+    background-color: var(--color-primary-800);
+    border-color: color-mix(in oklab, white 15%, transparent);
+    box-shadow: none;
+    color: var(--color-secondary-100);
+}
+.dark bleet-quilljs .ql-snow .ql-tooltip input[type=text] {
+    background-color: color-mix(in oklab, white 5%, transparent);
+    border-color: color-mix(in oklab, white 15%, transparent);
+    color: var(--color-secondary-100);
+}
+.dark bleet-quilljs .ql-snow .ql-editor code,
+.dark bleet-quilljs .ql-snow .ql-editor .ql-code-block-container {
+    background-color: var(--color-primary-950);
+}
+.dark bleet-quilljs .ql-editor td {
+    border-color: color-mix(in oklab, white 15%, transparent);
 }
