@@ -137,6 +137,21 @@
     }
 }
 
+/* THE SURFACE of the workbench: a plain sheet with a hairline and the faintest shadow, light or night. The tiles of
+   the dashboard, the lists and the forms sit on it; declared once rather than copied on every page. */
+@layer components {
+    .dboard-surface {
+        border-radius: var(--radius-xl);
+        border: 1px solid var(--color-secondary-200);
+        background-color: white;
+        box-shadow: var(--shadow-xs);
+    }
+    .dark .dboard-surface {
+        border-color: color-mix(in oklab, white 10%, transparent);
+        background-color: var(--color-primary-900);
+    }
+}
+
 /* Tabular figures in the mono face: the tabular-nums class is only set on values, it is doubled with a mono pitch. */
 .tabular-nums {
     font-family: var(--font-mono);

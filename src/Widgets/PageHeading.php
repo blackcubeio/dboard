@@ -30,6 +30,8 @@ class PageHeading extends Widget
 {
     private string $title = '';
     private ?string $subtitle = null;
+    private ?string $backUrl = null;
+    private string $backLabel = '';
     /** @var string[] rendered actions */
     private array $actions = [];
 
@@ -37,6 +39,17 @@ class PageHeading extends Widget
     {
         $new = clone $this;
         $new->title = $title;
+        return $new;
+    }
+
+    /**
+     * The way back, above the title: where the page comes from, by its name.
+     */
+    public function backTo(string $url, string $label): self
+    {
+        $new = clone $this;
+        $new->backUrl = $url;
+        $new->backLabel = $label;
         return $new;
     }
 
@@ -62,6 +75,8 @@ class PageHeading extends Widget
         $params = [
             'title' => $this->title,
             'subtitle' => $this->subtitle,
+            'backUrl' => $this->backUrl,
+            'backLabel' => $this->backLabel,
             'actions' => $this->actions,
         ];
 

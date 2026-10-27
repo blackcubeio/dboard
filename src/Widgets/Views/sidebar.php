@@ -138,25 +138,38 @@ $menuItemClasses = [
             <?php foreach ($items as $item): ?>
                 <?php if ($item->hasChildren() === true): ?>
                     <?php $toggleId = $item->getToggleId() ?? uniqid('sidebar-'); ?>
+                    <?php
+                    $hasActiveChild = false;
+                    foreach ($item->getChildren() as $child):
+                        if ($child->isActive() === true):
+                            $hasActiveChild = true;
+                        endif;
+                    endforeach;
+                    $groupClasses = [
+                        ...$linkClasses,
+                        ...($hasActiveChild === true ? $linkActiveClasses : $linkInactiveClasses),
+                        'w-full',
+                        'cursor-pointer',
+                        'justify-between',
+                    ];
+                    $groupIconClasses = [
+                        ...$iconClasses,
+                        ...($hasActiveChild === true ? $iconActiveClasses : $iconInactiveClasses),
+                    ];
+                    ?>
                     <li>
                         <?php echo Html::openTag('button', [
                             'type' => 'button',
                             'data-menu' => 'toggle-button-' . $toggleId,
                             'aria-expanded' => 'false',
-                            'class' => [
-                                ...$linkClasses,
-                                ...$linkInactiveClasses,
-                                'w-full',
-                                'cursor-pointer',
-                                'justify-between',
-                            ],
+                            'class' => $groupClasses,
                         ]); ?>
                             <span class="flex items-center gap-3">
                                 <?php if ($item->getIconName() !== null): ?>
                                     <?php if ($item->getIconType() === 'solid'): ?>
-                                        <?php echo Bleet::svg()->solid($item->getIconName())->addClass(...$iconClasses, ...$iconInactiveClasses); ?>
+                                        <?php echo Bleet::svg()->solid($item->getIconName())->addClass(...$groupIconClasses); ?>
                                     <?php else: ?>
-                                        <?php echo Bleet::svg()->outline($item->getIconName())->addClass(...$iconClasses, ...$iconInactiveClasses); ?>
+                                        <?php echo Bleet::svg()->outline($item->getIconName())->addClass(...$groupIconClasses); ?>
                                     <?php endif; ?>
                                 <?php endif; ?>
                                 <?php echo Html::encode($item->getLabel()); ?>

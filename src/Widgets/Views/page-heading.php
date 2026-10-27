@@ -14,14 +14,26 @@ declare(strict_types=1);
  *
  * @var string $title
  * @var string|null $subtitle
+ * @var string|null $backUrl
+ * @var string $backLabel
  * @var string[] $actions
  */
 
+use Blackcube\Bleet\Bleet;
 use Yiisoft\Html\Html;
 
 ?>
 <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
     <div class="min-w-0">
+        <?php if ($backUrl !== null): ?>
+            <?php echo Html::openTag('a', [
+                'href' => $backUrl,
+                'class' => 'mb-3 inline-flex items-center gap-1.5 text-sm font-medium text-secondary-500 transition-colors hover:text-accent-600 dark:text-secondary-400 dark:hover:text-accent-300',
+            ]); ?>
+                <?php echo Bleet::svg()->mini('arrow-left')->addClass('size-4'); ?>
+                <?php echo Html::encode($backLabel); ?>
+            <?php echo Html::closeTag('a'); ?>
+        <?php endif; ?>
         <h1 class="text-2xl font-semibold tracking-tight text-secondary-950 sm:text-3xl dark:text-white"><?php echo Html::encode($title); ?></h1>
         <?php if ($subtitle !== null && $subtitle !== ''): ?>
             <p class="mt-2 max-w-3xl text-sm leading-relaxed text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($subtitle); ?></p>
