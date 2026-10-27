@@ -9,3 +9,4 @@ export { BlapAttachDeviceCustomAttribute } from './attach-device';
 export { BlapLoginDeviceCustomAttribute } from './login-device';
 export { BlapMdDownloadCustomAttribute } from './md-download';
 export { DboardPreviewCustomAttribute } from './preview';
+export { DboardDarkToggleCustomAttribute } from './dark-toggle';

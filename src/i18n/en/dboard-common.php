@@ -186,4 +186,9 @@ return [
     '{entity, select, content{Content untagged.} tag{Tag untagged.} other{Element untagged.}}' => '{entity, select, content{Content untagged.} tag{Tag untagged.} other{Element untagged.}}',
     '{entity, select, content{Warning: the import will replace all existing blocks of this content. If you do not want to put this content at risk, please re-import the markdown into a new content created with the same type and properties.} other{Warning: the import will replace all existing blocks of this tag. If you do not want to put this tag at risk, please re-import the markdown into a new tag created with the same type and properties.}}' => '{entity, select, content{Warning: the import will replace all existing blocks of this content. If you do not want to put this content at risk, please re-import the markdown into a new content created with the same type and properties.} other{Warning: the import will replace all existing blocks of this tag. If you do not want to put this tag at risk, please re-import the markdown into a new tag created with the same type and properties.}}',
     '{type, select, content{Content blocks} other{Tag blocks}}' => '{type, select, content{Content blocks} other{Tag blocks}}',
+    'Open menu' => 'Open menu',
+    'Close menu' => 'Close menu',
+    'Main navigation' => 'Main navigation',
+    'Open the account menu' => 'Open the account menu',
+    'Switch between light and dark' => 'Switch between light and dark',
 ];

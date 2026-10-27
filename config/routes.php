@@ -203,7 +203,8 @@ return [
                 ->middleware(JwtAuthMiddleware::withRbac([
                     Rbac::PERMISSION_SITE_DASHBOARD,
                 ]))
-                ->action(DashboardIndex::class),
+                ->action(DashboardIndex::class)
+                ->name('dboard.index'),
             Route::methods([
                 'GET',
                 'POST',

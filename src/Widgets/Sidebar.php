@@ -15,7 +15,7 @@ use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Bleet\Bleet;
 use Blackcube\Bleet\Widgets\SidebarItem;
-use Yiisoft\Html\Html;
+use Composer\InstalledVersions;
 use Yiisoft\Rbac\ManagerInterface;
 use Yiisoft\Router\UrlGeneratorInterface;
 use Yiisoft\Translator\TranslatorInterface;
@@ -40,6 +40,7 @@ class Sidebar extends Widget
     private ?string $currentRoute = null;
     private string $color = Bleet::COLOR_PRIMARY;
     private ?TranslatorInterface $translator = null;
+    private string $preview = '';
 
     public function __construct(
         private ManagerInterface $rbacManager,
@@ -51,6 +52,16 @@ class Sidebar extends Widget
     {
         $new = clone $this;
         $new->translator = $translator;
+        return $new;
+    }
+
+    /**
+     * The rendered preview toggle, set at the foot of the bar next to the theme switch.
+     */
+    public function preview(string $preview): self
+    {
+        $new = clone $this;
+        $new->preview = $preview;
         return $new;
     }
 
@@ -123,7 +134,7 @@ class Sidebar extends Widget
             $sidebarItem = Bleet::sidebarItem($this->translate('Dashboard'))
                 ->outline('squares-2x2')
                 ->url($this->urlGenerator->generate('dboard.dashboard'));
-            if ($this->currentRoute === 'dboard.dashboard') {
+            if ($this->currentRoute === 'dboard.dashboard' || $this->currentRoute === 'dboard.index') {
                 $sidebarItem = $sidebarItem->active();
             }
             $items[] = $sidebarItem;
@@ -330,24 +341,59 @@ class Sidebar extends Widget
             $items[] = $sidebarItem;
         }
 
-        $logoIcon = Html::div(Bleet::svg()->logo('blackcube')->addClass('size-6'))
-            ->class('bg-black', 'rounded-md', 'p-1', 'text-white')
-            ->encode(false)
-            ->render();
-        $logoText = Html::span('DBOARD')
-            ->class('font-semibold', 'text-primary-800')
-            ->render();
-        $logoHtml = Html::div($logoIcon . $logoText)
-            ->class('flex', 'items-center', 'gap-2')
-            ->encode(false)
-            ->render();
+        switch ($this->color) {
+            case Bleet::COLOR_PRIMARY:
+                $ruleClass = 'border-primary-300';
+                $activeIconClass = 'text-primary-300';
+                break;
+            case Bleet::COLOR_SUCCESS:
+                $ruleClass = 'border-success-400';
+                $activeIconClass = 'text-success-300';
+                break;
+            case Bleet::COLOR_DANGER:
+                $ruleClass = 'border-danger-400';
+                $activeIconClass = 'text-danger-300';
+                break;
+            case Bleet::COLOR_WARNING:
+                $ruleClass = 'border-warning-400';
+                $activeIconClass = 'text-warning-300';
+                break;
+            case Bleet::COLOR_INFO:
+                $ruleClass = 'border-info-400';
+                $activeIconClass = 'text-info-300';
+                break;
+            default:
+                $ruleClass = 'border-accent-400';
+                $activeIconClass = 'text-accent-300';
+                break;
+        }
 
-        return Bleet::sidebar()
-            ->logo($logoHtml)
-            ->encode(false)
-            ->items($items)
-            ->color($this->color)
-            ->render();
+        $version = null;
+        if (InstalledVersions::isInstalled('blackcube/dboard') === true) {
+            $version = InstalledVersions::getPrettyVersion('blackcube/dboard');
+        }
+
+        $params = [
+            'items' => $items,
+            'brandUrl' => $this->urlGenerator->generate('dboard.dashboard'),
+            'name' => $this->user->getName(),
+            'initials' => mb_strtoupper(mb_substr($this->user->getFirstname(), 0, 1) . mb_substr($this->user->getLastname(), 0, 1)),
+            'email' => $this->user->getEmail(),
+            'accountUrl' => $this->urlGenerator->generate('dboard.account', [
+                'id' => $this->user->getId(),
+            ]),
+            'logoutUrl' => $this->urlGenerator->generate('dboard.logout'),
+            'version' => $version,
+            'preview' => $this->preview,
+            'ruleClass' => $ruleClass,
+            'activeIconClass' => $activeIconClass,
+            'translator' => $this->translator,
+        ];
+
+        extract($params, EXTR_OVERWRITE);
+        ob_start();
+        include __DIR__ . '/Views/sidebar.php';
+        return ob_get_clean();
     }
 
     private function translate(string $message): string

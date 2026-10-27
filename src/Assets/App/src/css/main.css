@@ -181,6 +181,17 @@
     mask-image: radial-gradient(ellipse 70% 60% at 35% 45%, black, transparent 80%);
 }
 
+/* THE HALO of the workbench: a glow of iris, very low, at the top of every screen. It gives the background a depth
+   without saying anything; the content stays on plain, readable surfaces. More present at night, where the eye
+   looks for it less. A background image has no Tailwind utility: it is a class. */
+.canvas-glow {
+    background-image: radial-gradient(60rem 22rem at 50% -8rem, color-mix(in oklab, var(--color-accent-500) 9%, transparent), transparent 70%);
+    background-repeat: no-repeat;
+}
+.dark .canvas-glow {
+    background-image: radial-gradient(60rem 22rem at 50% -8rem, color-mix(in oklab, var(--color-accent-500) 16%, transparent), transparent 70%);
+}
+
 /* THE AURORA of the sign-in panel: two glows, iris and blue, under the grid. */
 .bg-aurora {
     background-image:
