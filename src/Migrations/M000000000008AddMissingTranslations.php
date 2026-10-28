@@ -15,7 +15,7 @@ use Yiisoft\Db\Migration\MigrationInterface;
 use Yiisoft\Db\Query\Query;
 
 /**
- * Completes the translation tables with the keys the i18n files hold and the
+ * Adds to the translation tables the keys the i18n files hold and the
  * database does not yet: a base installed before them gets them, a base
  * installed from now on already has them from CreateTranslations. Not
  * revertible: the keys it adds cannot be told apart later from the ones seeded
@@ -25,7 +25,7 @@ use Yiisoft\Db\Query\Query;
  * @license https://www.blackcube.io/license
  * @link https://www.blackcube.io
  */
-class M000000000008CompleteTranslations implements MigrationInterface
+class M000000000008AddMissingTranslations implements MigrationInterface
 {
     public const TABLE_SOURCE = '{{%yii_source_message}}';
     public const TABLE_MESSAGE = '{{%yii_message}}';

@@ -21,7 +21,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - `yiisoft/rbac-db` as a development dependency: the test suite drives the sidebar against the RBAC tables the migrations create.
-- `CompleteTranslations`, a migration that adds to the translation tables the keys of the i18n files a base installed earlier does not hold yet, with their translations; a base installed from now on gets them from `CreateTranslations` and the migration adds nothing.
+- `AddMissingTranslations`, a migration that adds to the translation tables the keys of the i18n files a base installed earlier does not hold yet, with their translations; a base installed from now on gets them from `CreateTranslations` and the migration adds nothing.
 
 ### Fixed
 
