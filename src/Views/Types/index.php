@@ -33,37 +33,29 @@ use Yiisoft\Translator\TranslatorInterface;
 ?>
 
 
-        <main class="flex-1 p-4 sm:p-6 lg:p-8">
-            <div class="bg-white rounded-lg shadow-sm border border-secondary-200 p-4 mb-6">
-                <?php echo Html::form()->get($urlGenerator->generate('dboard.types'))->attribute('class', 'flex flex-wrap gap-4 items-center')->open(); ?>
-                    <div class="flex-1">
-                        <?php echo Bleet::input()
-                            ->type('search')
-                            ->name('search')
-                            ->value($searchForm->getSearch())
-                            ->placeholder($translator->translate('Search', category: 'dboard-common'))
-                            ->hideLabel()
-                            ->render();
-                        ?>
-                    </div>
-                    <div>
-                        <?php echo Bleet::a($translator->translate('Create', category: 'dboard-common'), $urlGenerator->generate('dboard.types.create'))
-                            ->button()
-                            ->icon('plus')
-                            ->primary()
-                            ->render();
-                        ?>
-                    </div>
-                <?php echo Html::form()->close(); ?>
-            </div>
-
-            <?php echo Bleet::cardHeader()
-                ->icon('rectangle-stack')
-                ->title($translator->translate('Types', category: 'dboard-modules'))
-                ->primary();
+        <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <?php echo Widgets::pageHeading($translator->translate('Types', category: 'dboard-modules'))
+                ->addAction(Bleet::a($translator->translate('Create', category: 'dboard-common'), $urlGenerator->generate('dboard.types.create'))
+                    ->button()
+                    ->icon('plus')
+                    ->accent()
+                    ->render())
+                ->render();
             ?>
 
-            <div class="bg-white rounded-b-lg shadow-lg p-4">
+            <?php echo Html::form()->get($urlGenerator->generate('dboard.types'))->attribute('class', 'mb-4')->open(); ?>
+                <?php echo Bleet::input()
+                    ->type('search')
+                    ->name('search')
+                    ->value($searchForm->getSearch())
+                    ->placeholder($translator->translate('Search', category: 'dboard-common'))
+                    ->iconLeft('magnifying-glass')
+                    ->hideLabel()
+                    ->render();
+                ?>
+            <?php echo Html::form()->close(); ?>
+
+            <div class="dboard-surface p-4">
                 <bleet-ajaxify id="types-list">
                 <?php
                     echo $this->render('Types/_list', [

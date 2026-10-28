@@ -9,6 +9,7 @@ declare(strict_types=1);
  */
 
 use Blackcube\Bleet\Bleet;
+use Blackcube\Dboard\Widgets\Widgets;
 use Yiisoft\Html\Html;
 use Yiisoft\Router\UrlGeneratorInterface;
 use Yiisoft\Translator\TranslatorInterface;
@@ -23,7 +24,9 @@ use Yiisoft\Translator\TranslatorInterface;
  */
 
 ?>
-<main class="flex-1 p-4 sm:p-6 lg:p-8">
+<main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+    <?php echo Widgets::pageHeading($translator->translate('Import an element', category: 'dboard-modules'))->render(); ?>
+
     <div class="mb-8">
         <?php echo Bleet::step()
             ->current(0)
@@ -35,14 +38,8 @@ use Yiisoft\Translator\TranslatorInterface;
         ?>
     </div>
 
-    <?php echo Bleet::cardHeader()
-        ->icon('arrow-up-tray')
-        ->title($translator->translate('Import an element', category: 'dboard-modules'))
-        ->primary();
-    ?>
-
-    <div class="bg-white rounded-b-lg shadow-lg p-8">
-        <p class="text-sm text-gray-600 mb-6"><?php echo $translator->translate('Select a JSON or ZIP file exported from the dashboard.', category: 'dboard-modules'); ?></p>
+    <div class="dboard-surface p-6">
+        <p class="mb-6 text-sm text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('Select a JSON or ZIP file exported from the dashboard.', category: 'dboard-modules'); ?></p>
 
         <?php if ($error !== null): ?>
             <div class="mb-6">
@@ -82,10 +79,10 @@ use Yiisoft\Translator\TranslatorInterface;
                 ?>
             </div>
 
-            <div class="flex justify-end gap-4 mt-6">
+            <div class="dboard-actions">
                 <?php echo Bleet::submitButton($translator->translate('Analyze', category: 'dboard-modules'))
                     ->icon('magnifying-glass')
-                    ->primary()
+                    ->accent()
                     ->render();
                 ?>
             </div>

@@ -186,4 +186,9 @@ return [
     '{entity, select, content{Content untagged.} tag{Tag untagged.} other{Element untagged.}}' => '{entity, select, content{Contenido desetiquetado.} tag{Etiqueta desetiquetada.} other{Elemento desetiquetado.}}',
     '{entity, select, content{Warning: the import will replace all existing blocks of this content. If you do not want to put this content at risk, please re-import the markdown into a new content created with the same type and properties.} other{Warning: the import will replace all existing blocks of this tag. If you do not want to put this tag at risk, please re-import the markdown into a new tag created with the same type and properties.}}' => '{entity, select, content{Advertencia: la importación reemplazará todos los bloques existentes de este contenido. Si no desea poner en riesgo este contenido, vuelva a importar el markdown en un nuevo contenido creado con el mismo tipo y las mismas propiedades.} other{Advertencia: la importación reemplazará todos los bloques existentes de esta etiqueta. Si no desea poner en riesgo esta etiqueta, vuelva a importar el markdown en una nueva etiqueta creada con el mismo tipo y las mismas propiedades.}}',
     '{type, select, content{Content blocks} other{Tag blocks}}' => '{type, select, content{Bloques del contenido} other{Bloques de la etiqueta}}',
+    'Open menu' => 'Abrir el menú',
+    'Close menu' => 'Cerrar el menú',
+    'Main navigation' => 'Navegación principal',
+    'Open the account menu' => 'Abrir el menú de la cuenta',
+    'Switch between light and dark' => 'Cambiar entre claro y oscuro',
 ];

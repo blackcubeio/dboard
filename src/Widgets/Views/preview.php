@@ -26,24 +26,44 @@ use Yiisoft\Html\Html;
     'class' => 'relative flex items-center',
 ]); ?>
 
+    <?php
+    // No display utility here: the attribute swaps the two buttons with the
+    // hidden class, which must stay the only word on their display.
+    $toggleClasses = [
+        'size-9',
+        'shrink-0',
+        'cursor-pointer',
+        'rounded-md',
+        'p-2.5',
+        'transition-colors',
+        'hover:bg-white/5',
+        'hover:text-white',
+        'focus-visible:outline-2',
+        'focus-visible:outline-accent-400',
+    ];
+    ?>
     <?php echo Bleet::button()
             ->icon('eye')
-            ->primary()
             ->outline()
             ->attribute('data-preview', 'toggle')
             ->attribute('aria-label', 'Preview')
-            ->addClass($active === true ? '' : 'hidden'); ?>
+            ->buttonClass(...$toggleClasses, ...[
+                'text-accent-300',
+                $active === true ? null : 'hidden',
+            ]); ?>
     <?php echo Bleet::button()
             ->icon('eye-slash')
-            ->primary()
             ->outline()
             ->attribute('data-preview', 'toggle')
             ->attribute('aria-label', 'Preview')
-            ->addClass($active === true ? 'hidden' : ''); ?>
+            ->buttonClass(...$toggleClasses, ...[
+                'text-secondary-400',
+                $active === true ? 'hidden' : null,
+            ]); ?>
 
     <?php echo Html::openTag('div', [
         'data-preview' => 'panel',
-        'class' => 'hidden absolute right-0 top-full mt-2 z-10 bg-white rounded-lg shadow-lg ring-1 ring-secondary-900/5 p-3 opacity-0 scale-95 transition-all duration-300',
+        'class' => 'hidden absolute right-0 bottom-full mb-2 z-10 w-64 origin-bottom bg-white rounded-lg shadow-xl ring-1 ring-secondary-900/5 p-3 opacity-0 scale-95 transition-all duration-300 dark:bg-primary-900 dark:ring-white/10',
     ]); ?>
         <?php echo Html::openTag('div', [
             'class' => 'flex items-end gap-2',

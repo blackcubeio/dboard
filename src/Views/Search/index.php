@@ -15,6 +15,7 @@ use Blackcube\Dcore\Models\Slug;
 use Blackcube\Dcore\Models\Tag;
 use Blackcube\Dboard\Models\Forms\SearchForm;
 use Blackcube\Bleet\Bleet;
+use Blackcube\Dboard\Widgets\Widgets;
 use Yiisoft\Html\Html;
 use Yiisoft\Router\CurrentRoute;
 use Yiisoft\Router\UrlGeneratorInterface;
@@ -37,34 +38,36 @@ use Yiisoft\Translator\TranslatorInterface;
 $searchUrl = $urlGenerator->generate('dboard.search');
 ?>
 
-<main class="flex-1 p-4 sm:p-6 lg:p-8">
+<main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+    <?php echo Widgets::pageHeading($translator->translate('Search', category: 'dboard-common'))->render(); ?>
 
     <?php echo Html::form()
             ->post($searchUrl)
             ->csrf($csrf)
             ->open(); ?>
-    <div class="bg-white rounded-lg shadow-sm border border-secondary-200 p-4 mb-6">
-            <div class="flex flex-wrap gap-4 items-center">
+    <div class="mb-6 flex flex-col gap-4">
+            <div class="flex gap-3">
                 <div class="flex-1">
                     <?php echo Bleet::input($searchForm, 'search')
                         ->hideLabel()
                         ->type('search')
                         ->placeholder($translator->translate('Search...', category: 'dboard-common'))
+                        ->iconLeft('magnifying-glass')
                         ->render();
                     ?>
                 </div>
                 <div>
                     <?php echo Bleet::submitButton($translator->translate('Search', category: 'dboard-common'))
                         ->icon('magnifying-glass')
-                        ->primary()
+                        ->accent()
                         ->render();
                     ?>
                 </div>
             </div>
 
             <?php if ($canViewContents === true || $canViewTags === true || $canViewMenus === true || $canViewSlugs === true): ?>
-            <div class="flex flex-wrap gap-4 items-center border-t border-secondary-200 pt-4 mt-4">
-                <span class="text-sm text-secondary-600"><?php echo $translator->translate('Filter by:', category: 'dboard-common'); ?></span>
+            <div class="flex flex-wrap items-center gap-4">
+                <span class="text-sm text-secondary-600 dark:text-secondary-300"><?php echo $translator->translate('Filter by:', category: 'dboard-common'); ?></span>
                 <?php if ($canViewContents === true): ?>
                     <?php echo Bleet::toggle($searchForm, 'filterContents')
                         ->label($translator->translate('Contents', category: 'dboard-common'))
@@ -97,13 +100,7 @@ $searchUrl = $urlGenerator->generate('dboard.search');
             <?php endif; ?>
     </div>
 
-    <?php echo Bleet::cardHeader()
-        ->icon('magnifying-glass')
-        ->title($translator->translate('Search', category: 'dboard-common'))
-        ->primary();
-    ?>
-
-    <div class="bg-white rounded-b-lg shadow-lg p-4">
+    <div class="dboard-surface p-4">
         <bleet-ajaxify id="search-results">
         <?php
             echo $this->render('Search/_results', [

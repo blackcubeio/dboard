@@ -3,10 +3,10 @@
     "js": "js/manifest.84bcb7f0.js"
   },
   "app": {
-    "css": "css/app.f58f6c8f.css",
-    "js": "js/app.f58f6c8f.js"
+    "css": "css/app.3ec6ca79.css",
+    "js": "js/app.3ec6ca79.js"
   },
   "vendors": {
-    "js": "js/vendors.fa5c4ef5.js"
+    "js": "js/vendors.0314d47e.js"
   }
 }

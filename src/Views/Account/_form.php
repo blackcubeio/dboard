@@ -27,7 +27,7 @@ use Yiisoft\Translator\TranslatorInterface;
 
 ?>
 
-                <div class="bg-white rounded-b-lg shadow-lg p-6">
+                <div class="dboard-surface p-6">
 
                     <div class="flex flex-wrap gap-4">
                         <div class="basis-1/2 grow">

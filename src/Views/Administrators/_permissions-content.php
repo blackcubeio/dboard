@@ -89,7 +89,7 @@ use Yiisoft\Translator\TranslatorInterface;
                             $permHasPerm = in_array($permName, $userPermissionNames, true);
                             $permIsInherited = $permHasPerm && $permHasAssignment === false;
                             ?>
-                            <div class="px-4 py-2 flex items-center justify-between bg-white hover:bg-secondary-25">
+                            <div class="px-4 py-2 flex items-center justify-between bg-white hover:bg-secondary-50">
                                 <div class="flex items-center gap-2 pl-6">
                                     <?php echo Bleet::svg()->outline('key')->addClass('size-4', 'text-secondary-400')->render(); ?>
                                     <span class="text-sm text-secondary-700"><?php echo Html::encode(Rbac::extractPermission($permName)); ?></span>
@@ -130,7 +130,7 @@ use Yiisoft\Translator\TranslatorInterface;
         </div>
     <?php endif; ?>
 
-    <div class="flex gap-4 pt-6 mt-6 border-t border-gray-200">
+    <div class="flex gap-4 pt-6 mt-6 border-t border-secondary-200">
         <?php echo Bleet::button($translator->translate('Close', category: 'dboard-common'))
                 ->secondary()
                 ->attribute('data-dialog', 'close')

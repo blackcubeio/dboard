@@ -21,11 +21,9 @@ declare(strict_types=1);
 
 use Blackcube\Dboard\Assets\AppAsset;
 use Blackcube\Dboard\Assets\FaviconAsset;
-use Blackcube\Dboard\Assets\StaticAsset;
 use Blackcube\Bleet\Bleet;
 
 $assetManager->register(AppAsset::class);
-$assetManager->register(StaticAsset::class);
 $assetManager->register(FaviconAsset::class);
 $this->addCssFiles($assetManager->getCssFiles());
 $this->addCssStrings($assetManager->getCssStrings());
@@ -33,7 +31,6 @@ $this->addJsFiles($assetManager->getJsFiles());
 $this->addJsStrings($assetManager->getJsStrings());
 $this->addJsVars($assetManager->getJsVars());
 $bundle = $assetManager->getBundle(AppAsset::class);
-$staticBundle = $assetManager->getBundle(StaticAsset::class);
 $this->registerJsVar('webpackBaseUrl', $bundle->baseUrl . '/');
 
 $this->beginPage()
@@ -47,11 +44,13 @@ $this->beginPage()
         <base href="/">
         <?php $this->head(); ?>
     </head>
-    <body class="min-h-screen bg-cover bg-center bg-no-repeat" style="background-image: url('<?php echo $staticBundle->baseUrl ?>/montagne.jpg');">
+    <body class="dboard-canvas min-h-screen">
     <?php $this->beginBody(); ?>
 
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl w-full bg-secondary-50/60 rounded-2xl p-6">
+    <div class="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-primary-950 px-4 py-12 sm:px-6 lg:px-8">
+        <div class="absolute inset-0 -z-10 bg-aurora"></div>
+        <div class="absolute inset-0 -z-10 bg-grid"></div>
+        <div class="w-full max-w-2xl">
             <?php echo $content ?>
         </div>
     </div>

@@ -63,6 +63,7 @@
         "yiisoft/di": "^1.4",
         "yiisoft/event-dispatcher": "^1.1",
         "yiisoft/injector": "^1.2",
+        "yiisoft/rbac-db": "^2.1",
         "yiisoft/test-support": "^3.2"
     },
     "autoload": {

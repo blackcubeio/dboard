@@ -45,7 +45,7 @@ use Yiisoft\Translator\TranslatorInterface;
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
-    <div class="flex gap-4 pt-6 mt-6 border-t border-gray-200">
+    <div class="flex gap-4 pt-6 mt-6 border-t border-secondary-200">
         <?php echo Bleet::button($translator->translate('Close', category: 'dboard-common'))->secondary()->attribute('data-dialog', 'close')->render(); ?>
         <?php echo Bleet::submitButton($translator->translate('Save', category: 'dboard-common'))->primary()->render(); ?>
     </div>

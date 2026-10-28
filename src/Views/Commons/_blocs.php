@@ -12,6 +12,7 @@ use Blackcube\Dcore\Models\ElasticSchema;
 use Blackcube\Dboard\Enums\ReorderMode;
 use Blackcube\Dboard\Helpers\ElasticFieldRenderer;
 use Blackcube\Dboard\Models\Forms\BlocForm;
+use Blackcube\Dboard\Widgets\Widgets;
 use Blackcube\Html\Aurelia;
 use Blackcube\Bleet\Bleet;
 use Blackcube\Bleet\Enums\AjaxifyTriggerMode;
@@ -84,7 +85,7 @@ endforeach;
                 'class' => implode(' ', $blocContainerClasses),
                 'data-drag-drop' => 'item-' . $blocId,
             ]); ?>
-                <div class="bg-secondary-100 px-4 py-2 flex items-center justify-between rounded-t-lg">
+                <div class="dark dboard-band flex items-center justify-between rounded-t-lg px-4 py-2">
                     <div class="flex items-center gap-2">
                         <?php
                         $handleClasses = [
@@ -100,76 +101,58 @@ endforeach;
                             ->attribute('data-drag-handle', true)
                             ->encode(false);
                         ?>
-                        <h4 class="font-medium text-secondary-700">
+                        <h4 class="text-base font-semibold text-white">
                             <?php echo Html::encode(ElasticFieldRenderer::getSchemaName($blocForm->getElasticSchemaId()) ?? $translator->translate('Block', category: 'dboard-common')); ?>
                         </h4>
                     </div>
                     <div class="flex items-center gap-2">
-                        <?php if ($i > 0): ?>
-                            <?php echo Html::openTag('span', Bleet::ajaxify()->mode(AjaxifyTriggerMode::PublishOnly)->target($blocsListId)->event('click')->trigger()); ?>
-                                <?php echo Html::input('hidden', 'BlocForm[blocId]', (string) $blocId, [
-                                    'disabled' => true,
-                                ]); ?>
-                                <?php echo Html::input('hidden', 'BlocForm[mode]', ReorderMode::MoveUp->value, [
-                                    'disabled' => true,
-                                ]); ?>
-                                <?php echo Bleet::button()
-                                    ->icon('chevron-up')
-                                    ->outline()
-                                    ->xs()
-                                    ->secondary()
-                                    ->render();
-                                ?>
-                            <?php echo Html::closeTag('span'); ?>
-                        <?php else: ?>
-                            <?php echo Bleet::button()
-                                ->icon('chevron-up')
-                                ->disabled()
-                                ->outline()
-                                ->xs()
-                                ->secondary()
-                                ->render();
-                            ?>
-                        <?php endif; ?>
-
-                        <?php if ($i < $blocsCount - 1): ?>
-                            <?php echo Html::openTag('span', Bleet::ajaxify()->mode(AjaxifyTriggerMode::PublishOnly)->target($blocsListId)->event('click')->trigger()); ?>
-                                <?php echo Html::input('hidden', 'BlocForm[blocId]', (string) $blocId, [
-                                    'disabled' => true,
-                                ]); ?>
-                                <?php echo Html::input('hidden', 'BlocForm[mode]', ReorderMode::MoveDown->value, [
-                                    'disabled' => true,
-                                ]); ?>
-                                <?php echo Bleet::button()
-                                    ->icon('chevron-down')
-                                    ->outline()
-                                    ->xs()
-                                    ->secondary()
-                                    ->render();
-                                ?>
-                            <?php echo Html::closeTag('span'); ?>
-                        <?php else: ?>
-                            <?php echo Bleet::button()
-                                ->icon('chevron-down')
-                                ->disabled()
-                                ->outline()
-                                ->xs()
-                                ->secondary()
-                                ->render();
-                            ?>
-                        <?php endif; ?>
-
                         <?php
+                        $moveUpButton = Bleet::button()
+                            ->icon('chevron-up')
+                            ->disabled()
+                            ->outline()
+                            ->xs()
+                            ->secondary();
+                        if ($i > 0):
+                            $moveUpButton = Widgets::ajaxifyButton()
+                                ->icon('chevron-up')
+                                ->outline()
+                                ->xs()
+                                ->secondary()
+                                ->hidden('BlocForm[blocId]', (string) $blocId)
+                                ->hidden('BlocForm[mode]', ReorderMode::MoveUp->value)
+                                ->addAttributes(Bleet::ajaxify()->mode(AjaxifyTriggerMode::PublishOnly)->target($blocsListId)->event('click')->trigger());
+                        endif;
+                        $moveDownButton = Bleet::button()
+                            ->icon('chevron-down')
+                            ->disabled()
+                            ->outline()
+                            ->xs()
+                            ->secondary();
+                        if ($i < $blocsCount - 1):
+                            $moveDownButton = Widgets::ajaxifyButton()
+                                ->icon('chevron-down')
+                                ->outline()
+                                ->xs()
+                                ->secondary()
+                                ->hidden('BlocForm[blocId]', (string) $blocId)
+                                ->hidden('BlocForm[mode]', ReorderMode::MoveDown->value)
+                                ->addAttributes(Bleet::ajaxify()->mode(AjaxifyTriggerMode::PublishOnly)->target($blocsListId)->event('click')->trigger());
+                        endif;
                         $deleteUrl = $urlGenerator->generate($deleteRoute, [
                             $routeIdParam => $modelId,
                             'blocId' => $blocId,
                         ]);
-                        echo Bleet::button()
+                        $deleteButton = Bleet::button()
                             ->icon('trash')
                             ->addAttributes(Bleet::modal()->trigger($deleteUrl))
                             ->outline()
                             ->xs()
-                            ->danger()
+                            ->danger();
+                        echo Bleet::buttonGroup()
+                            ->addButton($moveUpButton)
+                            ->addButton($moveDownButton)
+                            ->addButton($deleteButton)
                             ->render();
                         ?>
 
@@ -184,24 +167,22 @@ endforeach;
                                     ])
                                     ->secondary()
                                     ->hideLabel()
-                                    ->addContainerClass('w-32')
+                                    ->addContainerClass('w-56')
                                     ->render();
                                 ?>
-                                <?php echo Html::openTag('span', Bleet::ajaxify()->mode(AjaxifyTriggerMode::PublishOnly)->target($blocsListId)->id('addBloc-' . $blocId)->event('click')->trigger()); ?>
-                                    <?php echo Html::input('hidden', 'BlocForm[elasticSchemaId]', '', [
-                                        'disabled' => true,
-                                    ]); ?>
-                                    <?php echo Html::input('hidden', 'BlocForm[blocAdd]', (string) $blocId, [
-                                        'disabled' => true,
-                                    ]); ?>
-                                    <?php echo Bleet::button()
-                                        ->icon('plus')
-                                        ->outline()
-                                        ->xs()
-                                        ->primary()
-                                        ->render();
-                                    ?>
-                                <?php echo Html::closeTag('span'); ?>
+                                <?php
+                                $addButton = Widgets::ajaxifyButton()
+                                    ->icon('plus')
+                                    ->outline()
+                                    ->xs()
+                                    ->primary()
+                                    ->hidden('BlocForm[elasticSchemaId]', '')
+                                    ->hidden('BlocForm[blocAdd]', (string) $blocId)
+                                    ->addAttributes(Bleet::ajaxify()->mode(AjaxifyTriggerMode::PublishOnly)->target($blocsListId)->id('addBloc-' . $blocId)->event('click')->trigger());
+                                echo Bleet::buttonGroup()
+                                    ->addButton($addButton)
+                                    ->render();
+                                ?>
                             </span>
                         <?php endif; ?>
                     </div>
@@ -269,7 +250,7 @@ endforeach;
                 ])
                 ->secondary()
                 ->hideLabel()
-                ->addContainerClass('w-48')
+                ->addContainerClass('w-56')
                 ->render();
             ?>
             <?php echo Html::openTag('span', Bleet::ajaxify()->mode(AjaxifyTriggerMode::PublishOnly)->target($blocsListId)->id('addBloc-first')->event('click')->trigger()); ?>
