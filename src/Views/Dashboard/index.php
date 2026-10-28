@@ -26,20 +26,23 @@ use Yiisoft\Translator\TranslatorInterface;
  * @var UrlGeneratorInterface $urlGenerator
  * @var TranslatorInterface $translator
  * @var Administrator $administrator
- * @var array{contentsActive: int, contentsOutOfDate: int, contentsInactive: int, tagsActive: int, tagsInactive: int} $stats
+ * @var array{contentsActive: int, contentsScheduled: int, contentsExpired: int, contentsInactive: int, tagsActive: int, tagsInactive: int, updatedThisWeek: int, unreachable: int, pagesWithoutXeo: int, pagesOutOfSitemap: int, redirections: int, inactiveSlugs: int, activeLanguages: int, missingTranslations: int} $stats
  * @var ContentQuery $latestContentsQuery
+ * @var ContentQuery $draftsQuery
  * @var TagQuery $latestTagsQuery
+ * @var array<int, array{name: string, total: int}> $countsByLanguage
+ * @var array<int, array{name: string|null, total: int}> $countsByType
  * @var string|null $csrf
  */
 
-$outOfDateClasses = [
+$expiredClasses = [
     'mt-2',
     'tabular-nums',
     'text-3xl',
     'font-semibold',
     'tracking-tight',
-    $stats['contentsOutOfDate'] > 0 ? 'text-warning-600' : 'text-secondary-950',
-    $stats['contentsOutOfDate'] > 0 ? 'dark:text-warning-400' : 'dark:text-white',
+    $stats['contentsExpired'] > 0 ? 'text-warning-600' : 'text-secondary-950',
+    $stats['contentsExpired'] > 0 ? 'dark:text-warning-400' : 'dark:text-white',
 ];
 $inactiveClasses = [
     'mt-2',
@@ -63,6 +66,52 @@ $rowLinkClasses = [
     'dark:text-secondary-100',
     'dark:hover:text-accent-300',
 ];
+$healthRows = [
+    [
+        'label' => $translator->translate('Unreachable contents', category: 'dboard-modules'),
+        'count' => $stats['unreachable'],
+        'url' => $urlGenerator->generate('dboard.contents'),
+        'warn' => true,
+    ],
+    [
+        'label' => $translator->translate('Pages without *EO', category: 'dboard-modules'),
+        'count' => $stats['pagesWithoutXeo'],
+        'url' => $urlGenerator->generate('dboard.slugs'),
+        'warn' => true,
+    ],
+    [
+        'label' => $translator->translate('Pages out of the sitemap', category: 'dboard-modules'),
+        'count' => $stats['pagesOutOfSitemap'],
+        'url' => $urlGenerator->generate('dboard.slugs'),
+        'warn' => true,
+    ],
+    [
+        'label' => $translator->translate('Redirections', category: 'dboard-modules'),
+        'count' => $stats['redirections'],
+        'url' => $urlGenerator->generate('dboard.slugs'),
+        'warn' => false,
+    ],
+    [
+        'label' => $translator->translate('Inactive URLs', category: 'dboard-modules'),
+        'count' => $stats['inactiveSlugs'],
+        'url' => $urlGenerator->generate('dboard.slugs'),
+        'warn' => true,
+    ],
+];
+if ($stats['activeLanguages'] >= 2):
+    $healthRows[] = [
+        'label' => $translator->translate('Missing translations', category: 'dboard-modules'),
+        'count' => $stats['missingTranslations'],
+        'url' => $urlGenerator->generate('dboard.contents'),
+        'warn' => true,
+    ];
+endif;
+$languageMax = max(array_merge([
+    0,
+], array_column($countsByLanguage, 'total')));
+$typeMax = max(array_merge([
+    0,
+], array_column($countsByType, 'total')));
 
 ?>
 
@@ -77,9 +126,13 @@ $rowLinkClasses = [
                     <dd class="mt-2 tabular-nums text-3xl font-semibold tracking-tight text-secondary-950 dark:text-white"><?php echo $stats['contentsActive']; ?></dd>
                 </div>
                 <div class="flex-1 rounded-xl border border-secondary-200 bg-white px-5 py-4 shadow-xs dark:border-white/10 dark:bg-primary-900">
-                    <dt class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('Out of date contents', category: 'dboard-modules')); ?></dt>
-                    <?php echo Html::tag('dd', (string) $stats['contentsOutOfDate'], [
-                        'class' => $outOfDateClasses,
+                    <dt class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('Scheduled contents', category: 'dboard-modules')); ?></dt>
+                    <dd class="mt-2 tabular-nums text-3xl font-semibold tracking-tight text-secondary-950 dark:text-white"><?php echo $stats['contentsScheduled']; ?></dd>
+                </div>
+                <div class="flex-1 rounded-xl border border-secondary-200 bg-white px-5 py-4 shadow-xs dark:border-white/10 dark:bg-primary-900">
+                    <dt class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('Expired contents', category: 'dboard-modules')); ?></dt>
+                    <?php echo Html::tag('dd', (string) $stats['contentsExpired'], [
+                        'class' => $expiredClasses,
                     ]); ?>
                 </div>
                 <div class="flex-1 rounded-xl border border-secondary-200 bg-white px-5 py-4 shadow-xs dark:border-white/10 dark:bg-primary-900">
@@ -87,6 +140,10 @@ $rowLinkClasses = [
                     <?php echo Html::tag('dd', (string) $stats['contentsInactive'], [
                         'class' => $inactiveClasses,
                     ]); ?>
+                </div>
+                <div class="flex-1 rounded-xl border border-secondary-200 bg-white px-5 py-4 shadow-xs dark:border-white/10 dark:bg-primary-900">
+                    <dt class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('Updated this week', category: 'dboard-modules')); ?></dt>
+                    <dd class="mt-2 tabular-nums text-3xl font-semibold tracking-tight text-secondary-950 dark:text-white"><?php echo $stats['updatedThisWeek']; ?></dd>
                 </div>
             </dl>
 
@@ -102,7 +159,7 @@ $rowLinkClasses = [
                         </div>
                         <div class="flex shrink-0 items-center gap-1.5">
                             <?php echo Bleet::badge((string) $stats['contentsActive'])->dot()->success(); ?>
-                            <?php echo Bleet::badge((string) $stats['contentsOutOfDate'])->dot()->warning(); ?>
+                            <?php echo Bleet::badge((string) $stats['contentsExpired'])->dot()->warning(); ?>
                             <?php echo Bleet::badge((string) $stats['contentsInactive'])->dot()->danger(); ?>
                         </div>
                     </div>
@@ -126,6 +183,41 @@ $rowLinkClasses = [
                         <?php endforeach; ?>
                     </ul>
                     <?php if ($hasContents === false): ?>
+                        <p class="px-5 pb-5 text-sm text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('No results', category: 'dboard-common')); ?></p>
+                    <?php endif; ?>
+                </article>
+
+                <article class="min-w-0 flex-1 overflow-hidden rounded-xl border border-secondary-200 bg-white shadow-xs dark:border-white/10 dark:bg-primary-900">
+                    <div class="h-0.5 bg-linear-to-r from-accent-500 to-accent-300"></div>
+                    <div class="flex items-start justify-between gap-4 px-5 pt-5">
+                        <div class="min-w-0">
+                            <p class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-400"><?php echo Html::encode($translator->translate('Contents', category: 'dboard-modules')); ?></p>
+                            <h3 class="mt-1 text-base font-semibold text-secondary-950 dark:text-white"><?php echo Html::encode($translator->translate('Drafts in progress', category: 'dboard-modules')); ?></h3>
+                        </div>
+                        <div class="flex shrink-0 items-center gap-1.5">
+                            <?php echo Bleet::badge((string) $stats['contentsInactive'])->dot()->danger(); ?>
+                        </div>
+                    </div>
+                    <?php $hasDrafts = false; ?>
+                    <ul class="mt-3 divide-y divide-secondary-100 px-5 pb-2 dark:divide-white/5">
+                        <?php /** @var Content $draft */ ?>
+                        <?php foreach ($draftsQuery->each() as $draft): ?>
+                            <?php $hasDrafts = true; ?>
+                            <li class="flex items-baseline justify-between gap-4 py-3">
+                                <?php echo Html::a(
+                                    Html::encode($draft->getName() ?? $translator->translate('Unnamed', category: 'dboard-modules')),
+                                    $urlGenerator->generate('dboard.contents.edit', [
+                                        'id' => $draft->getId(),
+                                    ]),
+                                    [
+                                        'class' => $rowLinkClasses,
+                                    ]
+                                ); ?>
+                                <span class="shrink-0 text-xs text-secondary-500 dark:text-secondary-400"><?php echo Html::encode(RelativeTimeHelper::format($draft->getDateUpdate(), $translator)); ?></span>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php if ($hasDrafts === false): ?>
                         <p class="px-5 pb-5 text-sm text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('No results', category: 'dboard-common')); ?></p>
                     <?php endif; ?>
                 </article>
@@ -164,6 +256,86 @@ $rowLinkClasses = [
                     <?php if ($hasTags === false): ?>
                         <p class="px-5 pb-5 text-sm text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('No results', category: 'dboard-common')); ?></p>
                     <?php endif; ?>
+                </article>
+            </div>
+
+            <div class="mt-6 flex flex-col gap-6 lg:flex-row">
+                <article class="min-w-0 flex-1 overflow-hidden rounded-xl border border-secondary-200 bg-white shadow-xs dark:border-white/10 dark:bg-primary-900">
+                    <div class="h-0.5 bg-linear-to-r from-accent-500 to-accent-300"></div>
+                    <div class="px-5 pt-5">
+                        <p class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-400"><?php echo Html::encode($translator->translate('Site', category: 'dboard-modules')); ?></p>
+                        <h3 class="mt-1 text-base font-semibold text-secondary-950 dark:text-white"><?php echo Html::encode($translator->translate('Site health', category: 'dboard-modules')); ?></h3>
+                    </div>
+                    <dl class="mt-3 divide-y divide-secondary-100 px-5 pb-2 dark:divide-white/5">
+                        <?php foreach ($healthRows as $healthRow): ?>
+                            <?php
+                            $healthCountClasses = [
+                                'shrink-0',
+                                'tabular-nums',
+                                'text-sm',
+                                'font-semibold',
+                                $healthRow['warn'] === true && $healthRow['count'] > 0 ? 'text-warning-600' : 'text-secondary-950',
+                                $healthRow['warn'] === true && $healthRow['count'] > 0 ? 'dark:text-warning-400' : 'dark:text-white',
+                            ];
+                            ?>
+                            <div class="flex items-baseline justify-between gap-4 py-3">
+                                <dt class="min-w-0 truncate"><?php echo Html::a(Html::encode($healthRow['label']), $healthRow['url'], [
+                                    'class' => $rowLinkClasses,
+                                ]); ?></dt>
+                                <?php echo Html::tag('dd', (string) $healthRow['count'], [
+                                    'class' => $healthCountClasses,
+                                ]); ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </dl>
+                </article>
+
+                <article class="min-w-0 flex-1 overflow-hidden rounded-xl border border-secondary-200 bg-white shadow-xs dark:border-white/10 dark:bg-primary-900">
+                    <div class="h-0.5 bg-linear-to-r from-accent-500 to-accent-300"></div>
+                    <div class="px-5 pt-5">
+                        <p class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-400"><?php echo Html::encode($translator->translate('Site', category: 'dboard-modules')); ?></p>
+                        <h3 class="mt-1 text-base font-semibold text-secondary-950 dark:text-white"><?php echo Html::encode($translator->translate('Shape of the site', category: 'dboard-modules')); ?></h3>
+                    </div>
+                    <div class="mt-3 flex flex-col gap-6 px-5 pb-5 sm:flex-row">
+                        <div class="min-w-0 flex-1">
+                            <h4 class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-400"><?php echo Html::encode($translator->translate('Active contents by language', category: 'dboard-modules')); ?></h4>
+                            <dl class="mt-2 flex flex-col">
+                                <?php foreach ($countsByLanguage as $languageCount): ?>
+                                    <?php $languageWidth = $languageMax > 0 ? (int) round($languageCount['total'] * 100 / $languageMax) : 0; ?>
+                                    <div class="flex flex-wrap items-baseline justify-between gap-x-4 py-2">
+                                        <dt class="min-w-0 truncate text-sm text-secondary-700 dark:text-secondary-300"><?php echo Html::encode($languageCount['name']); ?></dt>
+                                        <dd class="tabular-nums text-sm font-semibold text-secondary-950 dark:text-white"><?php echo $languageCount['total']; ?></dd>
+                                        <dd class="mt-1.5 h-1.5 basis-full overflow-hidden rounded-full bg-secondary-100 dark:bg-white/10"><?php echo Html::tag('div', '', [
+                                            'class' => 'h-full rounded-full bg-accent-500',
+                                            'style' => 'width: ' . $languageWidth . '%',
+                                        ]); ?></dd>
+                                    </div>
+                                <?php endforeach; ?>
+                            </dl>
+                            <?php if (empty($countsByLanguage) === true): ?>
+                                <p class="mt-2 text-sm text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('No results', category: 'dboard-common')); ?></p>
+                            <?php endif; ?>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <h4 class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-400"><?php echo Html::encode($translator->translate('Active contents by type', category: 'dboard-modules')); ?></h4>
+                            <dl class="mt-2 flex flex-col">
+                                <?php foreach ($countsByType as $typeCount): ?>
+                                    <?php $typeWidth = $typeMax > 0 ? (int) round($typeCount['total'] * 100 / $typeMax) : 0; ?>
+                                    <div class="flex flex-wrap items-baseline justify-between gap-x-4 py-2">
+                                        <dt class="min-w-0 truncate text-sm text-secondary-700 dark:text-secondary-300"><?php echo Html::encode($typeCount['name'] ?? $translator->translate('Without type', category: 'dboard-modules')); ?></dt>
+                                        <dd class="tabular-nums text-sm font-semibold text-secondary-950 dark:text-white"><?php echo $typeCount['total']; ?></dd>
+                                        <dd class="mt-1.5 h-1.5 basis-full overflow-hidden rounded-full bg-secondary-100 dark:bg-white/10"><?php echo Html::tag('div', '', [
+                                            'class' => 'h-full rounded-full bg-accent-500',
+                                            'style' => 'width: ' . $typeWidth . '%',
+                                        ]); ?></dd>
+                                    </div>
+                                <?php endforeach; ?>
+                            </dl>
+                            <?php if (empty($countsByType) === true): ?>
+                                <p class="mt-2 text-sm text-secondary-500 dark:text-secondary-400"><?php echo Html::encode($translator->translate('No results', category: 'dboard-common')); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </article>
             </div>
         </main>

@@ -492,6 +492,9 @@
   .mt-1 {
     margin-top: var(--spacing);
   }
+  .mt-1\.5 {
+    margin-top: calc(var(--spacing) * 1.5);
+  }
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
   }
@@ -685,6 +688,9 @@
   }
   .h-0\.5 {
     height: calc(var(--spacing) * 0.5);
+  }
+  .h-1\.5 {
+    height: calc(var(--spacing) * 1.5);
   }
   .h-2 {
     height: calc(var(--spacing) * 2);
@@ -1358,6 +1364,9 @@
   }
   .bg-accent-200 {
     background-color: var(--color-accent-200);
+  }
+  .bg-accent-500 {
+    background-color: var(--color-accent-500);
   }
   .bg-accent-600 {
     background-color: var(--color-accent-600);
