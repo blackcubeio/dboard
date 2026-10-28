@@ -318,4 +318,5 @@ return [
     'Active contents by language' => 'Contenidos activos por idioma',
     'Active contents by type' => 'Contenidos activos por tipo',
     'Without type' => 'Sin tipo',
+    'And {count} more' => 'Y {count} más',
 ];

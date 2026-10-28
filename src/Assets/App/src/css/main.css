@@ -14,6 +14,7 @@
 /* Scan des sources pour les classes Tailwind */
 @source "../../../../Views/**/*.php";
 @source "../../../../Widgets/**/*.php";
+@source "../app/components/**/*.html";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

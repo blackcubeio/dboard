@@ -19,10 +19,14 @@ use Blackcube\Dcore\Models\Language;
 use Blackcube\Dcore\Models\Slug;
 use Blackcube\Dcore\Models\Type;
 use DateTimeImmutable;
+use Yiisoft\Router\FastRoute\UrlGenerator;
+use Yiisoft\Router\RouteCollection;
+use Yiisoft\Router\RouteCollector;
 
 /**
  * The numbers of the dashboard against the database: each counter moves by
- * exactly what is written.
+ * exactly what is written, and the records behind a health counter come with
+ * the link that puts them right.
  *
  * @copyright 2010-2026 Blackcube - Philippe Gaultier
  * @license https://www.blackcube.io/license
@@ -36,7 +40,7 @@ class DashboardCest
     {
         $I->wantTo('verify the content counters move by what is written');
 
-        $dashboardService = new DashboardService(new DashboardDataService());
+        $dashboardService = $this->createService();
         $now = new DateTimeImmutable();
         $activeBefore = $dashboardService->getCountActive();
         $scheduledBefore = $dashboardService->getCountScheduled();
@@ -69,7 +73,7 @@ class DashboardCest
     {
         $I->wantTo('verify the site health counters move by the slugs written');
 
-        $dashboardService = new DashboardService(new DashboardDataService());
+        $dashboardService = $this->createService();
         $withoutXeoBefore = $dashboardService->getCountPagesWithoutXeo();
         $outOfSitemapBefore = $dashboardService->getCountPagesOutOfSitemap();
         $redirectionsBefore = $dashboardService->getCountRedirections();
@@ -89,7 +93,7 @@ class DashboardCest
     {
         $I->wantTo('verify the shape counts the active contents by language and by type');
 
-        $dashboardService = new DashboardService(new DashboardDataService());
+        $dashboardService = $this->createService();
         $languageBefore = $this->totalsByName($dashboardService->getCountsByLanguage());
         $typeBefore = $this->totalsByName($dashboardService->getCountsByType());
 
@@ -116,6 +120,61 @@ class DashboardCest
         $I->assertSame(($languageBefore[$english->getName()] ?? 0) + 1, $languageAfter[$english->getName()]);
         $I->assertSame(($typeBefore['Article'] ?? 0) + 2, $typeAfter['Article']);
         $I->assertSame(($typeBefore[''] ?? 0) + 1, $typeAfter[''], 'the contents without a type come with a null name');
+    }
+
+    public function testTheHealthItemsCarryTheirLink(IntegrationTester $I): void
+    {
+        $I->wantTo('verify the records behind a health counter come with the link that puts them right');
+
+        $dashboardService = $this->createService();
+        $type = new Type();
+        $type->setName('Page');
+        $type->save();
+        $unreachable = $this->createContent('Unreachable', true, null, null, $type->getId());
+        $redirection = $this->createSlug('old-page', true, 'https://example.com/new-page');
+        $page = $this->createSlug('a-page', true, null);
+
+        $unreachableItems = $dashboardService->getHealthItems('unreachable', 50);
+        $I->assertSame($unreachableItems['total'], count($unreachableItems['items']), 'all of them fit under the limit');
+        $I->assertContains([
+            'label' => 'Unreachable',
+            'url' => '/dboard/contents/' . $unreachable->getId() . '/edit',
+            'detail' => 'fr',
+        ], $unreachableItems['items']);
+
+        $redirectionItems = $dashboardService->getHealthItems('redirections', 50);
+        $I->assertContains([
+            'label' => '/old-page',
+            'url' => '/dboard/slugs/' . $redirection->getId() . '/edit',
+            'detail' => 'https://example.com/new-page',
+        ], $redirectionItems['items']);
+
+        $withoutXeoItems = $dashboardService->getHealthItems('without-xeo', 50);
+        $I->assertContains([
+            'label' => '/a-page',
+            'url' => '/dboard/slugs/' . $page->getId() . '/edit',
+            'detail' => '/a-page',
+        ], $withoutXeoItems['items'], 'a slug that no content nor tag owns links to itself');
+
+        $I->assertSame([
+            'items' => [],
+            'total' => 0,
+        ], $dashboardService->getHealthItems('nothing', 50), 'an unknown kind is empty');
+    }
+
+    private function createService(): DashboardService
+    {
+        return new DashboardService(new DashboardDataService(), $this->createUrlGenerator());
+    }
+
+    private function createUrlGenerator(): UrlGenerator
+    {
+        $params = require dirname(__DIR__, 2) . '/config/common/params.php';
+        $routes = require dirname(__DIR__, 2) . '/config/routes.php';
+        $routeCollector = new RouteCollector();
+        $routeCollector->addRoute(...$routes);
+
+        return new UrlGenerator(new RouteCollection($routeCollector));
     }
 
     private function createContent(string $name, bool $active, ?DateTimeImmutable $dateStart, ?DateTimeImmutable $dateEnd, ?int $typeId, string $languageId = 'fr'): Content

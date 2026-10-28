@@ -11,8 +11,12 @@ declare(strict_types=1);
 namespace Blackcube\Dboard\Services;
 
 use Blackcube\Dboard\DataServices\DashboardDataService;
+use Blackcube\Dcore\Models\Content;
 use Blackcube\Dcore\Models\Language;
+use Blackcube\Dcore\Models\Slug;
 use Blackcube\Dcore\Models\Type;
+use Yiisoft\ActiveRecord\ActiveQueryInterface;
+use Yiisoft\Router\UrlGeneratorInterface;
 
 /**
  * The numbers of the dashboard, each one counted or read from a query of the
@@ -26,6 +30,7 @@ class DashboardService
 {
     public function __construct(
         private readonly DashboardDataService $dashboardDs,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -164,5 +169,162 @@ class DashboardService
             ];
         }
         return $counts;
+    }
+
+    /**
+     * The records behind a health counter, the first ones by name, each with
+     * the link that puts it right; the total says how many there are.
+     *
+     * @return array{items: array<int, array{label: string, url: string, detail: string|null}>, total: int}
+     */
+    public function getHealthItems(string $kind, int $limit): array
+    {
+        $items = [];
+        $total = 0;
+        switch ($kind) {
+            case 'unreachable':
+                $unreachableQuery = $this->dashboardDs->queryUnreachable();
+                $total = $unreachableQuery->count();
+                $items = $this->contentItems($unreachableQuery, $limit);
+                break;
+            case 'without-xeo':
+                $withoutXeoQuery = $this->dashboardDs->queryPagesWithoutXeo();
+                $total = $withoutXeoQuery->count();
+                $items = $this->pageItems($withoutXeoQuery, $limit);
+                break;
+            case 'out-of-sitemap':
+                $outOfSitemapQuery = $this->dashboardDs->queryPagesOutOfSitemap();
+                $total = $outOfSitemapQuery->count();
+                $items = $this->pageItems($outOfSitemapQuery, $limit);
+                break;
+            case 'redirections':
+                $redirectionsQuery = $this->dashboardDs->queryRedirections();
+                $total = $redirectionsQuery->count();
+                $items = $this->slugItems($redirectionsQuery, $limit);
+                break;
+            case 'inactive-slugs':
+                $inactiveSlugsQuery = $this->dashboardDs->queryInactiveSlugs();
+                $total = $inactiveSlugsQuery->count();
+                $items = $this->slugItems($inactiveSlugsQuery, $limit);
+                break;
+            case 'missing-translations':
+                $languagesCount = $this->getCountActiveLanguages();
+                $withoutGroupQuery = $this->dashboardDs->queryWithoutTranslationGroup();
+                $inShortGroupQuery = $this->dashboardDs->queryInShortTranslationGroup($languagesCount);
+                $total = $withoutGroupQuery->count() + $inShortGroupQuery->count();
+                $items = array_slice(array_merge(
+                    $this->contentItems($withoutGroupQuery, $limit),
+                    $this->contentItems($inShortGroupQuery, $limit),
+                ), 0, $limit);
+                break;
+            default:
+                break;
+        }
+        return [
+            'items' => $items,
+            'total' => $total,
+        ];
+    }
+
+    /**
+     * Contents as items: the name, the edit screen, the language.
+     *
+     * @return array<int, array{label: string, url: string, detail: string|null}>
+     */
+    protected function contentItems(ActiveQueryInterface $query, int $limit): array
+    {
+        $contentsQuery = (clone $query)
+            ->orderBy([
+                'name' => SORT_ASC,
+                'id' => SORT_ASC,
+            ])
+            ->limit($limit);
+        $items = [];
+        /** @var Content $content */
+        foreach ($contentsQuery->each() as $content) {
+            $items[] = [
+                'label' => $content->getName() ?? '#' . $content->getId(),
+                'url' => $this->urlGenerator->generate('dboard.contents.edit', [
+                    'id' => $content->getId(),
+                ]),
+                'detail' => $content->getLanguageId(),
+            ];
+        }
+        return $items;
+    }
+
+    /**
+     * Pages as items: the content or the tag that owns the slug, its edit
+     * screen where the *EO and the sitemap are set, else the slug itself.
+     *
+     * @return array<int, array{label: string, url: string, detail: string|null}>
+     */
+    protected function pageItems(ActiveQueryInterface $query, int $limit): array
+    {
+        $slugsQuery = (clone $query)
+            ->with([
+                'content',
+                'tag',
+            ])
+            ->orderBy([
+                'path' => SORT_ASC,
+                'id' => SORT_ASC,
+            ])
+            ->limit($limit);
+        $items = [];
+        /** @var Slug $slug */
+        foreach ($slugsQuery->each() as $slug) {
+            $content = $slug->content;
+            $tag = $slug->tag;
+            if ($content !== null) {
+                $label = $content->getName() ?? '/' . $slug->getPath();
+                $url = $this->urlGenerator->generate('dboard.contents.edit', [
+                    'id' => $content->getId(),
+                ]);
+            } elseif ($tag !== null) {
+                $label = $tag->getName();
+                $url = $this->urlGenerator->generate('dboard.tags.edit', [
+                    'id' => $tag->getId(),
+                ]);
+            } else {
+                $label = '/' . $slug->getPath();
+                $url = $this->urlGenerator->generate('dboard.slugs.edit', [
+                    'id' => $slug->getId(),
+                ]);
+            }
+            $items[] = [
+                'label' => $label,
+                'url' => $url,
+                'detail' => '/' . $slug->getPath(),
+            ];
+        }
+        return $items;
+    }
+
+    /**
+     * Slugs as items: the path, the edit screen, the target when it sends elsewhere.
+     *
+     * @return array<int, array{label: string, url: string, detail: string|null}>
+     */
+    protected function slugItems(ActiveQueryInterface $query, int $limit): array
+    {
+        $slugsQuery = (clone $query)
+            ->orderBy([
+                'path' => SORT_ASC,
+                'id' => SORT_ASC,
+            ])
+            ->limit($limit);
+        $items = [];
+        /** @var Slug $slug */
+        foreach ($slugsQuery->each() as $slug) {
+            $items[] = [
+                'label' => '/' . $slug->getPath(),
+                'url' => $this->urlGenerator->generate('dboard.slugs.edit', [
+                    'id' => $slug->getId(),
+                ]),
+                'detail' => $slug->getTargetUrl(),
+            ];
+        }
+        return $items;
     }
 }

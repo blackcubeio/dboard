@@ -11,6 +11,7 @@ declare(strict_types=1);
 use Blackcube\Dboard\Handlers\Authentication\Login;
 use Blackcube\Dboard\Handlers\Authentication\Logout;
 use Blackcube\Dboard\Handlers\Addons\Index as AddonsIndex;
+use Blackcube\Dboard\Handlers\Dashboard\Health as DashboardHealth;
 use Blackcube\Dboard\Handlers\Dashboard\Index as DashboardIndex;
 use Blackcube\Dboard\Handlers\Search\Index as SearchIndex;
 use Blackcube\Dboard\Handlers\Account\Index as AccountIndex;
@@ -238,6 +239,12 @@ return [
                 ]))
                 ->action(DashboardIndex::class)
                 ->name('dboard.dashboard'),
+            Route::get('/dashboard/health/{kind:unreachable|without-xeo|out-of-sitemap|redirections|inactive-slugs|missing-translations}')
+                ->middleware(JwtAuthMiddleware::withRbac([
+                    Rbac::PERMISSION_SITE_DASHBOARD,
+                ]))
+                ->action(DashboardHealth::class)
+                ->name('dboard.dashboard.health'),
             Group::create('/account')
                 ->middleware(JwtAuthMiddleware::class)
                 ->routes(

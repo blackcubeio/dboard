@@ -15,6 +15,7 @@ use Blackcube\Dcore\Models\TagQuery;
 use Blackcube\Dboard\Helpers\RelativeTimeHelper;
 use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Widgets\Widgets;
+use Blackcube\Html\Aurelia;
 use Blackcube\Bleet\Bleet;
 use Yiisoft\Html\Html;
 use Yiisoft\Router\UrlGeneratorInterface;
@@ -70,31 +71,41 @@ $healthRows = [
     [
         'label' => $translator->translate('Unreachable contents', category: 'dboard-modules'),
         'count' => $stats['unreachable'],
-        'url' => $urlGenerator->generate('dboard.contents'),
+        'url' => $urlGenerator->generate('dboard.dashboard.health', [
+            'kind' => 'unreachable',
+        ]),
         'warn' => true,
     ],
     [
         'label' => $translator->translate('Pages without *EO', category: 'dboard-modules'),
         'count' => $stats['pagesWithoutXeo'],
-        'url' => $urlGenerator->generate('dboard.slugs'),
+        'url' => $urlGenerator->generate('dboard.dashboard.health', [
+            'kind' => 'without-xeo',
+        ]),
         'warn' => true,
     ],
     [
         'label' => $translator->translate('Pages out of the sitemap', category: 'dboard-modules'),
         'count' => $stats['pagesOutOfSitemap'],
-        'url' => $urlGenerator->generate('dboard.slugs'),
+        'url' => $urlGenerator->generate('dboard.dashboard.health', [
+            'kind' => 'out-of-sitemap',
+        ]),
         'warn' => true,
     ],
     [
         'label' => $translator->translate('Redirections', category: 'dboard-modules'),
         'count' => $stats['redirections'],
-        'url' => $urlGenerator->generate('dboard.slugs'),
+        'url' => $urlGenerator->generate('dboard.dashboard.health', [
+            'kind' => 'redirections',
+        ]),
         'warn' => false,
     ],
     [
         'label' => $translator->translate('Inactive URLs', category: 'dboard-modules'),
         'count' => $stats['inactiveSlugs'],
-        'url' => $urlGenerator->generate('dboard.slugs'),
+        'url' => $urlGenerator->generate('dboard.dashboard.health', [
+            'kind' => 'inactive-slugs',
+        ]),
         'warn' => true,
     ],
 ];
@@ -102,10 +113,15 @@ if ($stats['activeLanguages'] >= 2):
     $healthRows[] = [
         'label' => $translator->translate('Missing translations', category: 'dboard-modules'),
         'count' => $stats['missingTranslations'],
-        'url' => $urlGenerator->generate('dboard.contents'),
+        'url' => $urlGenerator->generate('dboard.dashboard.health', [
+            'kind' => 'missing-translations',
+        ]),
         'warn' => true,
     ];
 endif;
+$moreLabel = $translator->translate('And {count} more', [
+    'count' => '{count}',
+], 'dboard-modules');
 $languageMax = max(array_merge([
     0,
 ], array_column($countsByLanguage, 'total')));
@@ -266,11 +282,10 @@ $typeMax = max(array_merge([
                         <p class="font-mono text-3xs font-medium uppercase tracking-label text-secondary-400"><?php echo Html::encode($translator->translate('Site', category: 'dboard-modules')); ?></p>
                         <h3 class="mt-1 text-base font-semibold text-secondary-950 dark:text-white"><?php echo Html::encode($translator->translate('Site health', category: 'dboard-modules')); ?></h3>
                     </div>
-                    <dl class="mt-3 divide-y divide-secondary-100 px-5 pb-2 dark:divide-white/5">
+                    <ul class="mt-3 divide-y divide-secondary-100 px-5 pb-2 dark:divide-white/5">
                         <?php foreach ($healthRows as $healthRow): ?>
                             <?php
                             $healthCountClasses = [
-                                'shrink-0',
                                 'tabular-nums',
                                 'text-sm',
                                 'font-semibold',
@@ -278,16 +293,24 @@ $typeMax = max(array_merge([
                                 $healthRow['warn'] === true && $healthRow['count'] > 0 ? 'dark:text-warning-400' : 'dark:text-white',
                             ];
                             ?>
-                            <div class="flex items-baseline justify-between gap-4 py-3">
-                                <dt class="min-w-0 truncate"><?php echo Html::a(Html::encode($healthRow['label']), $healthRow['url'], [
-                                    'class' => $rowLinkClasses,
-                                ]); ?></dt>
-                                <?php echo Html::tag('dd', (string) $healthRow['count'], [
-                                    'class' => $healthCountClasses,
-                                ]); ?>
-                            </div>
+                            <li>
+                                <?php echo Html::openTag('dboard-unfold', Aurelia::attributesCustomElement([
+                                    'url' => $healthRow['url'],
+                                    'moreLabel' => $moreLabel,
+                                ])); ?>
+                                    <button type="button" class="group flex w-full cursor-pointer items-baseline justify-between gap-4 py-3 text-left" data-unfold="trigger" aria-expanded="false">
+                                        <span class="min-w-0 truncate text-sm font-medium text-secondary-900 transition-colors group-hover:text-accent-600 dark:text-secondary-100 dark:group-hover:text-accent-300"><?php echo Html::encode($healthRow['label']); ?></span>
+                                        <span class="flex shrink-0 items-center gap-2">
+                                            <?php echo Html::tag('span', (string) $healthRow['count'], [
+                                                'class' => $healthCountClasses,
+                                            ]); ?>
+                                            <?php echo Bleet::svg()->outline('chevron-down')->addClass('size-4', 'text-secondary-400', 'transition-transform', 'group-aria-expanded:rotate-180')->render(); ?>
+                                        </span>
+                                    </button>
+                                <?php echo Html::closeTag('dboard-unfold'); ?>
+                            </li>
                         <?php endforeach; ?>
-                    </dl>
+                    </ul>
                 </article>
 
                 <article class="min-w-0 flex-1 overflow-hidden rounded-xl border border-secondary-200 bg-white shadow-xs dark:border-white/10 dark:bg-primary-900">

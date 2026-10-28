@@ -839,6 +839,9 @@
   .flex-shrink-0 {
     flex-shrink: 0;
   }
+  .shrink {
+    flex-shrink: 1;
+  }
   .shrink-0 {
     flex-shrink: 0;
   }
@@ -2818,6 +2821,9 @@
       stroke: color-mix(in oklab, var(--color-secondary-950) 25%, transparent);
     }
   }
+  .group-aria-expanded\:rotate-180:is(:where(.group)[aria-expanded="true"] *) {
+    rotate: 180deg;
+  }
   .placeholder\:text-accent-400::placeholder {
     color: var(--color-accent-400);
   }
@@ -3986,6 +3992,9 @@
     }
   }
   @media (hover: hover) {
+    .dark\:group-hover\:text-accent-300:where(.dark, .dark *):is(:where(.group):hover *) {
+      color: var(--color-accent-300);
+    }
     .dark\:hover\:bg-white\/10:where(.dark, .dark *):hover {
       background-color: color-mix(in srgb, #fff 10%, transparent);
     }
