@@ -155,7 +155,7 @@ endforeach;
                         ->render();
                     ?>
                 </div>
-                <div class="mt-6 flex justify-end gap-3">
+                <div class="dboard-actions">
                     <?php echo Bleet::submitButton($translator->translate('Continue', category: 'dboard-common'))
                         ->icon('arrow-right')
                         ->accent()

@@ -79,7 +79,7 @@ use Yiisoft\Translator\TranslatorInterface;
                 ?>
             </div>
 
-            <div class="mt-6 flex justify-end gap-3">
+            <div class="dboard-actions">
                 <?php echo Bleet::submitButton($translator->translate('Analyze', category: 'dboard-modules'))
                     ->icon('magnifying-glass')
                     ->accent()

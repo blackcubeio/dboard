@@ -51,7 +51,7 @@ use Yiisoft\Translator\TranslatorInterface;
                     'fileEndpoints' => $fileEndpoints,
                 ]); ?>
 
-                <div class="mt-6 flex justify-end gap-3">
+                <div class="dboard-actions">
                     <?php echo Bleet::a($translator->translate('Cancel', category: 'dboard-common'))
                         ->url($urlGenerator->generate('dboard.authors'))
                         ->icon('x-mark')

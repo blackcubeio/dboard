@@ -84,7 +84,7 @@ endforeach;
                 'class' => implode(' ', $blocContainerClasses),
                 'data-drag-drop' => 'item-' . $blocId,
             ]); ?>
-                <div class="bg-secondary-100 px-4 py-2 flex items-center justify-between rounded-t-lg">
+                <div class="dark dboard-band flex items-center justify-between rounded-t-lg px-4 py-2">
                     <div class="flex items-center gap-2">
                         <?php
                         $handleClasses = [
@@ -100,7 +100,7 @@ endforeach;
                             ->attribute('data-drag-handle', true)
                             ->encode(false);
                         ?>
-                        <h4 class="font-medium text-secondary-700">
+                        <h4 class="text-base font-semibold text-white">
                             <?php echo Html::encode(ElasticFieldRenderer::getSchemaName($blocForm->getElasticSchemaId()) ?? $translator->translate('Block', category: 'dboard-common')); ?>
                         </h4>
                     </div>
@@ -184,7 +184,7 @@ endforeach;
                                     ])
                                     ->secondary()
                                     ->hideLabel()
-                                    ->addContainerClass('w-32')
+                                    ->addContainerClass('w-56')
                                     ->render();
                                 ?>
                                 <?php echo Html::openTag('span', Bleet::ajaxify()->mode(AjaxifyTriggerMode::PublishOnly)->target($blocsListId)->id('addBloc-' . $blocId)->event('click')->trigger()); ?>
@@ -269,7 +269,7 @@ endforeach;
                 ])
                 ->secondary()
                 ->hideLabel()
-                ->addContainerClass('w-48')
+                ->addContainerClass('w-56')
                 ->render();
             ?>
             <?php echo Html::openTag('span', Bleet::ajaxify()->mode(AjaxifyTriggerMode::PublishOnly)->target($blocsListId)->id('addBloc-first')->event('click')->trigger()); ?>

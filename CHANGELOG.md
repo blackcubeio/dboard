@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - The night mode reaches the Bleet components: `main.css` dresses again, by the classes Bleet emits, the fields, the dropdowns, the checkboxes and toggles, the description lists, the badges, the pager, the button groups, the dialogs, the popovers, the alerts, the schema editor and the rich text editor. Bleet itself is untouched. The body of both layouts carries `dboard-canvas`.
 - Every screen of the panel takes the page pattern: hosts, administrators, authors, parameters, types, elastic schemas, mappings, redirections, menus, LLM menus, contents, tags, RBAC, search, account, addons, import and the *EO screens. The edit screens are titled by the record, with its kind and number as subtitle; the drawer actions of a record (permissions, passkeys, slug, *EO, properties, tags, translations, AI export, public URL) sit in the heading; the blocks of a content or a tag stand under their own section title.
 - The onboarding sits on the ink with the aurora, its steps on a `dboard-surface`; the forbidden screen and the OAuth consent screen follow the same palette. The static background pictures are no longer used by these screens.
+- The actions of a form (`dboard-actions`) stick to the foot of the screen while the page scrolls, so that Save is always at hand. The band that heads a block is ink with the accent stroke on its left (`dboard-band`), its controls dressed for the night whatever the hour; the block type dropdown is wider.
 
 ### Added
 

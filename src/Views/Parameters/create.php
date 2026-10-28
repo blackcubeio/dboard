@@ -49,7 +49,7 @@ use Yiisoft\Translator\TranslatorInterface;
                     'currentRoute' => $currentRoute,
                 ]); ?>
 
-                <div class="mt-6 flex justify-end gap-3">
+                <div class="dboard-actions">
                     <?php echo Bleet::a($translator->translate('Cancel', category: 'dboard-common'))
                         ->url($urlGenerator->generate('dboard.parameters'))
                         ->icon('x-mark')

@@ -60,7 +60,7 @@ $passkeysButton = Bleet::button($translator->translate('Passkeys', category: 'db
                     'localeOptions' => $localeOptions,
                 ]); ?>
 
-                <div class="mt-6 flex justify-end gap-3">
+                <div class="dboard-actions">
                     <?php echo Bleet::a($translator->translate('Dashboard', category: 'dboard-common'))
                         ->url($urlGenerator->generate('dboard.dashboard'))
                         ->icon('x-mark')
