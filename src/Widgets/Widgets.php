@@ -54,6 +54,14 @@ class Widgets
         return (new PageHeading())->title($title);
     }
 
+    /**
+     * A Bleet button that carries the hidden inputs of its own ajaxify trigger.
+     */
+    public static function ajaxifyButton(string $content = ''): AjaxifyButton
+    {
+        return AjaxifyButton::widget()->text($content);
+    }
+
     public static function elastic(?FormModelInterface $model = null, ?string $property = null, array $elasticOptions = []): Elastic
     {
         return new Elastic($model, $property, $elasticOptions);
