@@ -44,7 +44,7 @@ $this->beginPage()
         <base href="/">
         <?php $this->head(); ?>
     </head>
-    <body class="min-h-screen">
+    <body class="dboard-canvas min-h-screen">
     <?php $this->beginBody(); ?>
 
     <?php echo $content ?>

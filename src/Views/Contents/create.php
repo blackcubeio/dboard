@@ -11,6 +11,7 @@ declare(strict_types=1);
 use Blackcube\Dcore\Models\Content;
 use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Models\Forms\ContentForm;
+use Blackcube\Dboard\Widgets\Widgets;
 use Blackcube\Bleet\Bleet;
 use Yiisoft\Html\Html;
 use Yiisoft\Router\CurrentRoute;
@@ -31,12 +32,6 @@ use Yiisoft\Translator\TranslatorInterface;
  * @var array<int, string> $elasticSchemaOptions
  */
 
-$barButtonClasses = [
-    '!rounded-none',
-    '!shadow-none',
-    'bg-white',
-];
-
 $slugSitemapPopover = Bleet::popover($translator->translate('Slug / Sitemap', category: 'dboard-common'))->id('create-popover-slug-sitemap');
 $seoPopover = Bleet::popover($translator->translate('*EO', category: 'dboard-common'))->id('create-popover-seo');
 $elasticPopover = Bleet::popover($translator->translate('Properties', category: 'dboard-common'))->id('create-popover-elastic');
@@ -47,7 +42,6 @@ $slugSitemapButton = Bleet::button()
     ->outline()
     ->secondary()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($slugSitemapPopover->trigger())
     ->disabled();
 
@@ -56,7 +50,6 @@ $seoButton = Bleet::button()
     ->outline()
     ->info()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($seoPopover->trigger())
     ->disabled();
 
@@ -65,7 +58,6 @@ $elasticButton = Bleet::button()
     ->outline()
     ->primary()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($elasticPopover->trigger())
     ->disabled();
 
@@ -74,7 +66,6 @@ $tagsButton = Bleet::button()
     ->outline()
     ->secondary()
     ->xs()
-    ->addClass(...$barButtonClasses)
     ->addAttributes($tagsPopover->trigger())
     ->disabled();
 
@@ -85,18 +76,17 @@ $buttonGroup = Bleet::buttonGroup()
     ->addButton($tagsButton);
 
 ?>
-        <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <?php echo Widgets::pageHeading($translator->translate('New content', category: 'dboard-content'))
+                ->backTo($urlGenerator->generate('dboard.contents'), $translator->translate('Contents', category: 'dboard-content'))
+                ->addAction($buttonGroup->render())
+                ->render();
+            ?>
             <?php echo Html::form()
                 ->post($urlGenerator->generate('dboard.contents.create'))
                 ->csrf($csrf)
                 ->noValidate()
                 ->open(); ?>
-                <?php echo Bleet::cardHeader()
-                    ->left(Bleet::a()->url($urlGenerator->generate('dboard.contents'))->icon('chevron-left')->outline()->addClass('text-white', 'hover:text-white', '[&>svg]:size-6'))
-                    ->title($translator->translate('New content', category: 'dboard-content'))
-                    ->button($buttonGroup)
-                    ->primary();
-                ?>
 
                 <?php echo $this->render('Contents/_form', [
                     'urlGenerator' => $urlGenerator,
@@ -110,7 +100,7 @@ $buttonGroup = Bleet::buttonGroup()
                     'isEdit' => false,
                 ]); ?>
 
-                    <div class="flex justify-end gap-4 mt-6">
+                    <div class="dboard-actions">
                         <?php echo Bleet::a($translator->translate('Cancel', category: 'dboard-common'))
                             ->url($urlGenerator->generate('dboard.contents'))
                             ->icon('x-mark')
@@ -120,7 +110,7 @@ $buttonGroup = Bleet::buttonGroup()
                         ?>
                         <?php echo Bleet::submitButton($translator->translate('Save', category: 'dboard-common'))
                             ->icon('check')
-                            ->primary()
+                            ->accent()
                             ->render();
                         ?>
                     </div>

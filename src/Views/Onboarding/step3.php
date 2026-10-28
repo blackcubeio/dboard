@@ -20,7 +20,7 @@ use Yiisoft\Translator\TranslatorInterface;
  */
 
 ?>
-<div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
+<div class="dboard-surface p-8">
     <div class="mb-8">
         <?php echo Bleet::step()
             ->current(2)
@@ -34,7 +34,7 @@ use Yiisoft\Translator\TranslatorInterface;
 
     <div class="text-center mb-8">
         <div class="flex justify-center mb-4">
-            <div class="bg-black rounded-xl p-2 text-white">
+            <div class="rounded-xl bg-primary-950 p-2 text-white dark:bg-white/10">
                 <?php echo Bleet::svg()
                     ->logo('blackcube')
                     ->addClass('size-16');
@@ -49,14 +49,14 @@ use Yiisoft\Translator\TranslatorInterface;
                 ?>
             </div>
         </div>
-        <h2 class="text-2xl font-bold text-gray-900"><?php echo $translator->translate('Confirmation', category: 'dboard-onboarding'); ?></h2>
-        <p class="text-gray-600 mt-2"><?php echo $translator->translate('Your administrator account has been created successfully.', category: 'dboard-onboarding'); ?></p>
+        <h2 class="text-2xl font-semibold tracking-tight text-secondary-950 dark:text-white"><?php echo $translator->translate('Confirmation', category: 'dboard-onboarding'); ?></h2>
+        <p class="mt-2 text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('Your administrator account has been created successfully.', category: 'dboard-onboarding'); ?></p>
     </div>
 
     <div class="flex justify-center">
         <?php echo Bleet::a($translator->translate('Finish', category: 'dboard-onboarding'), $urlGenerator->generate('dboard.onboarding.finish'))
             ->button()
-            ->primary()
+            ->accent()
             ->render();
         ?>
     </div>

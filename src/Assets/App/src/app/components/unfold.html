@@ -1,0 +1,12 @@
+<template>
+    <au-slot></au-slot>
+    <div class="hidden" data-unfold="target">
+        <ul class="mb-3 divide-y divide-secondary-100 rounded-lg border border-secondary-200 dark:divide-white/5 dark:border-white/10">
+            <li repeat.for="item of items" class="flex items-baseline justify-between gap-4 px-4 py-2">
+                <a href.bind="item.url" class="min-w-0 truncate text-sm font-medium text-secondary-900 underline-offset-4 transition-colors hover:text-accent-600 hover:underline dark:text-secondary-100 dark:hover:text-accent-300">${item.label}</a>
+                <span if.bind="item.detail" class="min-w-0 shrink truncate text-xs text-secondary-500 dark:text-secondary-400">${item.detail}</span>
+            </li>
+            <li if.bind="more > 0" class="px-4 py-2 text-xs text-secondary-500 dark:text-secondary-400">${moreText}</li>
+        </ul>
+    </div>
+</template>

@@ -13,6 +13,9 @@ namespace Blackcube\Dboard\Tests\Support;
 use Blackcube\Dcore\Models\Bloc;
 use Blackcube\Dcore\Models\Content;
 use Blackcube\Dcore\Models\Tag;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use Yiisoft\Aliases\Aliases;
 use Yiisoft\Db\Connection\ConnectionInterface;
 use Yiisoft\Db\Connection\ConnectionProvider;
 use Yiisoft\Db\Migration\Informer\NullMigrationInformer;
@@ -33,7 +36,10 @@ use Yiisoft\Injector\Injector;
  */
 trait DatabaseCestTrait
 {
-    private const NAMESPACE = 'Blackcube\\Dcore\\Migrations';
+    private const NAMESPACES = [
+        'Blackcube\\Dboard\\Migrations',
+        'Blackcube\\Dcore\\Migrations',
+    ];
 
     protected ConnectionInterface $db;
     protected Migrator $migrator;
@@ -59,13 +65,22 @@ trait DatabaseCestTrait
         $containerConfig = ContainerConfig::create()
             ->withDefinitions([
                 ConnectionInterface::class => $this->db,
+                LoggerInterface::class => NullLogger::class,
+                Aliases::class => [
+                    'class' => Aliases::class,
+                    '__construct()' => [
+                        [
+                            '@dboard' => dirname(__DIR__, 2) . '/src',
+                        ],
+                    ],
+                ],
             ]);
         $container = new Container($containerConfig);
         $injector = new Injector($container);
 
         $this->migrator = new Migrator($this->db, new NullMigrationInformer());
         $this->service = new MigrationService($this->db, $injector, $this->migrator);
-        $this->service->setSourceNamespaces([self::NAMESPACE]);
+        $this->service->setSourceNamespaces(self::NAMESPACES);
     }
 
     private function dropAllTables(): void

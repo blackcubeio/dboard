@@ -57,7 +57,7 @@ $moveModeOptions = [
 
 ?>
 
-                <div class="bg-white rounded-b-lg shadow-lg p-6">
+                <div class="dboard-surface p-6">
                     <div class="basis-full mb-4">
                         <?php echo Bleet::toggle($formModel, 'active')
                             ->secondary()

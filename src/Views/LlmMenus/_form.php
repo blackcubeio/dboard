@@ -48,7 +48,7 @@ $showLinkSection = true;
 
 ?>
 
-                <div class="bg-white rounded-b-lg shadow-lg p-6">
+                <div class="dboard-surface p-6">
                     <?php if ($showNameSection === true): ?>
                     <div class="flex gap-4">
                         <div class="grow">

@@ -11,6 +11,7 @@ declare(strict_types=1);
 use Blackcube\Dcore\Models\Slug;
 use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Models\Forms\SlugForm;
+use Blackcube\Dboard\Widgets\Widgets;
 use Blackcube\Bleet\Bleet;
 use Yiisoft\Html\Html;
 use Yiisoft\Router\CurrentRoute;
@@ -29,17 +30,16 @@ use Yiisoft\Translator\TranslatorInterface;
  */
 
 ?>
-        <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <?php echo Widgets::pageHeading($translator->translate('New redirection', category: 'dboard-modules'))
+                ->backTo($urlGenerator->generate('dboard.slugs'), $translator->translate('Redirections', category: 'dboard-modules'))
+                ->render();
+            ?>
             <?php echo Html::form()
                 ->post($urlGenerator->generate('dboard.slugs.create'))
                 ->csrf($csrf)
                 ->noValidate()
                 ->open(); ?>
-                <?php echo Bleet::cardHeader()
-                    ->left(Bleet::a()->url($urlGenerator->generate('dboard.slugs'))->icon('chevron-left')->outline()->addClass('text-white', 'hover:text-white', '[&>svg]:size-6'))
-                    ->title($translator->translate('New redirection', category: 'dboard-modules'))
-                    ->primary();
-                ?>
 
                 <?php echo $this->render('Slugs/_form', [
                     'urlGenerator' => $urlGenerator,
@@ -48,7 +48,7 @@ use Yiisoft\Translator\TranslatorInterface;
                     'currentRoute' => $currentRoute,
                 ]); ?>
 
-                <div class="flex justify-end gap-4 mt-6">
+                <div class="dboard-actions">
                     <?php echo Bleet::a($translator->translate('Cancel', category: 'dboard-common'))
                         ->url($urlGenerator->generate('dboard.slugs'))
                         ->icon('x-mark')
@@ -58,7 +58,7 @@ use Yiisoft\Translator\TranslatorInterface;
                     ?>
                     <?php echo Bleet::submitButton($translator->translate('Save', category: 'dboard-common'))
                         ->icon('check')
-                        ->primary()
+                        ->accent()
                         ->render();
                     ?>
                 </div>

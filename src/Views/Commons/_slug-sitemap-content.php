@@ -93,7 +93,7 @@ $frequencyOptions = SitemapForm::getFrequencyOptions();
         </div>
 
         <!-- Sitemap Section -->
-        <div class="border-t border-gray-200 pt-6">
+        <div class="border-t border-secondary-200 pt-6">
             <h4 class="text-sm font-semibold text-secondary-900 mb-4">Sitemap</h4>
             <div class="space-y-4">
                 <div>
@@ -130,7 +130,7 @@ $frequencyOptions = SitemapForm::getFrequencyOptions();
         </div>
     </div>
 
-    <div class="flex gap-4 pt-6 mt-6 border-t border-gray-200">
+    <div class="flex gap-4 pt-6 mt-6 border-t border-secondary-200">
         <?php echo Bleet::button($translator->translate('Close', category: 'dboard-common'))
                 ->secondary()
                 ->attribute('data-dialog', 'close')

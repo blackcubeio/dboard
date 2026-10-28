@@ -9,6 +9,7 @@ declare(strict_types=1);
  */
 
 use Blackcube\Bleet\Bleet;
+use Blackcube\Dboard\Widgets\Widgets;
 use Yiisoft\Router\CurrentRoute;
 use Yiisoft\Router\UrlGeneratorInterface;
 use Yiisoft\Translator\TranslatorInterface;
@@ -46,22 +47,21 @@ endforeach;
 ksort($permissions);
 
 ?>
-        <main class="flex-1 p-4 sm:p-6 lg:p-8">
-            <?php echo Bleet::cardHeader()
-                ->left(Bleet::a()->url($urlGenerator->generate('dboard.rbac'))->icon('chevron-left')->outline()->addClass('text-white', 'hover:text-white', '[&>svg]:size-6'))
-                ->title($translator->translate('RBAC — Detail', category: 'dboard-modules'))
-                ->primary();
+        <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <?php echo Widgets::pageHeading($translator->translate('RBAC — Detail', category: 'dboard-modules'))
+                ->backTo($urlGenerator->generate('dboard.rbac'), $translator->translate('RBAC', category: 'dboard-modules'))
+                ->render();
             ?>
 
-            <div class="bg-white rounded-b-lg shadow-lg p-6">
+            <div class="dboard-surface p-6">
 
-                <div class="flex gap-4 mb-6">
+                <div class="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2">
                     <?php echo Bleet::badge($translator->translate('Synchronized', category: 'dboard-modules'))->secondary()->render(); ?>
-                    <span class="text-sm text-gray-500"><?php echo $translator->translate('Present in DB and in code', category: 'dboard-modules'); ?></span>
+                    <span class="text-sm text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('Present in DB and in code', category: 'dboard-modules'); ?></span>
                     <?php echo Bleet::badge($translator->translate('To add', category: 'dboard-modules'))->info()->render(); ?>
-                    <span class="text-sm text-gray-500"><?php echo $translator->translate('Present in code, missing from DB', category: 'dboard-modules'); ?></span>
+                    <span class="text-sm text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('Present in code, missing from DB', category: 'dboard-modules'); ?></span>
                     <?php echo Bleet::badge($translator->translate('To remove', category: 'dboard-modules'))->danger()->render(); ?>
-                    <span class="text-sm text-gray-500"><?php echo $translator->translate('Present in DB, missing from code', category: 'dboard-modules'); ?></span>
+                    <span class="text-sm text-secondary-500 dark:text-secondary-400"><?php echo $translator->translate('Present in DB, missing from code', category: 'dboard-modules'); ?></span>
                 </div>
 
                 <?php echo Bleet::hr($translator->translate('Roles ({count})', [
@@ -73,7 +73,7 @@ ksort($permissions);
                         <?php echo Bleet::badge($roleName)->$color()->render(); ?>
                     <?php endforeach; ?>
                     <?php if (empty($roles) === true): ?>
-                        <span class="text-sm text-gray-400"><?php echo $translator->translate('No role defined', category: 'dboard-modules'); ?></span>
+                        <span class="text-sm text-secondary-400"><?php echo $translator->translate('No role defined', category: 'dboard-modules'); ?></span>
                     <?php endif; ?>
                 </div>
 
@@ -86,7 +86,7 @@ ksort($permissions);
                         <?php echo Bleet::badge($permName)->$color()->render(); ?>
                     <?php endforeach; ?>
                     <?php if (empty($permissions) === true): ?>
-                        <span class="text-sm text-gray-400"><?php echo $translator->translate('No permission defined', category: 'dboard-modules'); ?></span>
+                        <span class="text-sm text-secondary-400"><?php echo $translator->translate('No permission defined', category: 'dboard-modules'); ?></span>
                     <?php endif; ?>
                 </div>
 

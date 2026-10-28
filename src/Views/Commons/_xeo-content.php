@@ -121,7 +121,7 @@ $llmRefreshUrl = $llmRefreshUrl ?? '';
             </div>
         </div>
         <!-- LLMs Section -->
-        <div class="border-t border-gray-200 pt-6">
+        <div class="border-t border-secondary-200 pt-6">
             <h4 class="text-sm font-semibold text-secondary-900 mb-4"><?php echo $translator->translate('LLMs', category: 'dboard-common'); ?></h4>
             <bleet-ajaxify id="xeo-llm" url="<?php echo $llmRefreshUrl; ?>">
             <?php echo $this->render('Commons/_xeo-llm-content', [
@@ -133,7 +133,7 @@ $llmRefreshUrl = $llmRefreshUrl ?? '';
             </bleet-ajaxify>
         </div>
         <!-- Authors Section (E-E-A-T) -->
-        <div class="border-t border-gray-200 pt-6">
+        <div class="border-t border-secondary-200 pt-6">
             <h4 class="text-sm font-semibold text-secondary-900 mb-4"><?php echo $translator->translate('Authors (E-E-A-T)', category: 'dboard-content'); ?></h4>
             <?php echo Html::openTag('dboard-authors', Aurelia::attributesCustomElement([
                     'buildUrl' => $authorsRefreshUrl,
@@ -146,7 +146,7 @@ $llmRefreshUrl = $llmRefreshUrl ?? '';
             <?php echo Html::closeTag('dboard-authors'); ?>
         </div>
         <!-- Open Graph Section -->
-        <div class="border-t border-gray-200 pt-6">
+        <div class="border-t border-secondary-200 pt-6">
             <h4 class="text-sm font-semibold text-secondary-900 mb-4">Open Graph</h4>
             <div class="space-y-4">
                 <div>
@@ -170,7 +170,7 @@ $llmRefreshUrl = $llmRefreshUrl ?? '';
         </div>
 
         <!-- Twitter Section -->
-        <div class="border-t border-gray-200 pt-6">
+        <div class="border-t border-secondary-200 pt-6">
             <h4 class="text-sm font-semibold text-secondary-900 mb-4">Twitter Cards</h4>
             <div class="space-y-4">
                 <div>
@@ -195,7 +195,7 @@ $llmRefreshUrl = $llmRefreshUrl ?? '';
 
         <!-- Structured Data Section -->
         <?php if (empty($xeoBlocForms) === false || $refreshUrl !== null): ?>
-            <div class="border-t border-gray-200 pt-6">
+            <div class="border-t border-secondary-200 pt-6">
                 <div class="flex items-center justify-between mb-4">
                     <h4 class="text-sm font-semibold text-secondary-900"><?php echo $translator->translate('Structured data', category: 'dboard-content'); ?></h4>
                     <?php if ($refreshUrl !== null): ?>
@@ -270,7 +270,7 @@ $llmRefreshUrl = $llmRefreshUrl ?? '';
 
     </div>
 
-    <div class="flex gap-4 pt-6 mt-6 border-t border-gray-200">
+    <div class="flex gap-4 pt-6 mt-6 border-t border-secondary-200">
         <?php echo Bleet::button($translator->translate('Close', category: 'dboard-common'))
             ->secondary()
             ->attribute('data-dialog', 'close')

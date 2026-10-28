@@ -19,7 +19,14 @@ export class BlapLoginDeviceCustomAttribute {
             .then((available) => {
                 if (!available) {
                     this.logger.debug('WebAuthn not available, removing element');
-                    this.element.remove();
+                    // The view may wrap the button with what only makes sense next to it, such as the
+                    // "or" separator before the password: the whole block goes, not the button alone.
+                    const block = this.element.closest('[data-login-device="block"]');
+                    if (block !== null) {
+                        block.remove();
+                    } else {
+                        this.element.remove();
+                    }
                 }
             });
     }

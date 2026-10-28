@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Blackcube\Dboard\Tests\Support;
 
+use Blackcube\Dcore\Helpers\QueryExpressions;
 use Yiisoft\Db\Cache\SchemaCache;
 use Yiisoft\Db\Connection\ConnectionInterface;
 use Yiisoft\Db\Mysql\Connection;
@@ -37,6 +38,9 @@ class MysqlHelper
         $pdoDriver = new Driver($driver . ':host=' . $host . ';dbname=' . $database . ';port=' . $port, $user, $password);
         $pdoDriver->charset('UTF8MB4');
 
-        return new Connection($pdoDriver, new SchemaCache(new MemorySimpleCache()));
+        $connection = new Connection($pdoDriver, new SchemaCache(new MemorySimpleCache()));
+        QueryExpressions::register($connection);
+
+        return $connection;
     }
 }

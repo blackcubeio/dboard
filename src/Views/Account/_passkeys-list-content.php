@@ -42,7 +42,7 @@ $passkeyIconsBundle = $assetManager->getBundle(PasskeysAsset::class);
     <div class="space-y-2">
         <?php /** @var Passkey $passkey */ ?>
         <?php foreach ($passkeysQuery->each() as $passkey): ?>
-            <?php $device = $passkey->passkeyDevice; ?>
+            <?php $device = $passkey->getPasskeyDeviceQuery()->one(); ?>
             <div class="flex items-center justify-between p-3 bg-white border border-secondary-200 rounded-lg">
                 <div class="flex items-center gap-3">
                     <?php if ($device !== null && $device->isIconLight() === true): ?>

@@ -186,4 +186,9 @@ return [
     '{entity, select, content{Content untagged.} tag{Tag untagged.} other{Element untagged.}}' => '{entity, select, content{Tags vom Inhalt entfernt.} tag{Tags vom Tag entfernt.} other{Tags vom Element entfernt.}}',
     '{entity, select, content{Warning: the import will replace all existing blocks of this content. If you do not want to put this content at risk, please re-import the markdown into a new content created with the same type and properties.} other{Warning: the import will replace all existing blocks of this tag. If you do not want to put this tag at risk, please re-import the markdown into a new tag created with the same type and properties.}}' => '{entity, select, content{Achtung: Der Import ersetzt alle bestehenden Blöcke dieses Inhalts. Wenn Sie diesen Inhalt nicht gefährden möchten, importieren Sie das Markdown erneut in einen neuen Inhalt mit demselben Typ und denselben Eigenschaften.} other{Achtung: Der Import ersetzt alle bestehenden Blöcke dieses Tags. Wenn Sie diesen Tag nicht gefährden möchten, importieren Sie das Markdown erneut in einen neuen Tag mit demselben Typ und denselben Eigenschaften.}}',
     '{type, select, content{Content blocks} other{Tag blocks}}' => '{type, select, content{Inhalt-Blöcke} other{Tag-Blöcke}}',
+    'Open menu' => 'Menü öffnen',
+    'Close menu' => 'Menü schließen',
+    'Main navigation' => 'Hauptnavigation',
+    'Open the account menu' => 'Kontomenü öffnen',
+    'Switch between light and dark' => 'Zwischen hell und dunkel wechseln',
 ];

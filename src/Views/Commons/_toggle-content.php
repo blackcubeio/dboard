@@ -24,7 +24,7 @@ use Yiisoft\Translator\TranslatorInterface;
 
     <?php echo Bleet::p($message); ?>
 
-    <div class="flex gap-4 pt-4 border-t border-gray-200">
+    <div class="flex gap-4 pt-4 border-t border-secondary-200">
         <?php echo Html::form()
                 ->post($formAction)
                 ->csrf($csrf)

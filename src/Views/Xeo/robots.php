@@ -11,6 +11,7 @@ declare(strict_types=1);
 use Blackcube\Dcore\Models\GlobalXeo;
 use Blackcube\Dcore\Models\Host;
 use Blackcube\Dboard\Helpers\ElasticFieldRenderer;
+use Blackcube\Dboard\Widgets\Widgets;
 use Blackcube\Bleet\Bleet;
 use Blackcube\BridgeFormModel\BridgeFormModel;
 use Yiisoft\Html\Html;
@@ -31,7 +32,13 @@ use Yiisoft\Translator\TranslatorInterface;
  */
 
 ?>
-        <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <?php echo Widgets::pageHeading($translator->translate('robots.txt — {host}', [
+                    'host' => $host->getName(),
+                ], 'dboard-content'))
+                ->backTo($urlGenerator->generate('dboard.xeo.robots'), $translator->translate('robots.txt', category: 'dboard-common'))
+                ->render();
+            ?>
             <?php echo Html::form()
                 ->post($urlGenerator->generate('dboard.xeo.robots.edit', [
                     'hostId' => $host->getId(),
@@ -39,15 +46,8 @@ use Yiisoft\Translator\TranslatorInterface;
                 ->csrf($csrf)
                 ->noValidate()
                 ->open(); ?>
-                <?php echo Bleet::cardHeader()
-                    ->left(Bleet::a()->url($urlGenerator->generate('dboard.xeo.robots'))->icon('chevron-left')->outline()->addClass('text-white', 'hover:text-white', '[&>svg]:size-6'))
-                    ->title($translator->translate('robots.txt — {host}', [
-                        'host' => $host->getName(),
-                    ], 'dboard-content'))
-                    ->primary();
-                ?>
 
-                <div class="bg-white rounded-b-lg shadow-lg p-6">
+                <div class="dboard-surface p-6">
                     <div class="basis-full mb-4">
                         <?php echo Bleet::toggle($formModel, 'active')
                             ->secondary()
@@ -79,7 +79,7 @@ use Yiisoft\Translator\TranslatorInterface;
                     </div>
                 </div>
 
-                <div class="flex justify-end gap-4 mt-6">
+                <div class="dboard-actions">
                     <?php echo Bleet::a($translator->translate('Cancel', category: 'dboard-common'))
                         ->url($urlGenerator->generate('dboard.xeo.robots'))
                         ->icon('x-mark')
@@ -89,7 +89,7 @@ use Yiisoft\Translator\TranslatorInterface;
                     ?>
                     <?php echo Bleet::submitButton($translator->translate('Save', category: 'dboard-common'))
                         ->icon('check')
-                        ->primary()
+                        ->accent()
                         ->render();
                     ?>
                 </div>

@@ -34,34 +34,27 @@ use Yiisoft\Translator\TranslatorInterface;
 ?>
 
 
-        <main class="flex-1 p-4 sm:p-6 lg:p-8">
-            <div class="bg-white rounded-lg shadow-sm border border-secondary-200 p-4 mb-6">
-                <?php echo Html::form()->post($urlGenerator->generate('dboard.menus'))->csrf($csrf)->attribute('class', 'flex flex-wrap gap-4 items-center')->open(); ?>
-                    <div class="flex-1">
-                        <?php echo Bleet::input($searchForm, 'search')
-                            ->hideLabel()
-                            ->text()
-                            ->render();
-                        ?>
-                    </div>
-                    <div>
-                        <?php echo Bleet::a($translator->translate('Create', category: 'dboard-common'), $urlGenerator->generate('dboard.menus.create'))
-                            ->button()
-                            ->icon('plus')
-                            ->primary()
-                            ->render();
-                        ?>
-                    </div>
-                <?php echo Html::form()->close(); ?>
-            </div>
-
-            <?php echo Bleet::cardHeader()
-                ->icon('bars-3')
-                ->title($translator->translate('Menus', category: 'dboard-content'))
-                ->primary();
+        <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+            <?php echo Widgets::pageHeading($translator->translate('Menus', category: 'dboard-content'))
+                ->addAction(Bleet::a($translator->translate('Create', category: 'dboard-common'), $urlGenerator->generate('dboard.menus.create'))
+                    ->button()
+                    ->icon('plus')
+                    ->accent()
+                    ->render())
+                ->render();
             ?>
 
-            <div class="bg-white rounded-b-lg shadow-lg p-4">
+            <?php echo Html::form()->post($urlGenerator->generate('dboard.menus'))->csrf($csrf)->attribute('class', 'mb-4')->open(); ?>
+                <?php echo Bleet::input($searchForm, 'search')
+                    ->placeholder($translator->translate('Search', category: 'dboard-common'))
+                    ->iconLeft('magnifying-glass')
+                    ->hideLabel()
+                    ->text()
+                    ->render();
+                ?>
+            <?php echo Html::form()->close(); ?>
+
+            <div class="dboard-surface p-4">
                 <bleet-ajaxify id="menus-list">
                 <?php
                     echo $this->render('Menus/_list', [
