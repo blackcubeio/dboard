@@ -12,6 +12,8 @@ namespace Blackcube\Dboard\Models\Forms;
 
 use Blackcube\BridgeFormModel\Attributes\Bridge;
 use Yiisoft\Validator\Rule\BooleanValue;
+use Yiisoft\Validator\Rule\Length;
+use Yiisoft\Validator\Rule\Required;
 
 /**
  * GlobalXeo form model with elastic properties support.
@@ -26,7 +28,20 @@ class GlobalXeoForm extends BridgeFormModel
     protected ?string $translateCategory = 'dboard-content';
     protected ?string $translateElasticCategory = 'dboard-content';
 
+    protected string $name = '';
     protected bool $active = false;
+
+    #[Bridge]
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    #[Bridge]
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
     #[Bridge]
     public function setActive(bool $active): void
@@ -50,6 +65,7 @@ class GlobalXeoForm extends BridgeFormModel
     {
         return [
             'elastic' => [
+                'name',
                 'active',
                 self::ALL_ELASTIC_ATTRIBUTES,
             ],
@@ -59,6 +75,10 @@ class GlobalXeoForm extends BridgeFormModel
     public function rules(): array
     {
         return [
+            'name' => [
+                new Required(),
+                new Length(max: 255),
+            ],
             'active' => [
                 new BooleanValue(),
             ],
@@ -68,6 +88,7 @@ class GlobalXeoForm extends BridgeFormModel
     protected function getRawLabels(): array
     {
         return [
+            'name' => 'Name',
             'active' => 'Active',
         ];
     }

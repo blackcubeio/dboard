@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- The Organization and WebSite screens of the *EO edit the label of the entry, the name the JSON-LD nodes carry; it was set once at creation and could not be changed.
+
 ## [1.0.2] - 2026-10-28
 
 ### Changed
