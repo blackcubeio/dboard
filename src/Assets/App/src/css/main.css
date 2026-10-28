@@ -372,27 +372,48 @@
     color: var(--color-secondary-100);
 }
 
-/* THE BUTTON GROUP ON A BAND is the one exception of the night island: its buttons are inverse, the dress Bleet
-   gives a button on a coloured ground (white at 90 %, the shade in 700, white on hover), so that they read on the
-   ink whatever the hour. The night remaps above are undone for them, by the classes the group emits. */
+/* THE CONTROLS ON A BAND are the one exception of the night island: the buttons of a group and the select are
+   inverse, the dress Bleet gives a button on a coloured ground (white at 90 %, the shade in 700), so that they read
+   on the ink whatever the hour; on hover a button turns, white on its shade, the hover of an outline button. The
+   night remaps above are undone for them, by the classes Bleet emits. */
 .dboard-band .inset-ring-1.bg-white {
     background-color: color-mix(in oklab, white 90%, transparent);
     --tw-inset-ring-color: var(--color-secondary-300);
 }
-.dboard-band .inset-ring-1.bg-white:hover {
-    background-color: white;
+/* The icon of a group button is the size of the select's chevron, so that the group and the select stand at the
+   same height on the band: eight of padding, twenty of icon, eight of padding, as the select's six, twenty-four, six. */
+.dboard-band .inset-ring-1.bg-white .size-4 {
+    width: calc(var(--spacing) * 5);
+    height: calc(var(--spacing) * 5);
 }
 .dboard-band .inset-ring-1.bg-white.text-secondary-600 {
     color: var(--color-secondary-700);
 }
 .dboard-band .inset-ring-1.bg-white.text-secondary-600:hover {
-    color: var(--color-secondary-800);
+    background-color: var(--color-secondary-500);
+    color: white;
 }
 .dboard-band .inset-ring-1.bg-white.text-danger-600 {
     color: var(--color-danger-700);
 }
 .dboard-band .inset-ring-1.bg-white.text-danger-600:hover {
-    color: var(--color-danger-800);
+    background-color: var(--color-danger-500);
+    color: white;
+}
+.dboard-band .inset-ring-1.bg-white.text-primary-600 {
+    color: var(--color-primary-700);
+}
+.dboard-band .inset-ring-1.bg-white.text-primary-600:hover {
+    background-color: var(--color-primary-500);
+    color: white;
+}
+.dboard-band button.bg-white[aria-haspopup="listbox"] {
+    background-color: color-mix(in oklab, white 90%, transparent);
+    outline-color: var(--color-secondary-300);
+    color: var(--color-secondary-700);
+}
+.dboard-band button.bg-white[aria-haspopup="listbox"] .text-secondary-500 {
+    color: var(--color-secondary-500);
 }
 
 /* THE GRID of the sign-in panel: a fine lattice that fades towards the edges, on the ink. A background, discreet. */

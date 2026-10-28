@@ -170,21 +170,19 @@ endforeach;
                                     ->addContainerClass('w-56')
                                     ->render();
                                 ?>
-                                <?php echo Html::openTag('span', Bleet::ajaxify()->mode(AjaxifyTriggerMode::PublishOnly)->target($blocsListId)->id('addBloc-' . $blocId)->event('click')->trigger()); ?>
-                                    <?php echo Html::input('hidden', 'BlocForm[elasticSchemaId]', '', [
-                                        'disabled' => true,
-                                    ]); ?>
-                                    <?php echo Html::input('hidden', 'BlocForm[blocAdd]', (string) $blocId, [
-                                        'disabled' => true,
-                                    ]); ?>
-                                    <?php echo Bleet::button()
-                                        ->icon('plus')
-                                        ->outline()
-                                        ->xs()
-                                        ->primary()
-                                        ->render();
-                                    ?>
-                                <?php echo Html::closeTag('span'); ?>
+                                <?php
+                                $addButton = Widgets::ajaxifyButton()
+                                    ->icon('plus')
+                                    ->outline()
+                                    ->xs()
+                                    ->primary()
+                                    ->hidden('BlocForm[elasticSchemaId]', '')
+                                    ->hidden('BlocForm[blocAdd]', (string) $blocId)
+                                    ->addAttributes(Bleet::ajaxify()->mode(AjaxifyTriggerMode::PublishOnly)->target($blocsListId)->id('addBloc-' . $blocId)->event('click')->trigger());
+                                echo Bleet::buttonGroup()
+                                    ->addButton($addButton)
+                                    ->render();
+                                ?>
                             </span>
                         <?php endif; ?>
                     </div>
