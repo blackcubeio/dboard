@@ -8,6 +8,7 @@ declare(strict_types=1);
  * @link https://www.blackcube.io
  */
 
+use Blackcube\Dboard\Assets\StaticAsset;
 use Blackcube\Dboard\Models\Forms\LoginForm;
 use Blackcube\Html\Aurelia;
 use Blackcube\Bleet\Bleet;
@@ -16,10 +17,12 @@ use Yiisoft\Translator\TranslatorInterface;
 
 /**
  * The sign-in screen, split in two. On a large screen the left panel is the
- * ink of the sidebar: the brand, what the panel is for, a grid that fades and
- * an aurora of iris (.bg-grid and .bg-aurora in main.css); the form stands
- * alone on the workbench, to the right. On a phone the panel is gone and the
- * brand sits above the form.
+ * ink of the sidebar: the brand, what the panel is for, a mountain at dusk as
+ * a relief in the ink (the photo in grey, screened on the ink at a third), an
+ * aurora of iris and a veil of ink that keeps the brand and the tagline
+ * readable (.bg-aurora and .bg-veil in main.css); the form stands alone on
+ * the workbench, to the right. On a phone the panel is gone and the brand
+ * sits above the form; the photo is a background, so it is not fetched there.
  *
  * The passkey comes before the password. The dboard-login-device attribute
  * removes its whole block, separator included, when the browser cannot do
@@ -34,6 +37,9 @@ use Yiisoft\Translator\TranslatorInterface;
  * @var string|null $csrf
  */
 
+$assetManager->register(StaticAsset::class);
+$staticBundle = $assetManager->getBundle(StaticAsset::class);
+$mountainUrl = $staticBundle->baseUrl . '/login.jpg';
 $loginQuery = [];
 if ($returnUrl !== null):
     $loginQuery['redirect'] = $returnUrl;
@@ -46,8 +52,14 @@ $loginDeviceAttributes = Aurelia::attributesCustomAttribute([
 ?>
 <div class="flex min-h-screen bg-secondary-50 dark:bg-primary-950">
     <div class="relative hidden w-1/2 overflow-hidden bg-primary-950 lg:flex lg:flex-col lg:justify-between lg:p-12">
+        <?php echo Html::openTag('div', [
+            'class' => 'absolute inset-0 bg-cover bg-no-repeat bg-position-[50%_40%] grayscale contrast-125 brightness-90 mix-blend-screen opacity-35',
+            'style' => 'background-image: url(\'' . $mountainUrl . '\');',
+            'aria-hidden' => 'true',
+        ]); ?>
+        <?php echo Html::closeTag('div'); ?>
         <div class="bg-aurora absolute inset-0" aria-hidden="true"></div>
-        <div class="bg-grid absolute inset-0" aria-hidden="true"></div>
+        <div class="bg-veil absolute inset-0" aria-hidden="true"></div>
         <div class="relative flex items-center gap-3">
             <div class="flex size-9 items-center justify-center rounded-lg bg-white/10 text-white">
                 <?php echo Bleet::svg()->logo('blackcube')->addClass('size-5'); ?>

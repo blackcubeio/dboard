@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- The sign-in panel carries again the mountain at dusk of `login.jpg`, in grey, screened on the ink at a third, under the aurora and a veil of ink that keeps the brand and the tagline readable (`.bg-veil`); the grid is gone from it. A phone, where the panel is hidden, does not fetch the picture.
+
 ## [1.0.3] - 2026-10-28
 
 ### Changed

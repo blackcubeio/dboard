@@ -417,7 +417,7 @@
     color: var(--color-secondary-500);
 }
 
-/* THE GRID of the sign-in panel: a fine lattice that fades towards the edges, on the ink. A background, discreet. */
+/* THE GRID of the onboarding screen: a fine lattice that fades towards the edges, on the ink. A background, discreet. */
 .bg-grid {
     background-image:
         linear-gradient(to right, color-mix(in oklab, white 7%, transparent) 1px, transparent 1px),
@@ -437,11 +437,17 @@
     background-image: radial-gradient(60rem 22rem at 50% -8rem, color-mix(in oklab, var(--color-accent-500) 16%, transparent), transparent 70%);
 }
 
-/* THE AURORA of the sign-in panel: two glows, iris and blue, under the grid. */
+/* THE AURORA of the sign-in panel: two glows, iris and blue, over the mountain and under the veil. */
 .bg-aurora {
     background-image:
         radial-gradient(40rem 30rem at 15% 20%, color-mix(in oklab, var(--color-accent-500) 35%, transparent), transparent 70%),
         radial-gradient(36rem 28rem at 85% 85%, color-mix(in oklab, var(--color-info-500) 22%, transparent), transparent 70%);
+}
+
+/* THE VEIL of the sign-in panel: the ink comes back at the top, under the brand, and at the bottom, under the tagline;
+   the mountain lives in between. */
+.bg-veil {
+    background-image: linear-gradient(to bottom, var(--color-primary-950) 0%, transparent 28%, transparent 55%, var(--color-primary-950) 92%);
 }
 
 .code-block {
