@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Blackcube\Dboard\Components;
 
-use Blackcube\Dboard\DboardConfig;
+use Blackcube\Dboard\Services\Modules;
 use Blackcube\Injector\Injector;
 use ReflectionClass;
 use Yiisoft\Strings\Inflector;
@@ -117,6 +117,7 @@ class Rbac
     public const PERMISSION_RBAC_VIEW = 'RBAC:VIEW';
     public const ROLE_RBAC_MANAGER = 'RBAC:MANAGER';
 
+    public const PERMISSION_ADDON_UPDATE = 'ADDON:UPDATE';
     public const PERMISSION_ADDON_VIEW = 'ADDON:VIEW';
     public const ROLE_ADDON_MANAGER = 'ADDON:MANAGER';
 
@@ -135,6 +136,7 @@ class Rbac
         self::ROLE_MENU_MANAGER,
         self::ROLE_SLUG_MANAGER,
         self::ROLE_RBAC_MANAGER,
+        self::ROLE_ADDON_MANAGER,
         self::ROLE_PARAMETER_MANAGER,
         self::ROLE_LANGUAGE_MANAGER,
         self::ROLE_HOST_MANAGER,
@@ -195,13 +197,13 @@ class Rbac
 
     /**
      * Returns every role: ORDERING_ROLES first, then the roles (ROLE_*) of the
-     * other declared RBAC classes (DboardConfig::rbacClasses).
+     * other declared RBAC classes (Modules::getRbacClasses(): the panel and the active add-ons).
      * @return string[]
      */
     public static function getAllRoles(): array
     {
         $roles = self::ORDERING_ROLES;
-        foreach (Injector::get(DboardConfig::class)->rbacClasses as $rbacClass) {
+        foreach (Injector::get(Modules::class)->getRbacClasses() as $rbacClass) {
             if ($rbacClass !== self::class) {
                 $reflection = new ReflectionClass($rbacClass);
                 foreach ($reflection->getConstants() as $name => $roleName) {
@@ -216,13 +218,13 @@ class Rbac
 
     /**
      * Returns every permission (PERMISSION_*) of the declared RBAC classes
-     * (DboardConfig::rbacClasses) through reflection.
+     * (Modules::getRbacClasses(): the panel and the active add-ons) through reflection.
      * @return string[]
      */
     public static function getAllPermissions(): array
     {
         $permissions = [];
-        foreach (Injector::get(DboardConfig::class)->rbacClasses as $rbacClass) {
+        foreach (Injector::get(Modules::class)->getRbacClasses() as $rbacClass) {
             $reflection = new ReflectionClass($rbacClass);
             foreach ($reflection->getConstants() as $name => $permissionName) {
                 if (str_starts_with($name, 'PERMISSION_') === true) {

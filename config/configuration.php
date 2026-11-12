@@ -12,6 +12,9 @@ return [
     'config-plugin' => [
         'params' => 'common/params.php',
         'params-web' => 'web/params.php',
+        'params-console' => [
+            'console/params.php',
+        ],
         'di' => [
             'common/di/*.php',
         ],

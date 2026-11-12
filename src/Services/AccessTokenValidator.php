@@ -33,7 +33,7 @@ class AccessTokenValidator
         private readonly CypherKey $cypherKey,
         private readonly JwtService $jwtService,
         private readonly ManagerInterface $rbacManager,
-        private readonly AddonPopulations $populations,
+        private readonly Populations $populations,
     ) {
     }
 

@@ -13,6 +13,7 @@ namespace Blackcube\Dboard\Widgets;
 use Blackcube\Dboard\Components\Rbac;
 use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dboard\Models\Administrator;
+use Blackcube\Dboard\Services\Modules;
 use Blackcube\Bleet\Bleet;
 use Blackcube\Bleet\Widgets\SidebarItem;
 use Composer\InstalledVersions;
@@ -46,6 +47,7 @@ class Sidebar extends Widget
         private ManagerInterface $rbacManager,
         private UrlGeneratorInterface $urlGenerator,
         private DboardConfig $dboardConfig,
+        private Modules $modules,
     ) {}
 
     public function translator(TranslatorInterface $translator): self
@@ -317,19 +319,13 @@ class Sidebar extends Widget
                 ->children($managementChildren);
         }
 
-        foreach ($this->dboardConfig->addons as $addon) {
-            if (isset($addon['sidebar']) === true) {
-                $addonElements = call_user_func(
-                    $addon['sidebar'],
-                    $this->translator,
-                    $this->urlGenerator,
-                    $this->rbacManager,
-                    $userId,
-                    $this->currentRoute,
-                );
-                $items = array_merge($items, $addonElements);
-            }
-        }
+        $items = array_merge($items, $this->modules->getSidebarItems(
+            $this->translator,
+            $this->urlGenerator,
+            $this->rbacManager,
+            $userId,
+            $this->currentRoute,
+        ));
 
         if ($this->rbacManager->userHasPermission($userId, Rbac::PERMISSION_ADDON_VIEW) === true) {
             $sidebarItem = Bleet::sidebarItem($this->translate('Addons'))

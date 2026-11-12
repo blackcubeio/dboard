@@ -8,10 +8,10 @@ declare(strict_types=1);
  * @link https://www.blackcube.io
  */
 
-namespace Blackcube\Dboard\Addons;
+namespace Blackcube\Dboard\Interfaces;
 
 /**
- * An addon whose resource is protected by the dboard authorization server.
+ * A module whose resource is protected by the dboard authorization server.
  *
  * getPopulation() names the OAuth2 population of the resource: the issuer and
  * audience of its tokens, and the segment of its endpoints
@@ -24,7 +24,7 @@ namespace Blackcube\Dboard\Addons;
  * @license https://www.blackcube.io/license
  * @link https://www.blackcube.io
  */
-interface AddonOauth2Interface
+interface Oauth2Interface
 {
     public static function getPopulation(): string;
 

@@ -8,7 +8,7 @@ declare(strict_types=1);
  * @link https://www.blackcube.io
  */
 
-namespace Blackcube\Dboard\Addons;
+namespace Blackcube\Dboard\Interfaces;
 
 use Blackcube\Bleet\Widgets\SidebarItem;
 use Yiisoft\Rbac\ManagerInterface;
@@ -16,17 +16,17 @@ use Yiisoft\Router\UrlGeneratorInterface;
 use Yiisoft\Translator\TranslatorInterface;
 
 /**
- * An addon that contributes items to the dboard sidebar.
+ * A module that contributes items to the dboard sidebar.
  *
  * getSidebar() receives the rendering context (translator, URL generator, RBAC
  * manager + current user id, current route) and returns the items to merge into
- * the main sidebar. The addon does its own permission filtering.
+ * the main sidebar. The module does its own permission filtering.
  *
  * @copyright 2010-2026 Blackcube - Philippe Gaultier
  * @license https://www.blackcube.io/license
  * @link https://www.blackcube.io
  */
-interface AddonSidebarInterface
+interface SidebarInterface
 {
     /**
      * @return SidebarItem[]

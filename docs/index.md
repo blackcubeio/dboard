@@ -1,6 +1,6 @@
 # dboard — Administration Panel
 
-Back-office for the Blackcube CMS. Provides CRUD for every dcore entity, tree management, RBAC, JWT authentication with passkey support.
+Back-office for the Blackcube CMS. Provides CRUD for every dcore entity, tree management, RBAC, JWT authentication with passkey support. Composer packages plug into the panel as add-ons or modules.
 
 - [Installation](installation.md)
 
@@ -25,6 +25,7 @@ Back-office for the Blackcube CMS. Provides CRUD for every dcore entity, tree ma
 | Administrators | CRUD, activation, role/permission assignment |
 | Passkeys | WebAuthn registration and management |
 | RBAC | Roles and permissions management |
+| Addons | Activation, update and deactivation of the declared add-ons |
 | Dashboard | Overview |
 | Search | Global search across entities |
 | Preview | Content preview with simulated dates |
@@ -72,6 +73,7 @@ Specialized abstract handlers:
 | `JwtAuthMiddleware` | JWT validation from cookies, refresh token flow, RBAC check |
 | `JsonBodyParserMiddleware` | Parse `application/json` request bodies |
 | `MultiVerbParserMiddleware` | Parse PUT/PATCH/DELETE multipart bodies |
+| `AddonRoutingMiddleware` | Routes of an add-on answer 404 while the add-on is inactive |
 
 ### Services
 
@@ -79,6 +81,9 @@ Specialized abstract handlers:
 |---|---|
 | `CypherKey` (`oauth2`) | JWT signing keys: `RS*` read from files and generated when missing, `HS*` taken from the configured secret |
 | `ScopeProvider` | OAuth2 scope provider |
+| `Modules` | Reads what the declared modules and the active add-ons bring: RBAC classes, sidebar entries, OAuth2 scopes |
+| `AddonActivation` | Activation, update and deactivation of an add-on: dcore migrations, RBAC sync, OAuth2 clients |
+| `Populations` | OAuth2 authorization server per published population |
 | `ImportService` (dcore) | Multi-step JSON import with file processing — provided by `Blackcube\Dcore\Services` |
 | `HazeltreeElasticService` | Bloc loading, validation, file tracking |
 | `RbacInitializer` | RBAC items sync from code to database |
@@ -134,6 +139,7 @@ The output types come from `blackcube/handler` (`Blackcube\Handler\OutputType`);
 
 ## Cross-cutting concepts
 
+- [Add-ons and modules](addons.md) — Interfaces, declaration, activation, Addons screen, console commands
 - [RBAC](rbac.md) — Roles, permissions, hierarchy, assignment
 - [WebAuthn](webauthn.md) — Passkey registration and authentication
 - [Performance](performance.md) — N+1 avoidance, RBAC and route caching

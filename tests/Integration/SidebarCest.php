@@ -13,10 +13,16 @@ namespace Blackcube\Dboard\Tests\Integration;
 use Blackcube\Dboard\Components\Rbac;
 use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dboard\Models\Administrator;
+use Blackcube\Dboard\Services\Modules;
 use Blackcube\Dboard\Services\RbacInitializer;
 use Blackcube\Dboard\Tests\Support\DatabaseCestTrait;
 use Blackcube\Dboard\Tests\Support\IntegrationTester;
 use Blackcube\Dboard\Widgets\Sidebar;
+use Blackcube\Dcore\Services\AddonService;
+use Yiisoft\Db\Connection\ConnectionInterface;
+use Yiisoft\Di\Container;
+use Yiisoft\Di\ContainerConfig;
+use Yiisoft\Injector\Injector;
 use Yiisoft\Rbac\Db\AssignmentsStorage;
 use Yiisoft\Rbac\Db\ItemsStorage;
 use Yiisoft\Rbac\Manager;
@@ -47,13 +53,14 @@ class SidebarCest
         $dboardConfig = new DboardConfig(rbacClasses: [
             Rbac::class,
         ]);
+        $modules = $this->createModules();
         $itemsStorage = new ItemsStorage($this->db);
         $manager = new Manager($itemsStorage, new AssignmentsStorage($this->db), enableDirectPermissions: true);
-        $rbacInitializer = new RbacInitializer($manager, $itemsStorage, $dboardConfig);
+        $rbacInitializer = new RbacInitializer($manager, $itemsStorage, $modules);
         $rbacInitializer->initialize();
         $manager->assign(Rbac::PERMISSION_CONTENT_VIEW, $administrator->getId());
 
-        $sidebar = new Sidebar($manager, $this->createUrlGenerator(), $dboardConfig);
+        $sidebar = new Sidebar($manager, $this->createUrlGenerator(), $dboardConfig, $modules);
         $html = $sidebar
             ->user($administrator)
             ->currentRoute('dboard.contents')
@@ -77,7 +84,7 @@ class SidebarCest
         $itemsStorage = new ItemsStorage($this->db);
         $manager = new Manager($itemsStorage, new AssignmentsStorage($this->db), enableDirectPermissions: true);
 
-        $sidebar = new Sidebar($manager, $this->createUrlGenerator(), $dboardConfig);
+        $sidebar = new Sidebar($manager, $this->createUrlGenerator(), $dboardConfig, $this->createModules());
         $html = $sidebar
             ->user($administrator)
             ->currentRoute('dboard.index')
@@ -101,6 +108,22 @@ class SidebarCest
         $administrator->save();
 
         return $administrator;
+    }
+
+    /**
+     * The modules with no add-on declared: the panel's RBAC class alone.
+     */
+    private function createModules(): Modules
+    {
+        $containerConfig = ContainerConfig::create()
+            ->withDefinitions([
+                ConnectionInterface::class => $this->db,
+            ]);
+        $injector = new Injector(new Container($containerConfig));
+
+        return new Modules(new AddonService($this->db, $injector, []), [
+            Rbac::class,
+        ]);
     }
 
     /**

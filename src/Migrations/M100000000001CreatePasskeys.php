@@ -22,7 +22,7 @@ use Yiisoft\Db\Schema\Column\ColumnBuilder;
  * @license https://www.blackcube.io/license
  * @link https://www.blackcube.io
  */
-class M000000000001CreatePasskeys implements RevertibleMigrationInterface
+class M100000000001CreatePasskeys implements RevertibleMigrationInterface
 {
     public function __construct(
         private PasskeyService $passkeyService,
