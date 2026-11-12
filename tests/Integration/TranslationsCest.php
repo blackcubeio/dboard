@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Blackcube\Dboard\Tests\Integration;
 
-use Blackcube\Dboard\Migrations\M000000000008AddMissingTranslations;
+use Blackcube\Dboard\Migrations\M100000000008AddMissingTranslations;
 use Blackcube\Dboard\Tests\Support\DatabaseCestTrait;
 use Blackcube\Dboard\Tests\Support\IntegrationTester;
 use Yiisoft\Db\Migration\Informer\NullMigrationInformer;
@@ -40,13 +40,13 @@ class TranslationsCest
         $I->wantTo('verify the migration adds a missing key with its translations, and adds nothing twice');
 
         $builder = new MigrationBuilder($this->db, new NullMigrationInformer());
-        $builder->delete(M000000000008AddMissingTranslations::TABLE_SOURCE, [
+        $builder->delete(M100000000008AddMissingTranslations::TABLE_SOURCE, [
             'category' => self::CATEGORY,
             'message_id' => self::MESSAGE,
         ]);
         $I->assertSame(0, $this->countSources(), 'the key is gone, its translations with it');
 
-        $migration = new M000000000008AddMissingTranslations();
+        $migration = new M100000000008AddMissingTranslations();
         $migration->up($builder);
 
         $I->assertSame(1, $this->countSources(), 'the key is back');
@@ -61,7 +61,7 @@ class TranslationsCest
     private function querySources(): Query
     {
         return (new Query($this->db))
-            ->from(M000000000008AddMissingTranslations::TABLE_SOURCE)
+            ->from(M100000000008AddMissingTranslations::TABLE_SOURCE)
             ->andWhere([
                 'category' => self::CATEGORY,
                 'message_id' => self::MESSAGE,
@@ -77,7 +77,7 @@ class TranslationsCest
     {
         $sourceIdsQuery = $this->querySources()->select('id');
         return (int) (new Query($this->db))
-            ->from(M000000000008AddMissingTranslations::TABLE_MESSAGE)
+            ->from(M100000000008AddMissingTranslations::TABLE_MESSAGE)
             ->andWhere([
                 'in',
                 'id',

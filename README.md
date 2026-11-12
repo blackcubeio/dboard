@@ -35,6 +35,7 @@ DBoard depends on dcore. It is not a standalone package — it is the admin laye
 - [Installation](docs/installation.md) — requirements, config-plugin, parameters, migrations
 - [API overview](docs/index.md) — managed entities, handler architecture, services, widgets
 - [RBAC](docs/rbac.md) — roles, permissions, hierarchy, assignment
+- [Add-ons and modules](docs/addons.md) — interfaces, declaration, activation, Addons screen, console commands
 - [WebAuthn](docs/webauthn.md) — passkey registration and authentication
 - [Performance](docs/performance.md) — eager-loading, RBAC cache, route caching
 

@@ -25,18 +25,15 @@ use Blackcube\Oauth2\Interfaces\ScopeProviderInterface;
  */
 class ScopeProvider implements ScopeProviderInterface
 {
-    /**
-     * @param array<string, string[]> $publishedScopes Permissions published by each addon population
-     */
     public function __construct(
-        private readonly array $publishedScopes = [],
+        private readonly Modules $modules,
     ) {
     }
 
     public function getAvailableScopes(): array
     {
         $scopes = [];
-        foreach ($this->publishedScopes as $populationScopes) {
+        foreach ($this->modules->getPublishedScopes() as $populationScopes) {
             $scopes = array_merge($scopes, $populationScopes);
         }
         return array_values(array_unique($scopes));
@@ -64,8 +61,11 @@ class ScopeProvider implements ScopeProviderInterface
     {
         $scopes = [];
         $client = OauthClient::queryById($clientId);
-        if ($client !== null && isset($this->publishedScopes[$client->getPopulation()]) === true) {
-            $scopes = $this->publishedScopes[$client->getPopulation()];
+        if ($client !== null) {
+            $publishedScopes = $this->modules->getPublishedScopes();
+            if (isset($publishedScopes[$client->getPopulation()]) === true) {
+                $scopes = $publishedScopes[$client->getPopulation()];
+            }
         }
         return $scopes;
     }

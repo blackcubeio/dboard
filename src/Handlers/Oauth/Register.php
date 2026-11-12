@@ -13,8 +13,8 @@ namespace Blackcube\Dboard\Handlers\Oauth;
 use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dboard\Handlers\Commons\AbstractBaseHandler;
 use Blackcube\Dboard\Models\OauthClient;
-use Blackcube\Dboard\Services\AddonPopulation;
-use Blackcube\Dboard\Services\AddonPopulations;
+use Blackcube\Dboard\Services\Population;
+use Blackcube\Dboard\Services\Populations;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -60,7 +60,7 @@ class Register extends AbstractBaseHandler
         Aliases $aliases,
         TranslatorInterface $translator,
         protected CurrentRoute $currentRoute,
-        protected AddonPopulations $populations,
+        protected Populations $populations,
     ) {
         parent::__construct(
             logger: $logger,
@@ -186,7 +186,7 @@ class Register extends AbstractBaseHandler
     /**
      * @param array<string, mixed> $metadata
      */
-    private function register(AddonPopulation $population, array $metadata): OauthClient
+    private function register(Population $population, array $metadata): OauthClient
     {
         $name = trim((string) ($metadata['client_name'] ?? ''));
         if ($name === '') {

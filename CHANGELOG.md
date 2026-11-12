@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2026-11-12
+
+### Added
+
+- The Addons screen activates, updates, deactivates and forgets the add-ons declared to dcore (`'blackcube/dcore' => 'addons'`), each action behind a confirmation modal and the new `ADDON:UPDATE` permission; a row shows the name, the id, the installed version and a badge (active, inactive, update available, package missing), the Configure button when the add-on carries `Interfaces\AddonConfigureInterface`. `Services\AddonActivation` plays the whole of an action: the migrations and the registry through dcore, the roles and permissions through `RbacInitializer`, the OAuth2 clients and codes of the population at deactivation.
+- The console commands `dboard:addonList`, `dboard:addonActivate <id>`, `dboard:addonUpdate <id>` and `dboard:addonDeactivate <id>` (the last one after a confirmation), through the same service; the `params-console` group now declares the commands of the package, `dboard:refreshAaguid` included.
+- The modules: a package that brings RBAC items, sidebar entries, routes or an OAuth2 population to the panel without being an add-on declares its class in `'blackcube/dboard' => 'modules'`, in its own params, and is always on. `Services\Modules` reads on each call what the modules bring, the declared ones plus the active add-ons of the dcore registry: the RBAC classes, the permissions each OAuth2 population publishes, the sidebar items. The routes of a module are mounted as they come; `Middlewares\AddonRoutingMiddleware::of($id)` gates the routes of an add-on: 404 while it is inactive.
+- `Upgrades\RenameMigrations`, declared in `'blackcube/dcore' => 'upgrades'`: the `upgrade` command of dcore rewrites the migration history of a base migrated under the former names.
+
+### Changed
+
+- The migrations of the package are named `M1` + 11 digits (`M100000000000CreateAdministrators` … `M100000000009AddAddonTranslations`): the type digit 1 of dboard, after the 0 of dcore. An existing base takes `upgrade` before `migrate:up`.
+- The interfaces a package implements to extend the panel sit in `Interfaces\` and lose their `Addon` prefix, a module carrying them without being an add-on: `RbacInterface`, `SidebarInterface`, `RoutesInterface`, `Oauth2Interface`. `Services\AddonPopulations` and `AddonPopulation` are `Populations` and `Population`, a population being published by a module.
+- `RbacInitializer`, `Rbac::getAllRoles()` and `Rbac::getAllPermissions()` read the RBAC classes from `Modules`: the panel's plus the modules'. `ScopeProvider` and `Populations` read the published scopes from it too, so an inactive add-on has no population and no grantable scope. `Sidebar` takes `Modules` as fourth argument.
+- The sign-in panel carries again the mountain at dusk of `login.jpg`, in grey, screened on the ink at a third, under the aurora and a veil of ink that keeps the brand and the tagline readable (`.bg-veil`); the grid is gone from it. A phone, where the panel is hidden, does not fetch the picture.
+
+### Removed
+
+- `DboardConfig::$addons` and the `'blackcube/dboard' => 'addons'` block of callables of the host: an add-on declares itself to dcore with its class, a module to the panel, dboard reads what they bring through the interfaces of `Interfaces\`.
+
 ## [1.0.3] - 2026-10-28
 
 ### Changed

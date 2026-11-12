@@ -9,15 +9,25 @@ declare(strict_types=1);
  */
 
 use Blackcube\Dboard\Components\Rbac;
+use Blackcube\Dboard\Upgrades\RenameMigrations;
 
 return [
+    'blackcube/dcore' => [
+        // The migrations of the package took the type digit 1: `upgrade` rewrites the history.
+        'upgrades' => [
+            RenameMigrations::class,
+        ],
+    ],
     'blackcube/dboard' => [
         'debug' => true,
         'routePrefix' => '/dboard',
         'rbacClasses' => [
             Rbac::class,
         ],
-        'addons' => [],
+        // The modules of the panel: packages that bring RBAC items, sidebar entries, routes or an
+        // OAuth2 population through the interfaces of Interfaces\ without being add-ons, always on.
+        // A module declares its class here, in its own params.
+        'modules' => [],
         'oauth2' => [
             'issuer' => 'dboard',
             'algorithm' => 'RS256',

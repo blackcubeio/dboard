@@ -15,8 +15,8 @@ use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dboard\Handlers\Commons\AbstractBaseHandler;
 use Blackcube\Dboard\Models\Forms\ConsentForm;
 use Blackcube\Dboard\Models\OauthClient;
-use Blackcube\Dboard\Services\AddonPopulation;
-use Blackcube\Dboard\Services\AddonPopulations;
+use Blackcube\Dboard\Services\Population;
+use Blackcube\Dboard\Services\Populations;
 use Blackcube\Oauth2\Handlers\Oauth2RequestTrait;
 use OAuth2\Response as Oauth2Response;
 use OAuth2\Server;
@@ -66,7 +66,7 @@ class Authorize extends AbstractBaseHandler
         TranslatorInterface $translator,
         protected StreamFactoryInterface $streamFactory,
         protected CurrentRoute $currentRoute,
-        protected AddonPopulations $populations,
+        protected Populations $populations,
         protected ManagerInterface $rbacManager,
     ) {
         parent::__construct(
@@ -98,7 +98,7 @@ class Authorize extends AbstractBaseHandler
         return $authorizeResponse;
     }
 
-    private function authorize(AddonPopulation $population): ResponseInterface
+    private function authorize(Population $population): ResponseInterface
     {
         $server = $population->getServer();
         $oauth2Request = $this->convertRequest($this->request);
@@ -143,7 +143,7 @@ class Authorize extends AbstractBaseHandler
      *
      * @return string[]
      */
-    private function offeredScopes(AddonPopulation $population, string $userId, string $requestedScope): array
+    private function offeredScopes(Population $population, string $userId, string $requestedScope): array
     {
         $userPermissions = $this->rbacManager->getPermissionsByUserId($userId);
         $held = [];
@@ -160,7 +160,7 @@ class Authorize extends AbstractBaseHandler
     /**
      * @param string[] $offered
      */
-    private function consent(AddonPopulation $population, OauthClient $client, array $offered): ResponseInterface
+    private function consent(Population $population, OauthClient $client, array $offered): ResponseInterface
     {
         $groups = [];
         foreach ($offered as $scope) {

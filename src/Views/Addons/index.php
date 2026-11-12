@@ -8,10 +8,7 @@ declare(strict_types=1);
  * @link https://www.blackcube.io
  */
 
-use Blackcube\Dboard\Models\Administrator;
-use Blackcube\Bleet\Bleet;
 use Blackcube\Dboard\Widgets\Widgets;
-use Yiisoft\Html\Html;
 use Yiisoft\Router\UrlGeneratorInterface;
 use Yiisoft\Translator\TranslatorInterface;
 
@@ -19,40 +16,19 @@ use Yiisoft\Translator\TranslatorInterface;
  * @var Yiisoft\View\WebView $this
  * @var UrlGeneratorInterface $urlGenerator
  * @var TranslatorInterface $translator
- * @var Administrator $administrator
- * @var array<string, array<string, mixed>> $addons
+ * @var array<int, array{id: string, name: string, version: ?string, active: bool, pending: bool, configureRoute: ?string, orphan: bool}> $addons
  */
 
 ?>
-
         <main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
             <?php echo Widgets::pageHeading($translator->translate('Addons', category: 'dboard-modules'))->render(); ?>
 
             <div class="dboard-surface p-4">
-                <?php if (empty($addons) === true): ?>
-                    <p class="text-sm text-secondary-500 dark:text-secondary-400">
-                        <?php echo Html::encode($translator->translate('No addon declared.', category: 'dboard-modules')); ?>
-                    </p>
-                <?php else: ?>
-                    <ul class="divide-y divide-secondary-200 dark:divide-white/10">
-                        <?php foreach ($addons as $name => $config): ?>
-                            <?php $configRoute = $config['configRoute'] ?? null; ?>
-                            <li class="flex items-center justify-between gap-4 py-3">
-                                <span class="font-medium text-secondary-800 dark:text-secondary-200">
-                                    <?php echo Html::encode($name); ?>
-                                </span>
-                                <?php if ($configRoute !== null): ?>
-                                    <?php echo Bleet::a($translator->translate('Configure', category: 'dboard-common'), $urlGenerator->generate($configRoute))
-                                        ->button()
-                                        ->icon('cog-6-tooth')
-                                        ->ghost()
-                                        ->secondary()
-                                        ->render();
-                                    ?>
-                                <?php endif; ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
+                <bleet-ajaxify id="addons-list">
+                    <?php echo $this->render('Addons/_list', [
+                        'addons' => $addons,
+                        'urlGenerator' => $urlGenerator,
+                    ]); ?>
+                </bleet-ajaxify>
             </div>
         </main>
