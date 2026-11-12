@@ -21,7 +21,7 @@ use Yiisoft\Db\Schema\Column\ColumnBuilder;
  * @license https://www.blackcube.io/license
  * @link https://www.blackcube.io
  */
-class M000000000005CreateTranslations implements RevertibleMigrationInterface
+class M100000000005CreateTranslations implements RevertibleMigrationInterface
 {
     public function up(MigrationBuilder $b): void
     {

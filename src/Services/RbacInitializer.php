@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Blackcube\Dboard\Services;
 
-use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dboard\Components\Rbac;
 use ReflectionClass;
 use Yiisoft\Rbac\ItemsStorageInterface;
@@ -19,7 +18,7 @@ use Yiisoft\Rbac\Permission;
 use Yiisoft\Rbac\Role;
 
 /**
- * Writes the roles and permissions of the declared RBAC classes in the RBAC storage and reports the differences.
+ * Writes the roles and permissions of the RBAC classes, the panel's and the active add-ons', in the RBAC storage and reports the differences.
  *
  * @copyright 2010-2026 Blackcube - Philippe Gaultier
  * @license https://www.blackcube.io/license
@@ -27,15 +26,10 @@ use Yiisoft\Rbac\Role;
  */
 class RbacInitializer
 {
-    /**
-     * @param ManagerInterface $manager
-     * @param ItemsStorageInterface $itemsStorage
-     * @param array<class-string> $rbacClasses
-     */
     public function __construct(
         private ManagerInterface $manager,
         private ItemsStorageInterface $itemsStorage,
-        private DboardConfig $dboardConfig,
+        private Modules $modules,
     ) {}
 
     public function initialize(): void
@@ -43,7 +37,7 @@ class RbacInitializer
         $roles = [];
         $permissions = [];
 
-        foreach ($this->dboardConfig->rbacClasses as $rbacClass) {
+        foreach ($this->modules->getRbacClasses() as $rbacClass) {
             $reflection = new ReflectionClass($rbacClass);
 
             foreach ($reflection->getConstants() as $name => $rbacItemName) {
@@ -108,7 +102,7 @@ class RbacInitializer
         $roles = [];
         $permissions = [];
 
-        foreach ($this->dboardConfig->rbacClasses as $rbacClass) {
+        foreach ($this->modules->getRbacClasses() as $rbacClass) {
             $reflection = new ReflectionClass($rbacClass);
 
             foreach ($reflection->getConstants() as $name => $rbacItemName) {

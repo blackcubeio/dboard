@@ -10,7 +10,16 @@ declare(strict_types=1);
 
 use Blackcube\Dboard\Handlers\Authentication\Login;
 use Blackcube\Dboard\Handlers\Authentication\Logout;
+use Blackcube\Dboard\Interfaces\RoutesInterface;
+use Blackcube\Dboard\Handlers\Addons\Activate as AddonsActivate;
+use Blackcube\Dboard\Handlers\Addons\ActivateInit as AddonsActivateInit;
+use Blackcube\Dboard\Handlers\Addons\Deactivate as AddonsDeactivate;
+use Blackcube\Dboard\Handlers\Addons\DeactivateInit as AddonsDeactivateInit;
+use Blackcube\Dboard\Handlers\Addons\Forget as AddonsForget;
+use Blackcube\Dboard\Handlers\Addons\ForgetInit as AddonsForgetInit;
 use Blackcube\Dboard\Handlers\Addons\Index as AddonsIndex;
+use Blackcube\Dboard\Handlers\Addons\Update as AddonsUpdate;
+use Blackcube\Dboard\Handlers\Addons\UpdateInit as AddonsUpdateInit;
 use Blackcube\Dboard\Handlers\Dashboard\Health as DashboardHealth;
 use Blackcube\Dboard\Handlers\Dashboard\Index as DashboardIndex;
 use Blackcube\Dboard\Handlers\Search\Index as SearchIndex;
@@ -175,6 +184,7 @@ use Blackcube\Dboard\Handlers\Oauth\Metadata as OauthMetadata;
 use Blackcube\Dboard\Handlers\Oauth\Register as OauthRegister;
 use Blackcube\Dboard\Handlers\Oauth\Token as OauthToken;
 use Blackcube\Dboard\Components\Rbac;
+use Blackcube\Dboard\Middlewares\AddonRoutingMiddleware;
 use Blackcube\Dboard\Middlewares\JsonBodyParserMiddleware;
 use Blackcube\Dboard\Middlewares\JwtAuthMiddleware;
 use Blackcube\Dboard\Middlewares\LocaleMiddleware;
@@ -183,10 +193,19 @@ use Yiisoft\Csrf\CsrfTokenMiddleware;
 use Yiisoft\Router\Group;
 use Yiisoft\Router\Route;
 
-$addonRoutesGroups = [];
-foreach (($params['blackcube/dboard']['addons'] ?? []) as $addon) {
-    if (isset($addon['routes']) === true) {
-        $addonRoutesGroups[] = call_user_func($addon['routes']);
+// The routes of the modules (RoutesInterface): a module declared in 'blackcube/dboard' => 'modules'
+// is mounted as it comes, it decides its routes alone; the group of an add-on declared to dcore
+// goes behind AddonRoutingMiddleware, the routes of an inactive add-on answer 404.
+$moduleRoutesGroups = [];
+foreach (($params['blackcube/dboard']['modules'] ?? []) as $moduleClass) {
+    if (is_subclass_of($moduleClass, RoutesInterface::class) === true) {
+        $moduleRoutesGroups[] = $moduleClass::getRoutesGroup();
+    }
+}
+foreach (($params['blackcube/dcore']['addons'] ?? []) as $addonId => $addonClass) {
+    if (is_subclass_of($addonClass, RoutesInterface::class) === true) {
+        $moduleRoutesGroups[] = $addonClass::getRoutesGroup()
+            ->prependMiddleware(AddonRoutingMiddleware::of($addonId));
     }
 }
 
@@ -1526,7 +1545,51 @@ return [
                 ]))
                 ->action(AddonsIndex::class)
                 ->name('dboard.addons'),
-            ...$addonRoutesGroups,
+            Route::get('/addons/{id}/activate')
+                ->middleware(JwtAuthMiddleware::withRbac([
+                    Rbac::PERMISSION_ADDON_UPDATE,
+                ]))
+                ->action(AddonsActivateInit::class)
+                ->name('dboard.addons.activate'),
+            Route::post('/addons/{id}/activate')
+                ->middleware(JwtAuthMiddleware::withRbac([
+                    Rbac::PERMISSION_ADDON_UPDATE,
+                ]))
+                ->action(AddonsActivate::class),
+            Route::get('/addons/{id}/update')
+                ->middleware(JwtAuthMiddleware::withRbac([
+                    Rbac::PERMISSION_ADDON_UPDATE,
+                ]))
+                ->action(AddonsUpdateInit::class)
+                ->name('dboard.addons.update'),
+            Route::post('/addons/{id}/update')
+                ->middleware(JwtAuthMiddleware::withRbac([
+                    Rbac::PERMISSION_ADDON_UPDATE,
+                ]))
+                ->action(AddonsUpdate::class),
+            Route::get('/addons/{id}/deactivate')
+                ->middleware(JwtAuthMiddleware::withRbac([
+                    Rbac::PERMISSION_ADDON_UPDATE,
+                ]))
+                ->action(AddonsDeactivateInit::class)
+                ->name('dboard.addons.deactivate'),
+            Route::post('/addons/{id}/deactivate')
+                ->middleware(JwtAuthMiddleware::withRbac([
+                    Rbac::PERMISSION_ADDON_UPDATE,
+                ]))
+                ->action(AddonsDeactivate::class),
+            Route::get('/addons/{id}/forget')
+                ->middleware(JwtAuthMiddleware::withRbac([
+                    Rbac::PERMISSION_ADDON_UPDATE,
+                ]))
+                ->action(AddonsForgetInit::class)
+                ->name('dboard.addons.forget'),
+            Route::post('/addons/{id}/forget')
+                ->middleware(JwtAuthMiddleware::withRbac([
+                    Rbac::PERMISSION_ADDON_UPDATE,
+                ]))
+                ->action(AddonsForget::class),
+            ...$moduleRoutesGroups,
         ),
     Group::create($oauthPrefix)
         ->middleware(JsonBodyParserMiddleware::class)

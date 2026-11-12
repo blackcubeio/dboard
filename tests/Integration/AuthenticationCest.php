@@ -10,19 +10,26 @@ declare(strict_types=1);
 
 namespace Blackcube\Dboard\Tests\Integration;
 
+use Blackcube\Dboard\Components\Rbac;
 use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Models\Forms\LoginForm;
+use Blackcube\Dboard\Services\Modules;
 use Blackcube\Dboard\Services\Client;
 use Blackcube\Dboard\Services\RefreshToken;
 use Blackcube\Dboard\Services\ScopeProvider;
 use Blackcube\Dboard\Tests\Support\DatabaseCestTrait;
 use Blackcube\Dboard\Tests\Support\IntegrationTester;
+use Blackcube\Dcore\Services\AddonService;
 use Blackcube\Oauth2\Jwt\CypherKey;
 use Blackcube\Oauth2\PopulationConfig;
 use Blackcube\Oauth2\Server\Oauth2ServerFactory;
 use Blackcube\Oauth2\Storage\Oauth2Storage;
 use OAuth2\Request as Oauth2Request;
 use OAuth2\Response as Oauth2Response;
+use Yiisoft\Db\Connection\ConnectionInterface;
+use Yiisoft\Di\Container;
+use Yiisoft\Di\ContainerConfig;
+use Yiisoft\Injector\Injector;
 
 /**
  * The sign-in screen against the database: what the login form accepts, and
@@ -38,6 +45,22 @@ class AuthenticationCest
     use DatabaseCestTrait;
 
     private const EMAIL = 'philippe@blackcube.io';
+
+    /**
+     * The scopes with no add-on declared: the dboard population publishes none.
+     */
+    private function createScopeProvider(): ScopeProvider
+    {
+        $containerConfig = ContainerConfig::create()
+            ->withDefinitions([
+                ConnectionInterface::class => $this->db,
+            ]);
+        $injector = new Injector(new Container($containerConfig));
+
+        return new ScopeProvider(new Modules(new AddonService($this->db, $injector, []), [
+            Rbac::class,
+        ]));
+    }
     private const PASSWORD = 'p';
 
     public function testLoginFormRefusesAnEmptySubmission(IntegrationTester $I): void
@@ -199,7 +222,7 @@ class AuthenticationCest
             userClass: $config->userQueryClass,
             clientClass: $config->clientQueryClass,
             refreshTokenClass: $config->refreshTokenQueryClass,
-            scopeProvider: new ScopeProvider(),
+            scopeProvider: $this->createScopeProvider(),
             cypherKeyClass: $config->cypherKeyQueryClass,
         );
 

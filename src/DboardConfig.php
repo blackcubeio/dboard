@@ -16,7 +16,8 @@ use Blackcube\Dboard\Services\ScopeProvider;
 use Blackcube\Dboard\Services\WebauthnConfig;
 
 /**
- * Settings of the admin panel: the handler settings (debug, views alias, layout) plus templates alias, route prefix, RBAC classes, addons, JWT key, scopes and WebAuthn.
+ * Settings of the admin panel: the handler settings (debug, views alias, layout) plus templates alias, route prefix, RBAC classes of the panel, JWT key, scopes and WebAuthn.
+ * The add-ons are declared to dcore ('blackcube/dcore' => 'addons') and read through Modules.
  * Its own type keeps the panel handlers apart from the application's HandlerConfig in the same container.
  *
  * @copyright 2010-2026 Blackcube - Philippe Gaultier
@@ -31,7 +32,6 @@ class DboardConfig extends HandlerConfig
         public readonly ?string $adminTemplatesAlias = null,
         public readonly string $routePrefix = '/admin',
         public readonly array $rbacClasses = [],
-        public readonly array $addons = [],
         public readonly ?CypherKey $cypherKey = null,
         public readonly ?ScopeProvider $scopeProvider = null,
         public readonly ?WebauthnConfig $webauthnConfig = null,

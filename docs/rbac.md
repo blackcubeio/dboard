@@ -82,6 +82,15 @@ Same pattern: `PREFIX:VIEW`, `PREFIX:CREATE`, `PREFIX:UPDATE`, `PREFIX:DELETE`.
 | `PERMISSION_RBAC_VIEW` | `RBAC:VIEW` |
 | `PERMISSION_RBAC_REFRESH` | `RBAC:REFRESH` |
 
+### Addon
+
+| Constant | Value |
+|---|---|
+| `PERMISSION_ADDON_VIEW` | `ADDON:VIEW` |
+| `PERMISSION_ADDON_UPDATE` | `ADDON:UPDATE` |
+
+`ADDON:VIEW` opens the Addons screen, `ADDON:UPDATE` activates, updates and deactivates an add-on (see [addons.md](addons.md#addons-screen)).
+
 ### AI
 
 | Constant | Value |
@@ -117,6 +126,7 @@ Each entity has a `MANAGER` role that aggregates all its permissions (matching p
 | `SLUG:MANAGER` | VIEW, CREATE, UPDATE, DELETE |
 | `ADMINISTRATOR:MANAGER` | VIEW, CREATE, UPDATE, DELETE |
 | `RBAC:MANAGER` | VIEW, REFRESH |
+| `ADDON:MANAGER` | VIEW, UPDATE |
 | `IA:MANAGER` | EXPORT, IMPORT |
 | `SITE:MANAGER` | DASHBOARD, SEARCH, PREVIEW |
 
@@ -142,6 +152,7 @@ ADMIN
 ├── SLUG:MANAGER
 ├── ADMINISTRATOR:MANAGER
 ├── RBAC:MANAGER
+├── ADDON:MANAGER
 ├── IA:MANAGER
 └── SITE:MANAGER
 ```
@@ -169,7 +180,7 @@ $initializer->getDiff(): array           // detailed diff
 ]
 ```
 
-The initializer reflects all classes listed in `rbacClasses` param for `PERMISSION_*` and `ROLE_*` constants, builds the hierarchy (roles inherit permissions by matching prefix, ADMIN inherits all roles), and cleans obsolete items.
+The initializer reflects the classes listed in the `rbacClasses` param, plus the RBAC class of each declared module and of each active add-on, for `PERMISSION_*` and `ROLE_*` constants, builds the hierarchy (roles inherit permissions by matching prefix, ADMIN inherits all roles), and cleans obsolete items.
 
 ## Utility methods
 
@@ -189,3 +200,5 @@ The initializer reflects all classes listed in `rbacClasses` param for `PERMISSI
 ## Custom RBAC classes
 
 Additional RBAC classes can be registered via the `rbacClasses` parameter. Each class must define `PERMISSION_*` and/or `ROLE_*` constants following the same `PREFIX:ACTION` / `PREFIX:MANAGER` convention.
+
+A Composer package brings its own class through `RbacInterface::getRbac()`, as a module or as an add-on: the application lists nothing. The items of an add-on are written at its activation and removed at its deactivation (see [addons.md](addons.md)).

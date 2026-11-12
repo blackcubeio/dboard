@@ -25,7 +25,7 @@ use Yiisoft\Db\Query\Query;
  * @license https://www.blackcube.io/license
  * @link https://www.blackcube.io
  */
-class M000000000008AddMissingTranslations implements MigrationInterface
+class M100000000008AddMissingTranslations implements MigrationInterface
 {
     public const TABLE_SOURCE = '{{%yii_source_message}}';
     public const TABLE_MESSAGE = '{{%yii_message}}';

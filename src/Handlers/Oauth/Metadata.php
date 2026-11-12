@@ -12,7 +12,7 @@ namespace Blackcube\Dboard\Handlers\Oauth;
 
 use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dboard\Handlers\Commons\AbstractBaseHandler;
-use Blackcube\Dboard\Services\AddonPopulations;
+use Blackcube\Dboard\Services\Populations;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -48,7 +48,7 @@ class Metadata extends AbstractBaseHandler
         Aliases $aliases,
         TranslatorInterface $translator,
         protected CurrentRoute $currentRoute,
-        protected AddonPopulations $populations,
+        protected Populations $populations,
     ) {
         parent::__construct(
             logger: $logger,

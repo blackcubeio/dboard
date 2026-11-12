@@ -13,7 +13,7 @@ namespace Blackcube\Dboard\Handlers\Oauth;
 use Blackcube\Dboard\DboardConfig;
 use Blackcube\Dboard\Handlers\Commons\AbstractBaseHandler;
 use Blackcube\Dboard\Models\OauthClient;
-use Blackcube\Dboard\Services\AddonPopulations;
+use Blackcube\Dboard\Services\Populations;
 use Blackcube\Oauth2\Handlers\Oauth2RequestTrait;
 use OAuth2\Response as Oauth2Response;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -53,7 +53,7 @@ class Token extends AbstractBaseHandler
         TranslatorInterface $translator,
         protected StreamFactoryInterface $streamFactory,
         protected CurrentRoute $currentRoute,
-        protected AddonPopulations $populations,
+        protected Populations $populations,
     ) {
         parent::__construct(
             logger: $logger,

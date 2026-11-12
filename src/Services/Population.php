@@ -23,7 +23,7 @@ use OAuth2\Server;
 use Psr\Log\LoggerInterface;
 
 /**
- * OAuth2 population of an addon resource: the administrators are its users,
+ * OAuth2 population of a module resource: the administrators are its users,
  * dynamically registered public clients obtain codes on the consent screen and
  * exchange them with PKCE. Tokens are signed with the dboard key; the
  * population is carried by the issuer and audience claims.
@@ -32,7 +32,7 @@ use Psr\Log\LoggerInterface;
  * @license https://www.blackcube.io/license
  * @link https://www.blackcube.io
  */
-class AddonPopulation
+class Population
 {
     private ?PopulationConfig $config = null;
     private ?Oauth2Storage $storage = null;

@@ -2,7 +2,7 @@
 
 ## Flow
 
-1. `GET|POST <prefix>/login` (`Authentication\Login`, `LoginForm`): the password is checked through `Administrator::queryByIdentifierAndPassword()` and the browser receives the two cookies (see below). `POST <prefix>/auth/token` (`Authentication\Token`) is the OAuth2 token endpoint of the `dboard` population: grants `password`, `refresh_token` and `passkey` (`config/routes.php:261-270`).
+1. `GET|POST <prefix>/login` (`Authentication\Login`, `LoginForm`): the password is checked through `Administrator::queryByIdentifierAndPassword()` and the browser receives the two cookies (see below). `POST <prefix>/auth/token` (`Authentication\Token`) is the OAuth2 token endpoint of the `dboard` population: grants `password`, `refresh_token` and `passkey` (`config/routes.php:288-297`).
 2. Every guarded route carries `JwtAuthMiddleware` (`config/routes.php`): `withRbac([...])` for a permission list, bare class for "authenticated", `optional()` for a route open to anonymous visitors where the administrator is attached when present (`src/Middlewares/JwtAuthMiddleware.php:82-109`).
 3. `LocaleMiddleware` runs first and sets the translator locale from `Accept-Language` when the primary language is one of `LocaleHelper::getLocales()` (`src/Middlewares/LocaleMiddleware.php:36-64`); `JwtAuthMiddleware` then applies the administrator locale when set (`JwtAuthMiddleware.php:171-174`).
 
@@ -20,7 +20,7 @@ Extends `blackcube/oauth2` `AbstractJwtMiddleware`. Constructor: `CypherKey`, `S
 
 ## Passkeys (WebAuthn)
 
-- Registration: `GET <prefix>/account/{id}/passkeys` (`Account\PasskeysInit`) returns the creation options, the challenge kept in session; `POST` (`Account\Passkeys`) validates the attestation with `WebauthnHelper::getAttestationValidator()` and saves through `WebauthnHelper::savePasskey(CredentialRecord, name, administratorId)`; `DELETE` removes one (`config/routes.php:250-259`, `src/Components/WebauthnHelper.php:84-98`).
+- Registration: `GET <prefix>/account/{id}/passkeys` (`Account\PasskeysInit`) returns the creation options, the challenge kept in session; `POST` (`Account\Passkeys`) validates the attestation with `WebauthnHelper::getAttestationValidator()` and saves through `WebauthnHelper::savePasskey(CredentialRecord, name, administratorId)`; `DELETE` removes one (`config/routes.php:277-286`, `src/Components/WebauthnHelper.php:84-98`).
 - Authentication: `POST <prefix>/auth/challenges` (`Authentication\Challenges`, optional auth) returns the request options; the assertion goes to `POST <prefix>/auth/token` with `grant_type=passkey`, handled by `Services\PasskeyGrant` (`GrantTypeInterface`, identifier `passkey`, `validateRequest()` checks the assertion against the stored `Passkey`, `getUserId()` the administrator, `src/Services/PasskeyGrant.php:33-153`).
 - `WebauthnConfig`: `getRpId(?request)` (param or request host), `getRpName()`, `getTimeout()`, `getChallengeLength()` (`src/Services/WebauthnConfig.php:31-53`), wired from the `webauthn` params (`config/common/di/oauth2.php:28-36`).
 - Models: `Passkey` (credential id, name, administrator, type, attestation type, aaguid, public key, user handle, counter, JSON, active, `src/Models/Passkey.php:31-189`) and `PasskeyDevice` (aaguid registry); `PasskeyService::importAaguid()` fills the registry and extracts the SVG icons under `@dboard/Assets/Passkeys/Img`, run by `dboard:refreshAaguid` (`src/Services/PasskeyService.php:26-92`, `src/Commands/RefreshAaguidCommand.php:32`).

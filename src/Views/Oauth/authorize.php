@@ -12,7 +12,7 @@ use Blackcube\Dboard\Components\Rbac;
 use Blackcube\Dboard\Models\Administrator;
 use Blackcube\Dboard\Models\Forms\ConsentForm;
 use Blackcube\Dboard\Models\OauthClient;
-use Blackcube\Dboard\Services\AddonPopulation;
+use Blackcube\Dboard\Services\Population;
 use Blackcube\Bleet\Bleet;
 use Yiisoft\Html\Html;
 use Yiisoft\Translator\TranslatorInterface;
@@ -21,7 +21,7 @@ use Yiisoft\Translator\TranslatorInterface;
  * @var Yiisoft\View\WebView $this
  * @var Yiisoft\Assets\AssetManager $assetManager
  * @var TranslatorInterface $translator
- * @var AddonPopulation $population
+ * @var Population $population
  * @var OauthClient $client
  * @var Administrator $administrator
  * @var array<string, array<string, string>> $groups

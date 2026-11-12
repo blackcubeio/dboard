@@ -14,39 +14,40 @@ use Blackcube\Oauth2\Jwt\CypherKey;
 use Psr\Log\LoggerInterface;
 
 /**
- * The OAuth2 populations declared by the addons (AddonOauth2Interface), by
+ * The OAuth2 populations published by the modules (Oauth2Interface), by
  * name. A population is built on first use.
  *
  * @copyright 2010-2026 Blackcube - Philippe Gaultier
  * @license https://www.blackcube.io/license
  * @link https://www.blackcube.io
  */
-class AddonPopulations
+class Populations
 {
     /**
-     * @var array<string, AddonPopulation>
+     * @var array<string, Population>
      */
     private array $populations = [];
 
-    /**
-     * @param array<string, string[]> $publishedScopes Permissions published by each population
-     */
     public function __construct(
-        private readonly array $publishedScopes,
+        private readonly Modules $modules,
         private readonly CypherKey $cypherKey,
         private readonly ScopeProvider $scopeProvider,
         private readonly LoggerInterface $logger,
     ) {
     }
 
-    public function get(string $name): ?AddonPopulation
+    /**
+     * The population, or null when no module publishes it.
+     */
+    public function get(string $name): ?Population
     {
         $population = null;
-        if (isset($this->publishedScopes[$name]) === true) {
+        $publishedScopes = $this->modules->getPublishedScopes();
+        if (isset($publishedScopes[$name]) === true) {
             if (isset($this->populations[$name]) === false) {
-                $this->populations[$name] = new AddonPopulation(
+                $this->populations[$name] = new Population(
                     name: $name,
-                    scopes: $this->publishedScopes[$name],
+                    scopes: $publishedScopes[$name],
                     cypherKey: $this->cypherKey,
                     scopeProvider: $this->scopeProvider,
                     logger: $this->logger,
@@ -62,6 +63,6 @@ class AddonPopulations
      */
     public function names(): array
     {
-        return array_keys($this->publishedScopes);
+        return array_keys($this->modules->getPublishedScopes());
     }
 }

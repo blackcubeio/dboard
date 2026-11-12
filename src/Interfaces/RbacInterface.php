@@ -8,10 +8,10 @@ declare(strict_types=1);
  * @link https://www.blackcube.io
  */
 
-namespace Blackcube\Dboard\Addons;
+namespace Blackcube\Dboard\Interfaces;
 
 /**
- * An addon that contributes RBAC items to the dboard admin.
+ * A module that contributes RBAC items to the dboard admin.
  *
  * getRbac() returns the class-string of a class holding PERMISSION_* / ROLE_*
  * constants in the dboard convention ('DOMAIN:ACTION'); dboard appends it to
@@ -21,7 +21,7 @@ namespace Blackcube\Dboard\Addons;
  * @license https://www.blackcube.io/license
  * @link https://www.blackcube.io
  */
-interface AddonRbacInterface
+interface RbacInterface
 {
     /**
      * @return class-string

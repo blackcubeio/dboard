@@ -22,6 +22,7 @@ The package uses `config-plugin` for automatic Yii3 registration:
 | `config/common/di/*.php` | All | DI container definitions (dboard, oauth2) |
 | `config/common/bootstrap.php` | All | `@dboard` alias registration |
 | `config/web/params.php` | Web | View injection registration |
+| `config/console/params.php` | Console | Console commands |
 | `config/routes.php` | Web | Route definitions |
 
 ### Parameters
@@ -31,6 +32,7 @@ The package uses `config-plugin` for automatic Yii3 registration:
     'debug' => true,
     'routePrefix' => '/dboard',          // route namespace
     'rbacClasses' => [Rbac::class],       // classes defining RBAC items
+    'modules' => [],                      // classes of the modules (see addons.md)
     'adminTemplatesAlias' => null,        // Yii alias for custom admin views
     'oauth2' => [
         'issuer' => 'dboard',
@@ -55,6 +57,7 @@ The package uses `config-plugin` for automatic Yii3 registration:
 |---|---|
 | `CypherKey` (`oauth2`) | JWT signing from `oauth2` config: with `RS*` the two paths are read when a token is signed and the pair is generated on first use when it is missing, with `HS*` the `hsKey` secret is used as it is given |
 | `DboardConfig` | Aggregated package configuration; extends `Blackcube\Handler\HandlerConfig` (views alias, layout and debug of the panel handlers) |
+| `Modules` | What the declared modules and the active add-ons bring to the panel: RBAC classes, sidebar entries, OAuth2 scopes |
 | `WebauthnConfig` | WebAuthn relying party settings |
 
 `ScopeProvider` and `ViewInjection` are resolved by autowiring (no explicit definition).
@@ -93,11 +96,24 @@ The application registers the migration namespace in its own params:
 ./yii migrate/up
 ```
 
+A base migrated under the former migration names gets its history rewritten first (see [addons.md](addons.md#upgrading-an-existing-base)):
+
+```bash
+./yii upgrade
+./yii migrate/up
+```
+
 ## Console commands
 
 | Command | Purpose |
 |---|---|
 | `dboard:refreshAaguid` | Import/refresh WebAuthn AAGUID device registry |
+| `dboard:addonList` | List the declared add-ons with their version and status |
+| `dboard:addonActivate <id>` | Activate an add-on: migrations, RBAC items |
+| `dboard:addonUpdate <id>` | Play the pending migrations of an active add-on |
+| `dboard:addonDeactivate <id>` | Deactivate an add-on: its tables, RBAC items and OAuth2 clients are removed |
+
+See [addons.md](addons.md) for add-ons and modules.
 
 ## Authentication
 
